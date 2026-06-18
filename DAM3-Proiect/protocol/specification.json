@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SecureOfflineMeshProtocol",
+  "description": "Binary and JSON specification for Secure Offline Mesh Messenger wire protocol",
+  "version": "1.0.0",
+  "definitions": {
+    "MessageEnvelope": {
+      "type": "object",
+      "properties": {
+        "protocolVersion": { "type": "integer", "minimum": 1, "maximum": 255 },
+        "messageId": { "type": "string", "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$" },
+        "messageType": { "type": "string", "enum": ["DIRECT_TEXT", "ROUTING_ACK", "SOS_BEACON", "PEER_DISCOVERY"] },
+        "senderPubkey": { "type": "string", "description": "Hex-encoded 32-byte Ed25519/X25519 public key" },
+        "recipientPubkey": { "type": "string", "description": "Hex-encoded 32-byte public key or all-zeros for broadcast" },
+        "createdAt": { "type": "integer", "description": "Unix timestamp in milliseconds" },
+        "expiresAt": { "type": "integer", "description": "Unix timestamp in milliseconds" },
+        "hopLimit": { "type": "integer", "minimum": 1, "maximum": 16 },
+        "hopCount": { "type": "integer", "minimum": 0, "maximum": 16 },
+        "ciphertext": { "type": "string", "description": "Base64 or Hex encoded ChaCha20-Poly1305 ciphertext" },
+        "nonce": { "type": "string", "description": "Hex-encoded 12-byte initialization vector" },
+        "authTag": { "type": "string", "description": "Hex-encoded 16-byte Poly1305 authentication tag" },
+        "signature": { "type": "string", "description": "Hex-encoded 64-byte Ed25519 signature over envelope metadata" }
+      },
+      "required": ["protocolVersion", "messageId", "messageType", "senderPubkey", "recipientPubkey", "createdAt", "expiresAt", "hopLimit", "hopCount", "ciphertext", "nonce", "authTag", "signature"]
+    },
+    "FragmentFrame": {
+      "type": "object",
+      "properties": {
+        "messageId": { "type": "string" },
+        "fragmentIndex": { "type": "integer", "minimum": 0 },
+        "totalFragments": { "type": "integer", "minimum": 1 },
+        "payloadChunk": { "type": "string" }
+      },
+      "required": ["messageId", "fragmentIndex", "totalFragments", "payloadChunk"]
+    },
+    "SOSPayload": {
+      "type": "object",
+      "properties": {
+        "sosId": { "type": "string" },
+        "timestamp": { "type": "integer" },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "accuracyMeters": { "type": "number" },
+        "emergencyNote": { "type": "string" }
+      },
+      "required": ["sosId", "timestamp", "emergencyNote"]
+    }
+  }
+}
