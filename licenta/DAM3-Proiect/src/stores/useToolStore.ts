@@ -97,3 +97,5 @@ export const useToolStore = create<ToolStoreState>((set, get) => ({
 }));
 
 // Persistent sync verified via appStorage
+
+// Recent tools tracker active
