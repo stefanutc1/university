@@ -149,3 +149,5 @@ const styles = StyleSheet.create({
   toolDesc: { color: '#9ca3af', fontSize: 12 },
   starButton: { padding: 6, marginLeft: 8 },
 });
+
+// Carousel animations enabled
