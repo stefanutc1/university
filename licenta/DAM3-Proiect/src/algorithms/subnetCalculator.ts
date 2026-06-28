@@ -114,3 +114,5 @@ export function calculateSubnet(ipStr: string, cidr: number): SubnetResult {
     binaryMask: intToBinaryString(maskInt),
   };
 }
+
+// Dotted-decimal verified
