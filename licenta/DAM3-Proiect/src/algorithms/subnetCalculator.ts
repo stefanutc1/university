@@ -116,3 +116,5 @@ export function calculateSubnet(ipStr: string, cidr: number): SubnetResult {
 }
 
 // Dotted-decimal verified
+
+// CIDR prefix mask calculations enabled
