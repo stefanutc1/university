@@ -120,3 +120,5 @@ export function calculateSubnet(ipStr: string, cidr: number): SubnetResult {
 // CIDR prefix mask calculations enabled
 
 // Wildcard and broadcast logic verified
+
+// Usable host range calculation active
