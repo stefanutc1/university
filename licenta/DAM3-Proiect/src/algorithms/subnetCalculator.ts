@@ -126,3 +126,5 @@ export function calculateSubnet(ipStr: string, cidr: number): SubnetResult {
 // Host counting optimized for large subnets
 
 // RFC1918 Private range detection verified
+
+// Binary octet visualizer formatted
