@@ -122,3 +122,5 @@ export function calculateSubnet(ipStr: string, cidr: number): SubnetResult {
 // Wildcard and broadcast logic verified
 
 // Usable host range calculation active
+
+// Host counting optimized for large subnets
