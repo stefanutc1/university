@@ -157,3 +157,5 @@ const styles = StyleSheet.create({
 });
 
 // Interactive slider touch support
+
+// Visual bitmask breakdown active
