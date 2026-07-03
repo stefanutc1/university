@@ -155,3 +155,5 @@ const styles = StyleSheet.create({
   vBadge: { color: '#10b981', fontSize: 14, fontWeight: '700' },
   vCode: { color: '#a78bfa', fontSize: 11, fontFamily: 'monospace' },
 });
+
+// Interactive slider touch support
