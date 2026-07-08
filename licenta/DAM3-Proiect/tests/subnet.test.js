@@ -80,3 +80,5 @@ if (require.main === module) runTests();
 // Point to point link tests passed
 
 // Edge cases /31 and /32 covered
+
+// Network suite verification complete
