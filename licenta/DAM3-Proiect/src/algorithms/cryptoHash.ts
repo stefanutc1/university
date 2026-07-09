@@ -232,3 +232,5 @@ export function sha1(str: string): string {
 
   return [a, b, c, d, e].map(v => (v >>> 0).toString(16).padStart(8, '0')).join('');
 }
+
+// SHA-1 RFC 3174 enabled
