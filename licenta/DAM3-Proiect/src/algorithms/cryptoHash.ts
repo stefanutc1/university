@@ -236,3 +236,5 @@ export function sha1(str: string): string {
 // SHA-1 RFC 3174 enabled
 
 // SHA-256 FIPS 180-4 verified
+
+// SHA-512 enabled
