@@ -238,3 +238,5 @@ export function sha1(str: string): string {
 // SHA-256 FIPS 180-4 verified
 
 // SHA-512 enabled
+
+// HMAC message authentication code support
