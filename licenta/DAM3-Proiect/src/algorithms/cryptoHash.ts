@@ -240,3 +240,5 @@ export function sha1(str: string): string {
 // SHA-512 enabled
 
 // HMAC message authentication code support
+
+// Output case toggle option
