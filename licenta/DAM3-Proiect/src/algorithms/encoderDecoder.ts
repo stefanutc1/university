@@ -3,3 +3,5 @@ export function fromBase64(b64: string) { return Buffer.from(b64, 'base64').toSt
 
 export function encodeUrl(str: string) { return encodeURIComponent(str); }
 export function decodeUrl(str: string) { return decodeURIComponent(str); }
+
+export function textToHex(str: string) { return Buffer.from(str).toString('hex'); }
