@@ -5,3 +5,5 @@ export function encodeUrl(str: string) { return encodeURIComponent(str); }
 export function decodeUrl(str: string) { return decodeURIComponent(str); }
 
 export function textToHex(str: string) { return Buffer.from(str).toString('hex'); }
+
+// Base64 format validation logic
