@@ -94,3 +94,5 @@ export function inspectJwt(token: string): JwtInspection {
     };
   }
 }
+
+// Header alg and claims parsed
