@@ -98,3 +98,5 @@ export function inspectJwt(token: string): JwtInspection {
 // Header alg and claims parsed
 
 // Token expiry countdown active
+
+// Human readable ISO timestamps
