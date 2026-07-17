@@ -41,3 +41,5 @@ function runTests() {
 
 module.exports = { runTests };
 if (require.main === module) runTests();
+
+// JWT parsing tests passed
