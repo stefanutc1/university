@@ -99,3 +99,5 @@ export function convertUnit(
     formula: `${val} ${fromFactor.symbol} * (${fromFactor.ratioToBase} / ${toFactor.ratioToBase}) = ${rounded} ${toFactor.symbol}`,
   };
 }
+
+// Weight & mass conversion factors verified
