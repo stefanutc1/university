@@ -103,3 +103,5 @@ export function convertUnit(
 // Weight & mass conversion factors verified
 
 // Volume units verified
+
+// Temperature Celsius/Fahrenheit/Kelvin equations
