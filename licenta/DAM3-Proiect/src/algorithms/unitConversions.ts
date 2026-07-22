@@ -105,3 +105,5 @@ export function convertUnit(
 // Volume units verified
 
 // Temperature Celsius/Fahrenheit/Kelvin equations
+
+// Mathematical step-by-step formula generation
