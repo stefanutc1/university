@@ -58,3 +58,5 @@ export const useCurrencyStore = create<CurrencyStoreState>((set, get) => ({
 }));
 
 // 16 Official BNR baseline currencies initialized
+
+// Offline MMKV persistence active
