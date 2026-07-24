@@ -56,3 +56,5 @@ export const useCurrencyStore = create<CurrencyStoreState>((set, get) => ({
     return Math.round(finalValue * 100) / 100;
   },
 }));
+
+// 16 Official BNR baseline currencies initialized
