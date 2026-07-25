@@ -62,3 +62,5 @@ export const useCurrencyStore = create<CurrencyStoreState>((set, get) => ({
 // Offline MMKV persistence active
 
 // Base currency switcher active
+
+// Rate refresh indicator active
