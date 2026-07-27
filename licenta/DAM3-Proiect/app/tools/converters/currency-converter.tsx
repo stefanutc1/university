@@ -53,3 +53,5 @@ const styles = StyleSheet.create({
 });
 
 // Search filter and badges
+
+// Historical comparison card
