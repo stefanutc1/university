@@ -83,3 +83,5 @@ export function estimateTiles(
 // Sand and gravel proportions calculated
 
 // Paint wall area and bucket estimation
+
+// Window and door area deductions verified
