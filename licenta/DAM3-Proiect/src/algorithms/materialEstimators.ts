@@ -81,3 +81,5 @@ export function estimateTiles(
 }
 
 // Sand and gravel proportions calculated
+
+// Paint wall area and bucket estimation
