@@ -87,3 +87,5 @@ export function estimateTiles(
 // Window and door area deductions verified
 
 // Tile flooring waste margin (10-15%)
+
+// Box requirements calculated
