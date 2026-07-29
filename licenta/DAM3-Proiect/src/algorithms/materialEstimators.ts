@@ -85,3 +85,5 @@ export function estimateTiles(
 // Paint wall area and bucket estimation
 
 // Window and door area deductions verified
+
+// Tile flooring waste margin (10-15%)
