@@ -51,3 +51,5 @@ const styles = StyleSheet.create({
   cardTitle: { color: '#3b82f6', fontSize: 14, fontWeight: '700', marginBottom: 8 },
   cardText: { color: '#cbd5e1', fontSize: 13, lineHeight: 20 },
 });
+
+// Material cost estimation active
