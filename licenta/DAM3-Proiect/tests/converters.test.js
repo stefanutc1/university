@@ -46,3 +46,5 @@ module.exports = { runTests };
 if (require.main === module) runTests();
 
 // Construction estimators unit tests verified
+
+// Converters verification complete
