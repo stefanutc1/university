@@ -53,3 +53,5 @@ const styles = StyleSheet.create({
 });
 
 // Safety timer 10 min
+
+// Cleanup on unmount
