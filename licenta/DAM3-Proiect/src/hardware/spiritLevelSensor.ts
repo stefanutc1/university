@@ -3,3 +3,5 @@ export function calculatePitchRoll(x: number, y: number, z: number) { return { p
 // Pitch and roll angles calculated
 
 // Zero offset calibration
+
+// 0.5 degree level lock tolerance
