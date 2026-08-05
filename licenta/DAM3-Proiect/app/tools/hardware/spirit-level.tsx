@@ -53,3 +53,5 @@ const styles = StyleSheet.create({
 });
 
 // Linear tube level bars
+
+// Haptic vibration feedback
