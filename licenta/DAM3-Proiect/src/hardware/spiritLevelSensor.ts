@@ -5,3 +5,5 @@ export function calculatePitchRoll(x: number, y: number, z: number) { return { p
 // Zero offset calibration
 
 // 0.5 degree level lock tolerance
+
+// Low-pass exponential smoothing filter
