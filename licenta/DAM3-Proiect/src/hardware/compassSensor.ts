@@ -3,3 +3,5 @@ export function calculateHeading(x: number, y: number) { let heading = Math.atan
 // Azimuth 0-360 degrees
 
 // Cardinal directions mapper
+
+// Field strength microteslas
