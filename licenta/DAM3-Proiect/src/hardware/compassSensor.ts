@@ -5,3 +5,5 @@ export function calculateHeading(x: number, y: number) { let heading = Math.atan
 // Cardinal directions mapper
 
 // Field strength microteslas
+
+// 60fps throttled listener
