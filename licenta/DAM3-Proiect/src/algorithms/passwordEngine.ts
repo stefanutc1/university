@@ -78,3 +78,5 @@ export function generatePassword(options: PasswordOptions): { secret: string; en
   const entropy = calculateEntropy(result, pool.length);
   return { secret: result, entropy };
 }
+
+// Character pool configurations
