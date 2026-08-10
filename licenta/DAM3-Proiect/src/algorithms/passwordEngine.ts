@@ -82,3 +82,5 @@ export function generatePassword(options: PasswordOptions): { secret: string; en
 // Character pool configurations
 
 // Ambiguous exclusion verified
+
+// Passphrase wordlist integration
