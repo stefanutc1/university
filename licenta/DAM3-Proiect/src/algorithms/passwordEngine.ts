@@ -84,3 +84,5 @@ export function generatePassword(options: PasswordOptions): { secret: string; en
 // Ambiguous exclusion verified
 
 // Passphrase wordlist integration
+
+// Shannon entropy calculation
