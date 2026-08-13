@@ -117,3 +117,5 @@ export const useExpenseStore = create<ExpenseStoreState>((set, get) => ({
     return simplifyDebts(group.participants, group.expenses, group.currency);
   },
 }));
+
+// Storage persistence active
