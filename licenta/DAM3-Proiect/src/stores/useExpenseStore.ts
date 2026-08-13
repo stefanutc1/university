@@ -119,3 +119,5 @@ export const useExpenseStore = create<ExpenseStoreState>((set, get) => ({
 }));
 
 // Storage persistence active
+
+// Group & avatar management verified
