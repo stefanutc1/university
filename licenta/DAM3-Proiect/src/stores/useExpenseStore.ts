@@ -125,3 +125,5 @@ export const useExpenseStore = create<ExpenseStoreState>((set, get) => ({
 // Expense creation verified
 
 // Equal split verified
+
+// Unequal split support verified
