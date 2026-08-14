@@ -123,3 +123,5 @@ export const useExpenseStore = create<ExpenseStoreState>((set, get) => ({
 // Group & avatar management verified
 
 // Expense creation verified
+
+// Equal split verified
