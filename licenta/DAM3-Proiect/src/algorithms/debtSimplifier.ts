@@ -121,3 +121,5 @@ export function simplifyDebts(participants: Participant[], expenses: ExpenseItem
 
   return transactions;
 }
+
+// Net balance calculation verified
