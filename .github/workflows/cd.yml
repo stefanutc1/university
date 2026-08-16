@@ -66,6 +66,7 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
+        continue-on-error: true
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
@@ -109,7 +110,7 @@ jobs:
         with:
           context: DAM3-Proiect
           file: DAM3-Proiect/Dockerfile
-          push: true
+          push: false
           tags: |
             ghcr.io/${{ steps.repo_owner.outputs.owner }}/dam3-web:latest
             ghcr.io/${{ steps.repo_owner.outputs.owner }}/dam3-web:${{ github.sha }}
