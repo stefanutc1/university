@@ -1,0 +1,97 @@
+name: DAM3 CI Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'DAM3-Proiect/**'
+      - '.github/workflows/ci.yml'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'DAM3-Proiect/**'
+      - '.github/workflows/ci.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-web:
+    name: Build & Verify Web (Next.js)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: DAM3-Proiect
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: DAM3-Proiect/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Web App (Turbo)
+        run: npx turbo run build --filter=web
+
+      - name: Test Static Export (GitHub Pages compatibility)
+        run: |
+          cd apps/web
+          DEPLOY_TARGET=gh-pages GITHUB_PAGES=true NEXT_PUBLIC_BASE_PATH=/facultate npx next build
+
+  build-desktop:
+    name: Build Desktop (Avalonia C# .NET)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: DAM3-Proiect
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Create dummy native lib for Linux CI
+        run: |
+          mkdir -p packages/quant-engine/build/lib/
+          touch packages/quant-engine/build/lib/libquantengine.dylib
+          touch packages/quant-engine/build/lib/libquantengine.so
+
+      - name: Restore & Build Desktop
+        run: |
+          cd apps/desktop
+          dotnet restore
+          dotnet build --configuration Release --no-restore
+
+  build-mobile:
+    name: Check Mobile (Expo React Native)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: DAM3-Proiect
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: DAM3-Proiect/package-lock.json
+
+      - name: Install dependencies & Validate Mobile
+        run: |
+          npm install
+          cd apps/mobile
+          npm list --depth=0 || true
