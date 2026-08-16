@@ -60,4 +60,32 @@ void introducere_studenti() {
         scanf("%d %d %d", 
               &grupa[numar_studenti].data_nasterii.an, 
               &grupa[numar_studenti].data_nasterii.luna, 
-              &grupa
+              &grupa[numar_studenti].data_nasterii.zi);
+
+        printf("Sex (M/F): ");
+        scanf(" %c", &grupa[numar_studenti].sex);
+
+        numar_studenti++;
+
+        printf("Doriti sa adaugati alt student? (d/n): ");
+        scanf(" %c", &raspuns);
+    } while (raspuns == 'd' || raspuns == 'D');
+}
+
+void afisare_studenti() {
+    printf("\n=== Lista Studenti (%d) ===\n", numar_studenti);
+    for (int i = 0; i < numar_studenti; ++i) {
+        printf("Cod: %d | Nume: %s %s | Tel: %s | Data: %04d-%02d-%02d | Sex: %c\n",
+               grupa[i].cod, grupa[i].nume, grupa[i].prenume,
+               grupa[i].telefon,
+               grupa[i].data_nasterii.an, grupa[i].data_nasterii.luna, grupa[i].data_nasterii.zi,
+               grupa[i].sex);
+    }
+}
+
+int main() {
+    introducere_studenti();
+    qsort(grupa, numar_studenti, sizeof(Student), compara_studenti);
+    afisare_studenti();
+    return 0;
+}
