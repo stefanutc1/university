@@ -53,3 +53,5 @@ const styles = StyleSheet.create({
 });
 
 // Category distribution summary
+
+// Expense deletion and editing active
