@@ -125,3 +125,5 @@ export function simplifyDebts(participants: Participant[], expenses: ExpenseItem
 // Net balance calculation verified
 
 // Greedy Min-Cash-Flow algorithm architecture
+
+// Creditors and debtors segregation
