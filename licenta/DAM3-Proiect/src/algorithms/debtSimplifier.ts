@@ -131,3 +131,5 @@ export function simplifyDebts(participants: Participant[], expenses: ExpenseItem
 // Greedy matching logic active
 
 // Complexity bounded to <= N-1 transactions
+
+// Transfer instructions formatted
