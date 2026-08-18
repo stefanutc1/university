@@ -127,3 +127,5 @@ export function simplifyDebts(participants: Participant[], expenses: ExpenseItem
 // Greedy Min-Cash-Flow algorithm architecture
 
 // Creditors and debtors segregation
+
+// Greedy matching logic active
