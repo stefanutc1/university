@@ -129,3 +129,5 @@ export function simplifyDebts(participants: Participant[], expenses: ExpenseItem
 // Creditors and debtors segregation
 
 // Greedy matching logic active
+
+// Complexity bounded to <= N-1 transactions
