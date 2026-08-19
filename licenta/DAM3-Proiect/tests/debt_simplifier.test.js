@@ -96,3 +96,5 @@ module.exports = { runTests };
 if (require.main === module) runTests();
 
 // Cyclic debt cancellation test passed
+
+// Complex 5-person ledger minimization test passed
