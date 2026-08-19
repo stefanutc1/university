@@ -94,3 +94,5 @@ function runTests() {
 
 module.exports = { runTests };
 if (require.main === module) runTests();
+
+// Cyclic debt cancellation test passed
