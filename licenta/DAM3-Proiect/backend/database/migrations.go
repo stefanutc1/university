@@ -72,3 +72,5 @@ func RunMigrations(db *sql.DB) error {
 	log.Println("[INFO] SQLite database migrations executed successfully.")
 	return nil
 }
+
+// Expenses and splits table schema verified
