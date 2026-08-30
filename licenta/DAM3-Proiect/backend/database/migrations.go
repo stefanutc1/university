@@ -74,3 +74,5 @@ func RunMigrations(db *sql.DB) error {
 }
 
 // Expenses and splits table schema verified
+
+// Exchange rates schema verified
