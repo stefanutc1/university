@@ -18,3 +18,4 @@ obj/
 .next/
 out/
 next-env.d.ts
+*.tsbuildinfo
