@@ -1,4 +1,4 @@
-name: Web CI/CD & GitHub Pages Deployment
+name: Web Application CI Pipeline
 
 on:
   push:
@@ -8,21 +8,13 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: web-ci-cd-${{ github.ref }}
+  group: web-ci-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 jobs:
-  build-and-deploy:
-    name: Build & Deploy Web App to GitHub Pages
+  build-and-verify:
+    name: Build & Verify Web Application
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     defaults:
       run:
         working-directory: DAM3-Proiect
@@ -47,22 +39,7 @@ jobs:
           cd apps/web
           npx tsc --noEmit
 
-      - name: Build Next.js Static Export
+      - name: Build Next.js Web App
         run: |
           cd apps/web
-          DEPLOY_TARGET=gh-pages GITHUB_PAGES=true NEXT_PUBLIC_BASE_PATH=/${{ github.event.repository.name }} npx next build
-          mkdir -p out
-          touch out/.nojekyll
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-        continue-on-error: true
-
-      - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: DAM3-Proiect/apps/web/out
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          npm run build
