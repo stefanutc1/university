@@ -1,0 +1,57 @@
+# LICENSE AND PROPRIETARY NOTICE (EMBARGO)
+
+**Bachelor's Thesis Project**  
+**Institution:** University of Craiova (Universitatea din Craiova)  
+**Faculty:** Faculty of Economics and Business Administration (Facultatea de Economie și Administrarea Afacerilor - FEAA)  
+**Author:** [Moana Stefanut-Cornel]  
+**Academic Year:** 2026–2027  
+
+---
+
+## STRICT EMBARGO & RESTRICTED ACCESS (Until July 10, 2027)
+
+**ALL RIGHTS RESERVED. NO PERMISSION GRANTED.**
+
+This repository and all its contents—including but not limited to source code, algorithms, datasets, analytical models, academic text, documentation, figures, and presentation slides—are part of an ongoing Bachelor's Degree graduation project (*Lucrare de Licență*) submitted to the **Faculty of Economics and Business Administration, University of Craiova**.
+
+### Terms & Restrictions Effective Immediately Until July 10, 2027:
+
+1. **No Reproduction / No Copying:** No part of this repository may be copied, reproduced, duplicated, mirrored, or downloaded for redistribution without prior explicit written permission from the author.
+2. **No Usage or Execution:** You are **STRICTLY PROHIBITED** from using, executing, deploying, modifying, adapting, or integrating any part of this code/data into other projects (academic, non-profit, educational, or commercial).
+3. **No Derivative Works:** Creating derivative works, translating, reverse-engineering, or using this work to train AI models is expressly forbidden.
+4. **Academic Integrity Protection:** This restriction is strictly enforced to protect academic originality, intellectual property, and defense integrity during the graduation examination process.
+
+---
+
+## 📅 Post-Embargo Terms (Effective After July 10, 2027)
+
+Starting **July 11, 2027**, following the official public defense of the Bachelor's Thesis:
+
+* **Source Code:** Will transition to an open-source license (such as the MIT License or Apache 2.0) upon formal repository update by the author.
+* **Thesis Document & Academic Materials:** Will be released under **Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)** for educational and research viewing purposes only.
+
+---
+
+## 📖 Citation Details (For Reviewers & Academic References)
+
+If reference to this ongoing work is necessary for academic evaluation, please cite as:
+
+```bibtex
+@bachelorthesis{craiova_feaa_thesis_2027,
+  author       = {[Moana Stefanut-Cornel]},
+  title        = {[Indecis momentan]},
+  school       = {University of Craiova, Faculty of Economics and Business Administration},
+  address      = {Craiova, Romania},
+  year         = {2027},
+  month        = {July},
+  note         = {Bachelor's Thesis (Lucrare de Licență) - Scientific Advisor: [Nu stiu momentan]}
+}
+```
+
+---
+
+## ✉️ Contact Information
+
+For inquiries, permissions, or evaluation access before July 10, 2027, please contact:
+* **Author:** [Moana Stefanut-Cornel]
+* **Email:** [moana.stefanut.f8p@student.ucv.ro]
