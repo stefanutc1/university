@@ -1,4 +1,4 @@
-name: DAM3 Application CI Pipeline
+name: DAM3 CI Pipeline
 
 on:
   push:
@@ -12,8 +12,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  web-app:
-    name: Build & Verify Web App (Next.js)
+  web-ci:
+    name: Typecheck & Build Web App (Next.js)
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -44,7 +44,7 @@ jobs:
           cd apps/web
           npm run build
 
-  ios-swift-engine:
+  ios-swift-ci:
     name: Verify Native Swift & Monte Carlo Engine
     runs-on: macos-14
     defaults:
@@ -57,7 +57,7 @@ jobs:
       - name: Select Xcode 15.4
         run: sudo xcode-select -s /Applications/Xcode_15.4.app/Contents/Developer || true
 
-      - name: Compile and Run Swift Monte Carlo Engine Benchmark
+      - name: Compile and Run Swift Monte Carlo Benchmark
         run: |
           swiftc -O scratch/test_native_engines.swift -o /tmp/test_native_engines
           /tmp/test_native_engines
@@ -66,8 +66,8 @@ jobs:
         run: |
           swiftc -typecheck apps/mobile/ios/DAM3Proiect/MonteCarloEngine.swift apps/mobile/ios/DAM3Proiect/MarketDataRepository.swift apps/mobile/ios/DAM3Proiect/ScenarioAnalysis.swift
 
-  quant-dotnet-engine:
-    name: Build F# & C# .NET Quant Engine
+  dotnet-quant-ci:
+    name: Build F# & C# .NET Engine
     runs-on: ubuntu-latest
     defaults:
       run:
