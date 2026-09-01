@@ -68,3 +68,5 @@ func (s *CurrencySyncService) FetchAndStoreRates() error {
 	log.Printf("[INFO] Synchronized exchange rates at %s", time.Now().Format(time.RFC3339))
 	return nil
 }
+
+// Daily BNR cron at 13:05
