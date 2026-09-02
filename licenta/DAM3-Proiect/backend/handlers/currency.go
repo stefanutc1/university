@@ -45,3 +45,5 @@ func RegisterCurrencyRoutes(router fiber.Router, db *sql.DB, syncService *servic
 		return c.JSON(fiber.Map{"status": "rates refreshed successfully"})
 	})
 }
+
+// Manual rate refresh active
