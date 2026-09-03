@@ -1,78 +1,54 @@
-```markdown
-# MeshRelay - Mesagerie Descentralizata Offline si Releu de Urgenta
+# Secure Offline Mesh Messenger
 
-MeshRelay este o aplicatie mobila dezvoltata in React Native si Expo, conceputa pentru comunicare descentralizata peer-to-peer (P2P) in medii fara acces la internet, retele celulare GSM sau infrastructura centrala de servere. 
+Aplicatie mobila dezvoltata in React Native pentru comunicare securizata offline intre dispozitive mobile aflate in proximitate, fara a necesita conexiune la internet, date mobile, retele Wi-Fi cu infrastructura sau servere centrale.
 
-Sistemul utilizeaza protocoale Bluetooth Low Energy (BLE) si Wi-Fi Direct pentru a construi o retea ad-hoc de tip mesh, permitand transmiterea mesajelor prin noduri intermediare (multi-hop routing) si emiterea de semnale de urgenta cu date de telemetrie.
+Proiect realizat in cadrul Universitatii din Craiova, Facultatea de Stiinte, disciplina Dezvoltarea Aplicatiilor Mobile (DAM).
 
----
+## Descriere
+
+Sistemul permite transmiterea de mesaje text si semnale de urgenta prin intermediul unei retele mesh locale ad-hoc. Dispozitivele intermediare actioneaza ca relee, transmitand pachetele mai departe catre destinatar fara a putea citi continutul acestora (relee opace).
 
 ## Functionalitati Principale
 
-- **Mesagerie P2P Offline**: Comunicare directa de la dispozitiv la dispozitiv fara intermedierea unui server central sau conexiune la internet.
-- **Rutare Ad-Hoc Multi-Hop (Store-and-Forward)**: Pachetele de date sunt retransmise automat prin nodurile din proximitate folosind un algoritm de tip gossip cu control al duratei de viata (TTL) si prevenire a duplicarii.
-- **Securitate End-to-End (E2EE)**: Fiecare mesaj 1-la-1 este criptat asimetric utilizand chei generate local pe dispozitiv (X25519 / ChaCha20-Poly1305). Nodurile intermediare de retransmisie nu pot inspecta continutul.
-- **Canal Public de Broadcast**: Transmitere de anunturi locale necriptate catre toti utilizatorii activi din raza retelei mesh.
-- **Mod SOS si Beacon de Urgenta**: Transmitere automata periodica a coordonatelor GPS si a starii bateriei pentru scenarii de cautare si salvare in caz de dezastru.
-- **Stocare Locala Criptata**: Persistenta istoricului conversatiilor si a cozii de mesaje intr-o baza de date SQLite securizata local.
+- Functionare 100% offline: foloseste Bluetooth Low Energy (BLE) si conexiuni directe peer-to-peer.
+- Criptare End-to-End (E2EE): fiecare mesaj este criptat pe dispozitivul sursa folosind Curve25519 si ChaCha20-Poly1305. Releele intermediare transporta doar ciphertext.
+- Identitate criptografica suverana: generare locala de chei asimetrice (Ed25519 pentru semnaturi si X25519 pentru chei de acord), fara conturi, email sau numere de telefon.
+- Rutare de tip Store-and-Forward: daca nodul destinatar este temporar deconectat, mesajul este pastrat intr-o coada locala si retransmis automat la reconectare.
+- Prevenirea buclelor: cache glisant de deduplicare si limitare stricta a numarului de salturi (Hop Limit).
+- Mod Urgenta SOS: transmiterea unei alerte de urgenta cu prioritate maxima si coordonate GPS catre toate dispozitivele din raza radio.
+- Baza de date locala criptata: stocare securizata a conversatiilor cu optiune de stergere completa a datelor.
 
----
+## Tehnologii Utilizate
 
-## Arhitectura Tehnica
+- React Native (TypeScript)
+- React Navigation (Bottom Tabs + Native Stack)
+- TweetNaCl (criptografie asimetrica si simetrica)
+- React Native BLE Manager (GATT Service FE60)
+- AsyncStorage (stocare locala criptata)
 
-- **Framework**: React Native, Expo (EAS Build)
-- **Limbaj**: TypeScript / JavaScript
-- **Transport de Retea**: Bluetooth Low Energy (BLE Peripheral/Central), Wi-Fi Direct
-- **Criptografie**: Libsodium / TweetNaCl (Curve25519, Ed25519, ChaCha20)
-- **Stocare si Persistenta**: SQLite (expo-sqlite) cu stocare de chei in SecureStore / Keystore
-- **Senzori & Telemetrie**: expo-location (GPS), expo-battery
+## Structura Proiectului
 
----
-
-## Structura Pachetului de Date
-
-Fiecare nod proceseaza frame-uri de retea serializate binar sau JSON structurate astfel:
-
-- `message_id`: Identificator unic al mesajului (UUIDv4)
-- `sender_pubkey`: Cheia publica a expeditorului
-- `recipient_pubkey`: Cheia publica a destinatarului (sau ID specific de broadcast)
-- `ttl`: Numarul maxim de hop-uri ramase pentru retransmisie
-- `payload`: Continutul criptat al mesajului
-- `signature`: Semnatura digitala a pachetului pentru prevenirea falsificarii
-- `timestamp`: Momentul generarii mesajului
-
----
+- src/crypto: generarea cheilor, criptare si semnare digitala.
+- src/network: transport radio BLE, socket-uri peer-to-peer si fragmentare pachete la MTU.
+- src/routing: rutare mesh, coada store-and-forward si deduplicare.
+- src/storage: gestiunea stocarii locale criptate.
+- src/sos: logica pentru alerta SOS si localizare GPS.
+- src/ui: ecrane si componente (Conversations, Chat, NearbyPeers, MeshStatus, Sos, Settings).
+- tests: suita de teste unitare si simulare de retea mesh.
 
 ## Instalare si Rulare
 
-1. Clonarea repository-ului:
-```bash
-git clone [https://github.com/stefanutc1/meshrelay.git](https://github.com/stefanutc1/meshrelay.git)
-cd meshrelay
+1. Instalare dependente:
+   npm install
 
-```
+2. Rulare teste unitare:
+   npm test
 
-2. Instalarea dependentelor:
+3. Rulare simulare determinista mesh:
+   npm run simulate
 
-```bash
-npm install
+4. Pornire server Metro:
+   npm start
 
-```
-
-3. Pornirea serverului de dezvoltare:
-
-```bash
-npx expo start
-
-```
-
-4. Generarea build-ului pentru dispozitiv fizic (necesar pentru acces la modulele hardware BLE/GPS):
-
-```bash
-npx eas build --platform android --profile development
-
-```
-
-```
-
-```
+5. Rulare pe Android:
+   npm run android
