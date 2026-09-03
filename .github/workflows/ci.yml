@@ -1,92 +1,85 @@
-name: DAM3 CI Pipeline
+name: CI
 
 on:
   push:
     branches: [ main, master ]
+    paths:
+      - 'LL3-LucrareLicenta/**'
   pull_request:
     branches: [ main, master ]
+    paths:
+      - 'LL3-LucrareLicenta/**'
   workflow_dispatch:
 
 concurrency:
-  group: dam3-ci-${{ github.ref }}
+  group: licenta-ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  web-ci:
-    name: Typecheck & Build Web App (Next.js)
+  licenta-ci:
+    name: "Converteste DOCX si valideaza LaTeX"
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: DAM3-Proiect
+        working-directory: LL3-LucrareLicenta
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 22
-        uses: actions/setup-node@v4
+      - name: Setup Pandoc & LaTeX Toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            pandoc \
+            texlive-latex-base \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            texlive-fonts-extra \
+            texlive-lang-european \
+            texlive-bibtex-extra \
+            biber \
+            latexmk
+
+      - name: Converteste DOCX in LaTeX & BiBTeX
+        run: |
+          mkdir -p output
+          DOCX_FILE=$(find . -maxdepth 1 -name "*.docx" | head -n 1)
+          
+          if [ -n "$DOCX_FILE" ]; then
+            echo "Gasit DOCX: $DOCX_FILE"
+            pandoc "$DOCX_FILE" \
+              --from=docx \
+              --to=latex \
+              --standalone \
+              --natbib \
+              --extract-media=./output/media \
+              -o ./output/licenta.tex
+              
+            if [ ! -f ./output/referinte.bib ]; then
+              touch ./output/referinte.bib
+            fi
+          elif [ -f "./licenta.tex" ]; then
+            cp -r ./*.tex ./output/
+            [ -f "./referinte.bib" ] && cp ./referinte.bib ./output/
+          else
+            echo "Fisier de intrare absent."
+            exit 1
+          fi
+
+      - name: Compile LaTeX to PDF
+        run: |
+          cd output
+          if [ -f licenta.tex ]; then
+            latexmk -pdf -interaction=nonstopmode -halt-on-error licenta.tex || true
+          fi
+
+      - name: Pune artifacts la licenta
+        uses: actions/upload-artifact@v4
         with:
-          node-version: '22'
-          cache: 'npm'
-          cache-dependency-path: DAM3-Proiect/package-lock.json
-
-      - name: Install Monorepo Dependencies
-        run: |
-          npm install
-          cd apps/web && npm install
-
-      - name: Typecheck Web App
-        run: |
-          cd apps/web
-          npx tsc --noEmit
-
-      - name: Build Next.js Production App
-        run: |
-          cd apps/web
-          npm run build
-
-  ios-swift-ci:
-    name: Verify Native Swift & Monte Carlo Engine
-    runs-on: macos-14
-    defaults:
-      run:
-        working-directory: DAM3-Proiect
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Select Xcode 15.4
-        run: sudo xcode-select -s /Applications/Xcode_15.4.app/Contents/Developer || true
-
-      - name: Compile and Run Swift Monte Carlo Benchmark
-        run: |
-          swiftc -O scratch/test_native_engines.swift -o /tmp/test_native_engines
-          /tmp/test_native_engines
-
-      - name: Typecheck Swift Native Sources
-        run: |
-          swiftc -typecheck apps/mobile/ios/DAM3Proiect/MonteCarloEngine.swift apps/mobile/ios/DAM3Proiect/MarketDataRepository.swift apps/mobile/ios/DAM3Proiect/ScenarioAnalysis.swift
-
-  dotnet-quant-ci:
-    name: Build F# & C# .NET Engine
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: DAM3-Proiect
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup .NET 8 SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Build F# Quant Library
-        run: |
-          dotnet build packages/quant-fsharp/EloquenceQuant.FSharp.fsproj --configuration Release
-
-      - name: Build Desktop C# Avalonia Application
-        run: |
-          mkdir -p packages/quant-engine/build/lib/
-          touch packages/quant-engine/build/lib/libquantengine.so
-          dotnet build apps/desktop/EloquenceSoftware.csproj --configuration Release
+          name: licenta-bundle
+          path: |
+            LL3-LucrareLicenta/output/*.pdf
+            LL3-LucrareLicenta/output/*.tex
+            LL3-LucrareLicenta/output/*.bib
+            LL3-LucrareLicenta/output/media/
+          retention-days: 7
