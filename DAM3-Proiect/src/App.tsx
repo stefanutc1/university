@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import { I18nProvider, useI18n } from './i18n/I18nContext';
+import { GlassTabBar } from './ui/components/GlassTabBar';
 
 import { ConversationsScreen } from './ui/screens/Conversations';
 import { ConversationDetailScreen } from './ui/screens/ConversationDetail';
@@ -25,13 +28,24 @@ import { theme } from './ui/theme';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+const NavigationDarkTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: theme.colors.background,
+    card: theme.colors.surface,
+    text: theme.colors.textPrimary,
+    border: theme.colors.surfaceBorder,
+  },
+};
+
 function ChatStack() {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: theme.colors.surface },
+        headerStyle: { backgroundColor: 'rgba(16, 22, 34, 0.95)' },
         headerTintColor: theme.colors.textPrimary,
-        headerTitleStyle: { fontWeight: '700' },
+        headerTitleStyle: { fontWeight: '800' },
       }}
     >
       <Stack.Screen
@@ -51,12 +65,14 @@ function ChatStack() {
 }
 
 function ToolsStack() {
+  const { t } = useI18n();
+
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: theme.colors.surface },
+        headerStyle: { backgroundColor: 'rgba(16, 22, 34, 0.95)' },
         headerTintColor: theme.colors.textPrimary,
-        headerTitleStyle: { fontWeight: '700' },
+        headerTitleStyle: { fontWeight: '800' },
       }}
     >
       <Stack.Screen
@@ -67,29 +83,49 @@ function ToolsStack() {
       <Stack.Screen
         name="QrPairing"
         component={QrPairingScreen}
-        options={{ title: 'Pairing QR' }}
+        options={{ title: t('open_qr') }}
       />
       <Stack.Screen
         name="ClipboardSync"
         component={ClipboardSyncScreen}
-        options={{ title: 'Clipboard Sync' }}
+        options={{ title: t('open_clip') }}
       />
       <Stack.Screen
         name="MeshStatus"
         component={MeshStatusScreen}
-        options={{ title: 'Diagnoza Mesh' }}
+        options={{ title: t('open_diag') }}
       />
       <Stack.Screen
         name="Sos"
         component={SosScreen}
-        options={{ title: 'Urgenta SOS' }}
+        options={{ title: t('open_sos') }}
       />
       <Stack.Screen
         name="NearbyPeers"
         component={NearbyPeersScreen}
-        options={{ title: 'Noduri Vecine' }}
+        options={{ title: t('open_peers') }}
       />
     </Stack.Navigator>
+  );
+}
+
+function MainNavigation() {
+  return (
+    <NavigationContainer theme={NavigationDarkTheme}>
+      <StatusBar barStyle="light-content" backgroundColor={theme.colors.background} />
+      <Tab.Navigator
+        tabBar={(props) => <GlassTabBar {...props} />}
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Tab.Screen name="Chats" component={ChatStack} />
+        <Tab.Screen name="AirDrop" component={FileTransfer} />
+        <Tab.Screen name="Walkie" component={VoiceIntercom} />
+        <Tab.Screen name="IncidentMap" component={IncidentMap} />
+        <Tab.Screen name="Tools" component={ToolsStack} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
 
@@ -112,47 +148,8 @@ export default function App() {
   }, []);
 
   return (
-    <NavigationContainer>
-      <StatusBar barStyle="light-content" backgroundColor={theme.colors.background} />
-      <Tab.Navigator
-        screenOptions={{
-          tabBarStyle: {
-            backgroundColor: theme.colors.surface,
-            borderTopColor: theme.colors.surfaceBorder,
-            height: 60,
-            paddingBottom: 8,
-          },
-          tabBarActiveTintColor: theme.colors.textPrimary,
-          tabBarInactiveTintColor: theme.colors.textSecondary,
-          headerShown: false,
-        }}
-      >
-        <Tab.Screen
-          name="Chats"
-          component={ChatStack}
-          options={{ tabBarLabel: 'Mesaje' }}
-        />
-        <Tab.Screen
-          name="AirDrop"
-          component={FileTransfer}
-          options={{ tabBarLabel: 'AirDrop' }}
-        />
-        <Tab.Screen
-          name="Walkie"
-          component={VoiceIntercom}
-          options={{ tabBarLabel: 'Intercom' }}
-        />
-        <Tab.Screen
-          name="IncidentMap"
-          component={IncidentMap}
-          options={{ tabBarLabel: 'Harta' }}
-        />
-        <Tab.Screen
-          name="Tools"
-          component={ToolsStack}
-          options={{ tabBarLabel: 'Utilitare' }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <I18nProvider>
+      <MainNavigation />
+    </I18nProvider>
   );
 }

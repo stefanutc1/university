@@ -1,4 +1,17 @@
 {
-  "name": "MeshMessenger",
-  "displayName": "MeshMessenger"
+  "expo": {
+    "name": "MeshMessenger",
+    "slug": "mesh-messenger",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0a0c10"
+      }
+    }
+  }
 }

@@ -2,80 +2,88 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
-  ScrollView,
+  TextInput,
+  Alert,
 } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { SosController } from '../../sos/SosController';
 import { theme } from '../theme';
+import { useI18n } from '../../i18n/I18nContext';
 
 export const SosScreen: React.FC = () => {
-  const sosController = SosController.getInstance();
+  const sos = SosController.getInstance();
+  const { t } = useI18n();
 
-  const [isArmed, setIsArmed] = useState(sosController.getArmedState());
+  const [isArmed, setIsArmed] = useState(sos.getArmedState());
   const [note, setNote] = useState('');
 
   const handleTrigger = async () => {
-    setIsArmed(true);
-    await sosController.triggerSos(note);
+    try {
+      await sos.triggerSos(note);
+      setIsArmed(true);
+      Alert.alert(
+        'ALERTA SOS EMISĂ',
+        'Semnalul de urgență cu coordonatele GPS a fost difuzat cu prioritate maximă prin întreaga rețea mesh.'
+      );
+    } catch (e: any) {
+      Alert.alert('Eroare SOS', e.message);
+    }
   };
 
   const handleCancel = () => {
+    sos.cancelSos();
     setIsArmed(false);
-    sosController.cancelSos();
+    setNote('');
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.warningHeader}>
-          <Text style={styles.warningIcon}>⚠️</Text>
-          <Text style={styles.title}>EMERGENCY SOS BEACON</Text>
-          <Text style={styles.subtitle}>
-            Deliberate emergency broadcast. Nearby mesh nodes will relay your distress signal and GPS location without internet access.
-          </Text>
-        </View>
+      <View style={styles.header}>
+        <Text style={styles.title}>{t('sos_title')}</Text>
+        <Text style={styles.subtitle}>{t('sos_subtitle')}</Text>
+      </View>
 
-        <View style={styles.inputCard}>
-          <Text style={styles.inputLabel}>EMERGENCY DETAILS / LANDMARK</Text>
-          <TextInput
-            style={styles.textInput}
-            value={note}
-            onChangeText={setNote}
-            placeholder="Describe injury, terrain landmark, or assistance needed..."
-            placeholderTextColor={theme.colors.textSecondary}
-            multiline
+      <View style={styles.content}>
+        <View style={[styles.statusBox, isArmed ? styles.statusBoxArmed : styles.statusBoxSafe]}>
+          <Ionicons
+            name={isArmed ? 'warning' : 'shield-checkmark'}
+            size={18}
+            color={isArmed ? theme.colors.sosEmergency : theme.colors.success}
+            style={{ marginRight: 8 }}
           />
-        </View>
-
-        {isArmed ? (
-          <View style={styles.activeCard}>
-            <Text style={styles.activeTitle}>SOS BROADCAST ACTIVE</Text>
-            <Text style={styles.activeSubtitle}>
-              Repeatedly transmitting beacon across BLE and local ad-hoc peer mesh...
-            </Text>
-            <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
-              <Text style={styles.cancelButtonText}>DEACTIVATE SOS</Text>
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <TouchableOpacity style={styles.triggerButton} onPress={handleTrigger}>
-            <Text style={styles.triggerButtonText}>BROADCAST SOS DISTRESS</Text>
-          </TouchableOpacity>
-        )}
-
-        <View style={styles.guaranteesCard}>
-          <Text style={styles.guaranteesHeader}>PROTOCOL GUARANTEES</Text>
-          <Text style={styles.guaranteesBody}>
-            • Hop Limit: 12 hops max range{'\n'}
-            • Cryptographic Signature: Ed25519 authenticated{'\n'}
-            • Privacy: Coordinates included only when armed{'\n'}
-            • Retries: Multi-path gossip store-and-forward
+          <Text style={[styles.statusText, { color: isArmed ? theme.colors.sosEmergency : theme.colors.success }]}>
+            {isArmed ? t('sos_armed') : t('sos_safe')}
           </Text>
         </View>
-      </ScrollView>
+
+        <TextInput
+          style={styles.input}
+          value={note}
+          onChangeText={setNote}
+          placeholder={t('sos_note_ph')}
+          placeholderTextColor={theme.colors.textMuted}
+        />
+
+        {/* Massive SOS Button with Glow */}
+        <View style={styles.sosButtonOuter}>
+          <TouchableOpacity
+            style={[styles.sosButton, isArmed && styles.sosButtonActive]}
+            onPress={isArmed ? handleCancel : handleTrigger}
+            activeOpacity={0.8}
+          >
+            <Ionicons name="alert-circle" size={48} color="#ffffff" />
+            <Text style={styles.sosButtonText}>
+              {isArmed ? 'STOP' : 'SOS'}
+            </Text>
+            <Text style={styles.sosButtonSubtext}>
+              {isArmed ? t('sos_cancel_btn') : t('sos_trigger_btn')}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -85,111 +93,106 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.background,
   },
-  container: {
-    padding: theme.spacing.lg,
-  },
-  warningHeader: {
-    alignItems: 'center',
-    marginVertical: theme.spacing.lg,
-  },
-  warningIcon: {
-    fontSize: 48,
-    marginBottom: theme.spacing.sm,
+  header: {
+    paddingHorizontal: theme.spacing.lg,
+    paddingTop: theme.spacing.md,
+    paddingBottom: theme.spacing.md,
+    backgroundColor: 'rgba(16, 22, 34, 0.9)',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255, 255, 255, 0.08)',
   },
   title: {
-    color: theme.colors.textPrimary,
-    fontSize: 20,
-    fontWeight: '800',
+    color: theme.colors.sosEmergency,
+    fontSize: 22,
+    fontWeight: '900',
+    letterSpacing: -0.5,
   },
   subtitle: {
     color: theme.colors.textSecondary,
-    fontSize: 13,
-    textAlign: 'center',
-    marginTop: theme.spacing.xs,
-    lineHeight: 18,
+    fontSize: 12,
+    marginTop: 2,
   },
-  inputCard: {
-    backgroundColor: theme.colors.surface,
-    borderColor: theme.colors.surfaceBorder,
-    borderWidth: 1,
-    borderRadius: theme.borderRadius.md,
-    padding: theme.spacing.md,
-    marginBottom: theme.spacing.lg,
-  },
-  inputLabel: {
-    color: theme.colors.textSecondary,
-    fontSize: 11,
-    fontFamily: theme.typography.fontFamilyMono,
-    fontWeight: '700',
-    marginBottom: theme.spacing.xs,
-  },
-  textInput: {
-    color: theme.colors.textPrimary,
-    fontSize: 14,
-    minHeight: 60,
-  },
-  triggerButton: {
-    backgroundColor: theme.colors.sosEmergency,
-    paddingVertical: 18,
-    borderRadius: theme.borderRadius.md,
-    alignItems: 'center',
-    marginBottom: theme.spacing.lg,
-  },
-  triggerButtonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '800',
-    letterSpacing: 0.5,
-  },
-  activeCard: {
-    backgroundColor: theme.colors.sosBackground,
-    borderColor: theme.colors.sosEmergency,
-    borderWidth: 1.5,
-    borderRadius: theme.borderRadius.md,
+  content: {
+    flex: 1,
     padding: theme.spacing.lg,
     alignItems: 'center',
-    marginBottom: theme.spacing.lg,
+    justifyContent: 'center',
+    paddingBottom: 80,
   },
-  activeTitle: {
-    color: theme.colors.sosEmergency,
-    fontSize: 18,
+  statusBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 14,
+    borderWidth: 1,
+    marginBottom: 20,
+    width: '100%',
+    justifyContent: 'center',
+  },
+  statusBoxSafe: {
+    backgroundColor: 'rgba(0, 230, 118, 0.08)',
+    borderColor: 'rgba(0, 230, 118, 0.25)',
+  },
+  statusBoxArmed: {
+    backgroundColor: 'rgba(255, 42, 85, 0.12)',
+    borderColor: 'rgba(255, 42, 85, 0.4)',
+  },
+  statusText: {
+    fontSize: 11,
     fontWeight: '800',
     fontFamily: theme.typography.fontFamilyMono,
+    letterSpacing: 0.5,
   },
-  activeSubtitle: {
-    color: theme.colors.textSecondary,
-    fontSize: 12,
-    textAlign: 'center',
-    marginVertical: theme.spacing.sm,
-  },
-  cancelButton: {
-    backgroundColor: theme.colors.surfaceBorder,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: theme.borderRadius.sm,
-    marginTop: theme.spacing.sm,
-  },
-  cancelButtonText: {
+  input: {
+    width: '100%',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: 14,
+    padding: 14,
     color: theme.colors.textPrimary,
-    fontWeight: '700',
-  },
-  guaranteesCard: {
-    backgroundColor: theme.colors.surface,
-    borderColor: theme.colors.surfaceBorder,
+    fontSize: 13,
+    marginBottom: 32,
     borderWidth: 1,
-    borderRadius: theme.borderRadius.md,
-    padding: theme.spacing.md,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
   },
-  guaranteesHeader: {
-    color: theme.colors.textSecondary,
-    fontSize: 11,
-    fontWeight: '700',
+  sosButtonOuter: {
+    width: 230,
+    height: 230,
+    borderRadius: 115,
+    backgroundColor: 'rgba(255, 42, 85, 0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 42, 85, 0.3)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sosButton: {
+    width: 190,
+    height: 190,
+    borderRadius: 95,
+    backgroundColor: theme.colors.sosEmergency,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: theme.colors.sosEmergency,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.6,
+    shadowRadius: 24,
+    elevation: 12,
+  },
+  sosButtonActive: {
+    backgroundColor: '#7A1020',
+  },
+  sosButtonText: {
+    color: '#ffffff',
+    fontSize: 36,
+    fontWeight: '900',
     fontFamily: theme.typography.fontFamilyMono,
-    marginBottom: theme.spacing.xs,
+    marginTop: 2,
   },
-  guaranteesBody: {
-    color: theme.colors.textSecondary,
-    fontSize: 12,
-    lineHeight: 20,
+  sosButtonSubtext: {
+    color: 'rgba(255, 255, 255, 0.85)',
+    fontSize: 10,
+    fontWeight: '700',
+    marginTop: 4,
+    textAlign: 'center',
   },
 });

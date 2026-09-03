@@ -10,20 +10,22 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { EncryptedStorage } from '../../storage/EncryptedStorage';
 import { MeshRouter } from '../../routing/MeshRouter';
-import { CryptoEngine } from '../../crypto/CryptoEngine';
 import { Message } from '../../types';
 import { MessageBubble } from '../components/MessageBubble';
 import { theme } from '../theme';
+import { useI18n } from '../../i18n/I18nContext';
 
 export const ConversationDetailScreen: React.FC<{
   route: any;
   navigation: any;
-}> = ({ route, navigation }) => {
-  const { conversationId, peerName } = route.params;
+}> = ({ route }) => {
+  const { conversationId, peerName, peerPubkey } = route.params;
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
+  const { t } = useI18n();
 
   const storage = EncryptedStorage.getInstance();
   const router = MeshRouter.getInstance();
@@ -48,8 +50,7 @@ export const ConversationDetailScreen: React.FC<{
     setInputText('');
 
     try {
-      // In peer mesh, agreement key is either derived or known from discovery
-      await router.sendTextMessage(conversationId, conversationId, text);
+      await router.sendTextMessage(peerPubkey || conversationId, conversationId, text);
       loadMessages();
     } catch (e) {
       console.warn('Failed to send text message:', e);
@@ -61,37 +62,47 @@ export const ConversationDetailScreen: React.FC<{
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
       >
-        <View style={styles.subHeader}>
-          <Text style={styles.subHeaderText}>
-            E2EE ChaCha20-Poly1305 • sovereign mesh link
+        {/* Security Banner */}
+        <View style={styles.securityBanner}>
+          <Ionicons name="shield-checkmark" size={12} color={theme.colors.accent} />
+          <Text style={styles.securityBannerText}>
+            Curve25519 ECDH • ChaCha20-Poly1305 E2EE
           </Text>
         </View>
 
+        {/* Message Stream */}
         <FlatList
           data={messages}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => <MessageBubble message={item} />}
-          contentContainerStyle={styles.listContent}
+          contentContainerStyle={styles.messageList}
         />
 
-        <View style={styles.inputBar}>
+        {/* Liquid Glass Input Bar */}
+        <View style={styles.inputContainer}>
           <TextInput
-            style={styles.textInput}
+            style={styles.input}
             value={inputText}
             onChangeText={setInputText}
-            placeholder="Type offline message..."
-            placeholderTextColor={theme.colors.textSecondary}
+            placeholder={t('chat_input_placeholder')}
+            placeholderTextColor={theme.colors.textMuted}
+            multiline
           />
           <TouchableOpacity
             style={[
               styles.sendButton,
-              !inputText.trim() && styles.sendButtonDisabled,
+              inputText.trim() ? styles.sendButtonActive : styles.sendButtonDisabled,
             ]}
             onPress={handleSend}
             disabled={!inputText.trim()}
           >
-            <Text style={styles.sendButtonText}>Send</Text>
+            <Ionicons
+              name="arrow-up"
+              size={18}
+              color={inputText.trim() ? '#050B14' : theme.colors.textMuted}
+            />
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -107,53 +118,67 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  subHeader: {
-    backgroundColor: theme.colors.surface,
-    paddingVertical: 6,
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colors.surfaceBorder,
-  },
-  subHeaderText: {
-    color: theme.colors.textSecondary,
-    fontSize: 10,
-    fontFamily: theme.typography.fontFamilyMono,
-  },
-  listContent: {
-    paddingVertical: theme.spacing.md,
-  },
-  inputBar: {
+  securityBanner: {
     flexDirection: 'row',
-    padding: theme.spacing.md,
-    backgroundColor: theme.colors.surface,
-    borderTopWidth: 1,
-    borderTopColor: theme.colors.surfaceBorder,
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 6,
+    backgroundColor: 'rgba(0, 242, 254, 0.06)',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0, 242, 254, 0.15)',
   },
-  textInput: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-    borderColor: theme.colors.surfaceBorder,
-    borderWidth: 1,
-    borderRadius: theme.borderRadius.full,
-    paddingHorizontal: 16,
+  securityBannerText: {
+    color: theme.colors.accent,
+    fontSize: 10,
+    fontWeight: '700',
+    fontFamily: theme.typography.fontFamilyMono,
+    marginLeft: 6,
+    letterSpacing: 0.5,
+  },
+  messageList: {
+    padding: theme.spacing.md,
+    paddingBottom: 20,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    paddingHorizontal: theme.spacing.md,
     paddingVertical: 10,
+    backgroundColor: 'rgba(16, 22, 34, 0.95)',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255, 255, 255, 0.08)',
+  },
+  input: {
+    flex: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingTop: 10,
+    paddingBottom: 10,
     color: theme.colors.textPrimary,
+    maxHeight: 100,
     fontSize: 14,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   sendButton: {
-    marginLeft: theme.spacing.sm,
-    backgroundColor: theme.colors.accentDark,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: theme.borderRadius.full,
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+    marginBottom: 2,
+  },
+  sendButtonActive: {
+    backgroundColor: theme.colors.accent,
+    shadowColor: '#00F2FE',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 8,
+    elevation: 4,
   },
   sendButtonDisabled: {
-    opacity: 0.4,
-  },
-  sendButtonText: {
-    color: theme.colors.textPrimary,
-    fontSize: 13,
-    fontWeight: '700',
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
   },
 });

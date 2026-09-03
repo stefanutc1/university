@@ -1,6 +1,26 @@
 import nacl from 'tweetnacl';
 import { decodeUTF8, encodeUTF8, encodeBase64, decodeBase64 } from 'tweetnacl-util';
 
+// Initialize PRNG for TweetNaCl in React Native / Expo environment
+nacl.setPRNG((x: Uint8Array, n: number) => {
+  try {
+    const ExpoCrypto = require('expo-crypto');
+    if (ExpoCrypto && typeof ExpoCrypto.getRandomValues === 'function') {
+      ExpoCrypto.getRandomValues(x);
+      return;
+    }
+  } catch {}
+
+  if (typeof global !== 'undefined' && (global as any).crypto?.getRandomValues) {
+    (global as any).crypto.getRandomValues(x);
+    return;
+  }
+
+  for (let i = 0; i < n; i++) {
+    x[i] = Math.floor(Math.random() * 256);
+  }
+});
+
 export class CryptoEngine {
   private static instance: CryptoEngine;
 

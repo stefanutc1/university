@@ -1,6 +1,13 @@
 import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
-import BleManager from 'react-native-ble-manager';
 import { Peer } from '../types';
+
+let BleManager: any = null;
+try {
+  const mod = require('react-native-ble-manager');
+  BleManager = mod?.default || mod;
+} catch {
+  BleManager = null;
+}
 
 const SERVICE_UUID = '0000FE60-0000-1000-8000-00805F9B34FB';
 const RX_CHAR_UUID = '0000FE61-0000-1000-8000-00805F9B34FB';
@@ -38,9 +45,11 @@ export class BleMeshTransport {
 
   private async initBle(): Promise<void> {
     try {
-      await BleManager.start({ showAlert: false });
+      if (BleManager && typeof BleManager.start === 'function') {
+        await BleManager.start({ showAlert: false });
+      }
     } catch (e) {
-      // In simulator or headless environment, fail gracefully
+      // In Expo Go or simulator, fail gracefully
       console.warn('BLE Hardware Manager initialization deferred:', e);
     }
   }

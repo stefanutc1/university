@@ -1,5 +1,12 @@
 import { PermissionsAndroid, Platform } from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
+
+let Geolocation: any = null;
+try {
+  const mod = require('react-native-geolocation-service');
+  Geolocation = mod?.default || mod;
+} catch {
+  Geolocation = null;
+}
 import { MeshRouter } from '../routing/MeshRouter';
 import { SOSAlert } from '../types';
 
