@@ -4,12 +4,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { ConversationsScreen } from './ui/screens/ConversationsScreen';
-import { ConversationDetailScreen } from './ui/screens/ConversationDetailScreen';
-import { NearbyPeersScreen } from './ui/screens/NearbyPeersScreen';
-import { MeshStatusScreen } from './ui/screens/MeshStatusScreen';
-import { SosScreen } from './ui/screens/SosScreen';
-import { SettingsScreen } from './ui/screens/SettingsScreen';
+import { ConversationsScreen } from './ui/screens/Conversations';
+import { ConversationDetailScreen } from './ui/screens/ConversationDetail';
+import { NearbyPeersScreen } from './ui/screens/NearbyPeers';
+import { MeshStatusScreen } from './ui/screens/MeshStatus';
+import { SosScreen } from './ui/screens/Sos';
+import { SettingsScreen } from './ui/screens/Settings';
 
 import { BleMeshTransport } from './network/BleMeshTransport';
 import { LocalPeerTransport } from './network/LocalPeerTransport';
