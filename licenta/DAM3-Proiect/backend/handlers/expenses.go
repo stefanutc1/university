@@ -85,3 +85,5 @@ func RegisterExpenseRoutes(router fiber.Router, db *sql.DB, hub *services.WSHub)
 		})
 	})
 }
+
+// Expense balance calculations enabled
