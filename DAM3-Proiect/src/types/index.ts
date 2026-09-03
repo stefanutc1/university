@@ -92,3 +92,52 @@ export interface DiagnosticMetrics {
   activePeersCount: number;
   queueDepth: number;
 }
+
+// --- Local High-Speed Network & Utility Types ---
+
+export interface FileMetadata {
+  id: string;
+  name: string;
+  size: number;
+  mimeType: string;
+  totalChunks: number;
+  sha256Checksum: string;
+  senderPubkey: string;
+  timestamp: number;
+}
+
+export interface VoiceFrame {
+  channelId: string;
+  senderName: string;
+  frameIndex: number;
+  audioChunkBase64: string;
+  timestamp: number;
+  isEndOfStream: boolean;
+}
+
+export interface QrPairingPayload {
+  v: number;
+  name: string;
+  pk: string;
+  apk: string;
+  ip?: string;
+  ts: number;
+}
+
+export interface ClipboardItem {
+  id: string;
+  senderName: string;
+  text: string;
+  timestamp: number;
+}
+
+export interface IncidentPin {
+  id: string;
+  authorName: string;
+  title: string;
+  description: string;
+  latitude: number;
+  longitude: number;
+  severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  timestamp: number;
+}

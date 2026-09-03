@@ -11,6 +11,12 @@ import { MeshStatusScreen } from './ui/screens/MeshStatus';
 import { SosScreen } from './ui/screens/Sos';
 import { SettingsScreen } from './ui/screens/Settings';
 
+import { FileTransfer } from './ui/screens/FileTransfer';
+import { VoiceIntercom } from './ui/screens/VoiceIntercom';
+import { IncidentMap } from './ui/screens/IncidentMap';
+import { QrPairingScreen } from './ui/screens/QrPairing';
+import { ClipboardSyncScreen } from './ui/screens/ClipboardSync';
+
 import { BleMeshTransport } from './network/BleMeshTransport';
 import { LocalPeerTransport } from './network/LocalPeerTransport';
 import { EncryptedStorage } from './storage/EncryptedStorage';
@@ -44,9 +50,52 @@ function ChatStack() {
   );
 }
 
+function ToolsStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: theme.colors.surface },
+        headerTintColor: theme.colors.textPrimary,
+        headerTitleStyle: { fontWeight: '700' },
+      }}
+    >
+      <Stack.Screen
+        name="SettingsMain"
+        component={SettingsScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="QrPairing"
+        component={QrPairingScreen}
+        options={{ title: 'Pairing QR' }}
+      />
+      <Stack.Screen
+        name="ClipboardSync"
+        component={ClipboardSyncScreen}
+        options={{ title: 'Clipboard Sync' }}
+      />
+      <Stack.Screen
+        name="MeshStatus"
+        component={MeshStatusScreen}
+        options={{ title: 'Diagnoza Mesh' }}
+      />
+      <Stack.Screen
+        name="Sos"
+        component={SosScreen}
+        options={{ title: 'Urgenta SOS' }}
+      />
+      <Stack.Screen
+        name="NearbyPeers"
+        component={NearbyPeersScreen}
+        options={{ title: 'Noduri Vecine' }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 export default function App() {
   useEffect(() => {
-    // Bootstrap offline services
+    // Pornire servicii offline locale
     const storage = EncryptedStorage.getInstance();
     storage.init();
 
@@ -54,7 +103,7 @@ export default function App() {
     ble.start();
 
     const p2p = LocalPeerTransport.getInstance();
-    p2p.start();
+    p2p.start(false, 'MyPhone');
 
     return () => {
       ble.stop();
@@ -81,30 +130,27 @@ export default function App() {
         <Tab.Screen
           name="Chats"
           component={ChatStack}
-          options={{ tabBarLabel: 'Chats' }}
+          options={{ tabBarLabel: 'Mesaje' }}
         />
         <Tab.Screen
-          name="Peers"
-          component={NearbyPeersScreen}
-          options={{ tabBarLabel: 'Peers' }}
+          name="AirDrop"
+          component={FileTransfer}
+          options={{ tabBarLabel: 'AirDrop' }}
         />
         <Tab.Screen
-          name="Mesh"
-          component={MeshStatusScreen}
-          options={{ tabBarLabel: 'Mesh' }}
+          name="Walkie"
+          component={VoiceIntercom}
+          options={{ tabBarLabel: 'Intercom' }}
         />
         <Tab.Screen
-          name="SOS"
-          component={SosScreen}
-          options={{
-            tabBarLabel: 'SOS',
-            tabBarActiveTintColor: theme.colors.sosEmergency,
-          }}
+          name="IncidentMap"
+          component={IncidentMap}
+          options={{ tabBarLabel: 'Harta' }}
         />
         <Tab.Screen
-          name="Settings"
-          component={SettingsScreen}
-          options={{ tabBarLabel: 'Settings' }}
+          name="Tools"
+          component={ToolsStack}
+          options={{ tabBarLabel: 'Utilitare' }}
         />
       </Tab.Navigator>
     </NavigationContainer>
