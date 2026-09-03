@@ -1,93 +1,93 @@
-name: DAM3 CD Pipeline
+name: CD
 
 on:
   push:
     branches: [ main, master ]
+    paths:
+      - 'LL3-LucrareLicenta/**'
   workflow_dispatch:
     inputs:
-      publish_docker:
-        description: 'Build and publish Web Docker image'
-        required: true
-        type: boolean
-        default: true
-      build_desktop_release:
-        description: 'Build Desktop release artifacts'
+      deploy_licenta_release:
+        description: 'Publish Licenta Compiled PDF Release'
         required: true
         type: boolean
         default: true
 
 concurrency:
-  group: dam3-cd-${{ github.ref }}
+  group: master-cd-${{ github.ref }}
   cancel-in-progress: false
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
-  docker-publish-cd:
-    name: Build & Push Docker Container Image
-    if: github.event_name != 'workflow_dispatch' || inputs.publish_docker
+  licenta-sync-cd:
+    name: "Sincronizare LaTeX si generare PDF"
+    if: github.event_name != 'workflow_dispatch' || inputs.deploy_licenta_release
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    defaults:
-      run:
-        working-directory: DAM3-Proiect
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to GitHub Container Registry (GHCR)
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Convert repository owner to lowercase for Docker tag
-        id: repo_owner
-        run: echo "owner=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_OUTPUT
-
-      - name: Build Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          context: DAM3-Proiect
-          file: DAM3-Proiect/Dockerfile
-          push: false
-          tags: |
-            ghcr.io/${{ steps.repo_owner.outputs.owner }}/dam3-web:latest
-            ghcr.io/${{ steps.repo_owner.outputs.owner }}/dam3-web:${{ github.sha }}
-
-  release-desktop-cd:
-    name: Build Desktop Release Package
-    if: github.event_name != 'workflow_dispatch' || inputs.build_desktop_release
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    defaults:
-      run:
-        working-directory: DAM3-Proiect
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup .NET 8 SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Create dummy native lib for build
+      - name: Setup Pandoc & LaTeX Toolchain
         run: |
-          mkdir -p packages/quant-engine/build/lib/
-          touch packages/quant-engine/build/lib/libquantengine.so
+          sudo apt-get update
+          sudo apt-get install -y \
+            pandoc \
+            texlive-latex-base \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            texlive-fonts-extra \
+            texlive-lang-european \
+            texlive-bibtex-extra \
+            biber \
+            latexmk
 
-      - name: Publish Desktop Standalone Binary (Linux x64)
+      - name: Construire surse LaTeX
         run: |
-          dotnet publish apps/desktop/EloquenceSoftware.csproj -c Release -r linux-x64 --self-contained -o dist/desktop-linux
+          cd LL3-LucrareLicenta
+          mkdir -p latex_generated
+          DOCX_FILE=$(find . -maxdepth 1 -name "*.docx" | head -n 1)
+          
+          if [ -n "$DOCX_FILE" ]; then
+            pandoc "$DOCX_FILE" \
+              --from=docx \
+              --to=latex \
+              --standalone \
+              --natbib \
+              --extract-media=./latex_generated/media \
+              -o ./latex_generated/licenta.tex
+              
+            [ ! -f ./latex_generated/referinte.bib ] && touch ./latex_generated/referinte.bib
+            
+            cd latex_generated
+            latexmk -pdf -interaction=nonstopmode -halt-on-error licenta.tex || true
+            cd ../..
+          fi
 
-      - name: Upload Desktop Artifact
-        uses: actions/upload-artifact@v4
+      - name: Commit Generated LaTeX to Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add LL3-LucrareLicenta/latex_generated/
+          if ! git diff --cached --quiet; then
+            git commit -m "cd: auto-sync latex files for LL3-LucrareLicenta [skip ci]"
+            git push origin HEAD:${{ github.ref_name }}
+          else
+            echo "Nicio modificare in fisierele LaTeX."
+          fi
+
+      - name: Publica release
+        uses: softprops/action-gh-release@v2
+        if: env.PDF_EXISTS == 'true'
+        env:
+          PDF_EXISTS: ${{ hashFiles('LL3-LucrareLicenta/latex_generated/*.pdf') != '' }}
         with:
-          name: dam3-desktop-linux-x64
-          path: DAM3-Proiect/dist/desktop-linux
+          tag_name: licenta-latest
+          name: "Licență - Ultimul Build PDF"
+          body: "Compilat automat din commit-ul: `${{ github.sha }}`"
+          files: LL3-LucrareLicenta/latex_generated/*.pdf
+          draft: false
+          prerelease: true
