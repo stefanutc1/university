@@ -4,11 +4,11 @@ on:
   push:
     branches: [ main, master ]
     paths:
-      - 'LL3-LucrareLicenta/**'
+      - 'licenta/LL3-LucrareLicenta/**'
   pull_request:
     branches: [ main, master ]
     paths:
-      - 'LL3-LucrareLicenta/**'
+      - 'licenta/LL3-LucrareLicenta/**'
   workflow_dispatch:
 
 concurrency:
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: LL3-LucrareLicenta
+        working-directory: licenta/LL3-LucrareLicenta
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -78,8 +78,8 @@ jobs:
         with:
           name: licenta-bundle
           path: |
-            LL3-LucrareLicenta/output/*.pdf
-            LL3-LucrareLicenta/output/*.tex
-            LL3-LucrareLicenta/output/*.bib
-            LL3-LucrareLicenta/output/media/
+            licenta/LL3-LucrareLicenta/output/*.pdf
+            licenta/LL3-LucrareLicenta/output/*.tex
+            licenta/LL3-LucrareLicenta/output/*.bib
+            licenta/LL3-LucrareLicenta/output/media/
           retention-days: 7

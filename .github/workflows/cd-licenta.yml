@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main, master ]
     paths:
-      - 'LL3-LucrareLicenta/**'
+      - 'licenta/LL3-LucrareLicenta/**'
   workflow_dispatch:
     inputs:
       deploy_licenta_release:
@@ -46,7 +46,7 @@ jobs:
 
       - name: Construire surse LaTeX
         run: |
-          cd LL3-LucrareLicenta
+          cd licenta/LL3-LucrareLicenta
           mkdir -p latex_generated
           DOCX_FILE=$(find . -maxdepth 1 -name "*.docx" | head -n 1)
           
@@ -63,7 +63,7 @@ jobs:
             
             cd latex_generated
             latexmk -pdf -interaction=nonstopmode -halt-on-error licenta.tex || true
-            cd ../..
+            cd ../../..
           fi
 
       - name: Commit Generated LaTeX to Git
@@ -71,7 +71,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          git add LL3-LucrareLicenta/latex_generated/
+          git add licenta/LL3-LucrareLicenta/latex_generated/
           if ! git diff --cached --quiet; then
             git commit -m "cd: auto-sync latex files for LL3-LucrareLicenta [skip ci]"
             git push origin HEAD:${{ github.ref_name }}
@@ -83,11 +83,11 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: env.PDF_EXISTS == 'true'
         env:
-          PDF_EXISTS: ${{ hashFiles('LL3-LucrareLicenta/latex_generated/*.pdf') != '' }}
+          PDF_EXISTS: ${{ hashFiles('licenta/LL3-LucrareLicenta/latex_generated/*.pdf') != '' }}
         with:
           tag_name: licenta-latest
           name: "Licență - Ultimul Build PDF"
           body: "Compilat automat din commit-ul: `${{ github.sha }}`"
-          files: LL3-LucrareLicenta/latex_generated/*.pdf
+          files: licenta/LL3-LucrareLicenta/latex_generated/*.pdf
           draft: false
           prerelease: true
