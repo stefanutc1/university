@@ -36,6 +36,12 @@ export default function RootLayout() {
         <Stack.Screen name="tools/dev/encoder-decoder" options={{ title: 'Encoder / Decoder' }} />
         <Stack.Screen name="tools/dev/jwt-decoder" options={{ title: 'Inspector Token JWT' }} />
         <Stack.Screen name="tools/dev/epoch-converter" options={{ title: 'Convertor Epoch Unix' }} />
+        <Stack.Screen name="tools/network/speed-test" options={{ title: 'Speed Test & Latenta' }} />
+        <Stack.Screen name="tools/hardware/voice-recorder" options={{ title: 'Inregistrator Voce' }} />
+        <Stack.Screen name="tools/hardware/clipboard-manager" options={{ title: 'Istoric Clipboard' }} />
+        <Stack.Screen name="tools/scanner/inventory-tracker" options={{ title: 'Inventar & Coduri Bare' }} />
+        <Stack.Screen name="tools/dev/http-tester" options={{ title: 'Tester HTTP & API' }} />
+        <Stack.Screen name="tools/converters/random-picker" options={{ title: 'Decident Aleatoriu' }} />
       </Stack>
     </SafeAreaProvider>
   );

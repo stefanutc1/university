@@ -22,12 +22,14 @@ Aplicatia reprezinta o suita completa de instrumente de utilitate zilnica, netwo
 - **Inspector Inregistrari DNS**: Rezolvare DNS via DoH (Cloudflare / Google) pentru inregistrari A, AAAA, MX, TXT, CNAME si NS, cu afisare TTL.
 - **Generator QR Wi-Fi Securizat**: Generare instanta de coduri QR pentru conectare automata la retele WPA/WPA2/WPA3 sau WEP, cu optiune de retea ascunsa si partajare nativa.
 - **Scanner Noduri LAN Locale**: Detectie dispozitive active in subretea, interogare porturi comune (HTTP, HTTPS, SSH, Dev) si testare latenta ping.
+- **Speed Test & Monitor Latenta**: Masurare viteza reala download/upload si ping spre noduri externe sau server homelab propriu, cu istoric local pentru urmarirea fluctuatiilor Wi-Fi sau 4G/5G.
 
 ### 3. Scanare Documente & Generare PDF (Document Scanner)
 - **Vizor Camera Nativ**: Cadru ghidaj in timp real pentru incadrarea documentelor si declansare asistata (`expo-camera`).
 - **Corectie Perspectiva & Decupare**: Puncte de control pentru indreptarea documentelor fotografiate in unghi.
 - **Filtre Document B&W & Contrast**: Procesare imagine pentru transformare in alb-negru curat, eliminare umbre si cresterea claritatii textului.
 - **Compilator PDF Multi-Pagina**: Unire pagini scanate intr-un singur document A4 compact, salvare locala si export/partajare via `expo-sharing` si `expo-print`.
+- **Inventar & Scaner Coduri de Bare**: Mini-sistem local de gestiune componente, cutii si echipamente homelab prin scanare coduri de bare EAN/QR cu alerta stoc redus si locatii.
 
 ### 4. Convertoare & Estimatoare (Converters & Math)
 - **Convertor Universal de Unitati**: Lungime (m, km, ft, in, mi, nmi), Greutate/Masa (kg, g, lb, oz, tone), Volum (L, mL, gal, m3, fl oz) si Temperatura (°C, °F, K) cu afisarea formulei stiintifice aplicate.
@@ -36,6 +38,7 @@ Aplicatia reprezinta o suita completa de instrumente de utilitate zilnica, netwo
   - *Beton & Ciment*: Volum metri cubi, saci necesari de 25kg/40kg, cantitate necesara de nisip, pietris si apa.
   - *Vopsea Lavabila*: Suprafata pereti, deducere goluri geamuri/usi, calcul litri si galeti de 5L/10L necesare.
   - *Gresie & Faianta*: Suprafata podea/perete, marime placi (ex: 60x60cm), marja de pierderi (10-15%) si numar cutii.
+- **Decident & Selector Aleatoriu**: Zaruri virtuale configurabile (1d6, 2d6, 1d20), tragere la sorti din liste/optiuni, aruncare moneda si generator echilibrat de impartire pe echipe pentru proiecte studentesti.
 
 ### 5. Impartire Cheltuieli de Grup (Expense Splitter)
 - **Registru Tranzactii de Grup**: Evidenta cheltuielilor comune (cazare, transport, mese) cu sustinere pentru participanti multipli si impartire egala sau procentuala.
@@ -47,12 +50,15 @@ Aplicatia reprezinta o suita completa de instrumente de utilitate zilnica, netwo
 - **Nivela cu Bula pe Doua Axe**: Citire valori din senzorul de accelerometru (`expo-sensors`), calcul unghiuri Pitch & Roll, tinta grafica interactiva, calibrare offset la zero si feedback haptic la orizontalitate.
 - **Busola Digitala**: Orientare 360° prin magnetometru, indicare directie cardinala si monitorizare intensitate camp magnetic ($\mu T$).
 - **Generator Criptografic de Parole**: Generare caractere aleatorii sau fraze de acces (Passphrase) din dictionar, excludere caractere ambigue si calculare riguroasa a entropiei Shannon ($E = L \times \log_2 N$).
+- **Inregistrator Audio & Jurnal Notite**: Inregistrare rapida audio pentru notite de curs sau idei pe fuga, masurare durata si atasare transcriere text asociata.
+- **Manager Istoric Clipboard**: Retentie inteligenta si organizare pe categorii (Link-uri, Cod/JSON, Parole, Text) pentru textele copiate recent, cu optiune de fixare si re-copiere rapida.
 
 ### 7. Unelte pentru Dezvoltatori (Dev & Data Tools)
 - **Generator Hash-uri Criptografice**: MD5 (RFC 1321), SHA-1, SHA-256, SHA-512 si HMAC cu cheie secreta.
 - **Encoder & Decoder**: Conversie bidirectionala Base64, Hexadecimal si URL Component cu suport UTF-8.
 - **Inspector Token JWT**: Decodare header si payload JSON, evidentiere algoritm si validare timestamp de expirare (`exp`, `iat`).
 - **Convertor Epoch Timestamp**: Conversie instanta intre secunde/milisecunde Unix si format calendaristic UTC / Ora Romaniei.
+- **Tester HTTP & API (Postman Lite)**: Client mobil integrat pentru trimitere cereri GET/POST/PUT/DELETE/PATCH, inspectare headere, timp de raspuns si formatare automata a raspunsului JSON.
 
 ---
 

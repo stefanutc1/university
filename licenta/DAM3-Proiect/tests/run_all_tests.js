@@ -4,6 +4,7 @@ const { runTests: runDebtTests } = require('./debt_simplifier.test.js');
 const { runTests: runConverterTests } = require('./converters.test.js');
 const { runTests: runDevTests } = require('./dev_tools.test.js');
 const { runTests: runPasswordTests } = require('./password.test.js');
+const { runTests: runNewFeatureTests } = require('./new_features.test.js');
 
 console.log('============================================================');
 console.log('           DAM3-Proiect Mobile Utility Suite');
@@ -51,6 +52,14 @@ try {
   passedSuites++;
 } catch (e) {
   console.error('[FAIL] Password Tests Failed:', e.message);
+}
+totalSuites++;
+
+try {
+  runNewFeatureTests();
+  passedSuites++;
+} catch (e) {
+  console.error('[FAIL] New Feature Tests Failed:', e.message);
 }
 totalSuites++;
 

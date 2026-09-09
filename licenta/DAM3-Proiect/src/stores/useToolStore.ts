@@ -17,16 +17,19 @@ export const INITIAL_TOOLS: ToolItem[] = [
   { id: 'dns-lookup', name: 'DNS Lookup Record Inspector', description: 'Interogare inregistrari A, AAAA, MX, TXT, CNAME, NS via DoH', category: 'network', icon: 'globe-outline', route: '/tools/network/dns-lookup', tags: ['dns', 'domain', 'lookup', 'ip', 'ns'] },
   { id: 'wifi-qr', name: 'Generator QR Conexiune Wi-Fi', description: 'Creare cod QR pentru partajare rapida credentiale Wi-Fi securizate', category: 'network', icon: 'qr-code-outline', route: '/tools/network/wifi-qr', tags: ['wifi', 'qr', 'password', 'share', 'security'] },
   { id: 'lan-scanner', name: 'Scanner Gazde Retea Locala', description: 'Detectie noduri active si servicii deschise in reteaua Wi-Fi curenta', category: 'network', icon: 'wifi-outline', route: '/tools/network/lan-scanner', tags: ['lan', 'scanner', 'ping', 'network', 'hosts'] },
+  { id: 'speed-test', name: 'Speed Test & Monitor Latenta', description: 'Masurare viteza download/upload si ping spre noduri externe sau homelab', category: 'network', icon: 'speedometer-outline', route: '/tools/network/speed-test', tags: ['speed', 'test', 'ping', 'latency', 'bandwidth', 'download', 'upload'] },
 
   // Document Scanner
   { id: 'camera-capture', name: 'Scanare Camera Documente', description: 'Captura asistata cu incadrare automata a marginilor colii', category: 'scanner', icon: 'camera-outline', route: '/tools/scanner/camera-capture', tags: ['scan', 'camera', 'document', 'capture', 'edge'] },
   { id: 'document-filter', name: 'Filtre Alb-Negru & Contrast', description: 'Procesare alb-negru monocrom, curatare fundal si claritate text', category: 'scanner', icon: 'color-filter-outline', route: '/tools/scanner/document-filter', tags: ['filter', 'bw', 'contrast', 'enhance', 'text'] },
   { id: 'pdf-compiler', name: 'Compilator PDF Multi-Pagina', description: 'Asamblare, reordonare si export documente scanate in fisier PDF', category: 'scanner', icon: 'document-text-outline', route: '/tools/scanner/pdf-compiler', tags: ['pdf', 'document', 'export', 'share', 'print'] },
+  { id: 'inventory-tracker', name: 'Inventar & Scaner Coduri de Bare', description: 'Gestiune stocuri, componente homelab si cutii prin scanare coduri de bare', category: 'scanner', icon: 'barcode-outline', route: '/tools/scanner/inventory-tracker', tags: ['barcode', 'inventory', 'assets', 'stock', 'scanner', 'homelab'] },
 
   // Converters & Math
   { id: 'unit-converter', name: 'Convertor Universal Unitati', description: 'Lungime, masa, volum si temperatura cu formule matematice detaliate', category: 'converters', icon: 'swap-horizontal-outline', route: '/tools/converters/unit-converter', tags: ['units', 'length', 'weight', 'volume', 'temperature'] },
   { id: 'currency-converter', name: 'Convertor Valutar Offline', description: 'Cursuri oficiale BNR si BCE memorate offline pentru 16 valute', category: 'converters', icon: 'cash-outline', route: '/tools/converters/currency-converter', tags: ['currency', 'exchange', 'bnr', 'eur', 'ron', 'usd'] },
   { id: 'material-estimator', name: 'Estimator Materiale Constructii', description: 'Calcul volum beton, saci ciment, vopsea lavabila si gresie cu pierderi', category: 'converters', icon: 'construct-outline', route: '/tools/converters/material-estimator', tags: ['concrete', 'paint', 'tiles', 'construction', 'estimator'] },
+  { id: 'random-picker', name: 'Decident & Selector Aleatoriu', description: 'Zaruri virtuale, tragere la sorti din liste, roata norocului si impartire in echipe', category: 'converters', icon: 'shuffle-outline', route: '/tools/converters/random-picker', tags: ['random', 'picker', 'dice', 'decision', 'teams', 'wheel'] },
 
   // Expense Splitter
   { id: 'expenses-hub', name: 'Registru Cheltuieli de Grup', description: 'Evidenta plati comune pe categorii si calcul balante per membru', category: 'expenses', icon: 'people-outline', route: '/tools/expenses/group-detail', tags: ['expenses', 'split', 'group', 'ledger', 'money'] },
@@ -37,12 +40,15 @@ export const INITIAL_TOOLS: ToolItem[] = [
   { id: 'spirit-level', name: 'Nivela cu Bula pe Doua Axe', description: 'Indicator orizontal si vertical de precizie bazat pe accelerometru', category: 'hardware', icon: 'compass-outline', route: '/tools/hardware/spirit-level', tags: ['level', 'accelerometer', 'bubble', 'pitch', 'roll'] },
   { id: 'compass', name: 'Busola Digitala & Azimut', description: 'Orientare 360 grade, puncte cardinale si intensitate camp magnetic', category: 'hardware', icon: 'navigate-outline', route: '/tools/hardware/compass', tags: ['compass', 'magnetometer', 'heading', 'azimuth', 'north'] },
   { id: 'password-gen', name: 'Generator Parole & Secrete', description: 'Generare chei criptografice si fraze de acces cu indicator de entropie', category: 'hardware', icon: 'key-outline', route: '/tools/hardware/password-gen', tags: ['password', 'generator', 'entropy', 'security', 'crypto'] },
+  { id: 'voice-recorder', name: 'Inregistrator Voce & Jurnal Notite', description: 'Inregistrare audio rapida notite vocale, extragere durata si jurnal transcrieri', category: 'hardware', icon: 'mic-outline', route: '/tools/hardware/voice-recorder', tags: ['voice', 'audio', 'recorder', 'notes', 'transcription', 'mic'] },
+  { id: 'clipboard-manager', name: 'Manager Istoric Clipboard', description: 'Retentie inteligenta a textelor copiate recent organizate pe categorii', category: 'hardware', icon: 'clipboard-outline', route: '/tools/hardware/clipboard-manager', tags: ['clipboard', 'history', 'copy', 'paste', 'snippets', 'links'] },
 
   // Dev & Data Tools
   { id: 'hash-generator', name: 'Generator Hash Criptografic', description: 'Calcul instanta MD5, SHA-1, SHA-256, SHA-512 si cod de autentificare HMAC', category: 'dev', icon: 'finger-print-outline', route: '/tools/dev/hash-generator', tags: ['hash', 'md5', 'sha256', 'crypto', 'hmac'] },
   { id: 'encoder-decoder', name: 'Encoder / Decoder Base64 & URL', description: 'Conversie rapida text in Base64, Hexadecimal si URL Safe Component', category: 'dev', icon: 'code-working-outline', route: '/tools/dev/encoder-decoder', tags: ['base64', 'url', 'hex', 'encode', 'decode'] },
   { id: 'jwt-decoder', name: 'Inspector Token JWT', description: 'Parsare Header, Claims Payload si verificare stare expirare token', category: 'dev', icon: 'shield-checkmark-outline', route: '/tools/dev/jwt-decoder', tags: ['jwt', 'token', 'auth', 'claims', 'expiration'] },
   { id: 'epoch-converter', name: 'Convertor Timestamp Unix Epoch', description: 'Translatare secunde/milisecunde in data umana UTC si ora Romaniei', category: 'dev', icon: 'time-outline', route: '/tools/dev/epoch-converter', tags: ['epoch', 'timestamp', 'unix', 'time', 'date'] },
+  { id: 'http-tester', name: 'Tester HTTP & API (Postman Lite)', description: 'Client mobil pentru cereri GET/POST/PUT/DELETE, testare webhook-uri si inspectie JSON', category: 'dev', icon: 'cloud-upload-outline', route: '/tools/dev/http-tester', tags: ['http', 'api', 'rest', 'postman', 'curl', 'webhook', 'json'] },
 ];
 
 interface ToolStoreState {
