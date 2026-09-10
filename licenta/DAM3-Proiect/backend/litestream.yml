@@ -1,7 +1,0 @@
-# Litestream continuous SQLite replication configuration
-dbs:
-  - path: /data/dam.db
-    replicas:
-      - type: file
-        path: /data/backups/dam.db
-        retention: 72h
