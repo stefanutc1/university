@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1789924282.68756 "licenta.tex" "licenta.pdf" "licenta" 1789924283.40286 0
+["pdflatex"] 1789925449.04463 "licenta.tex" "licenta.pdf" "licenta" 1789925449.87825 0
   "/etc/texmf/web2c/texmf.cnf" 1788815411.52207 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecrm1000.tfm" 1136768653 3584 adb004a0c8e7c46ee66cad73671f37b4 ""
@@ -110,10 +110,10 @@
   "/usr/share/texmf/tex/latex/lm/t1lmr.fd" 1616454256 1867 996fe743d88a01aca041ed22cc10e1bb ""
   "/usr/share/texmf/tex/latex/lm/ts1lmr.fd" 1616454256 1914 884882d7ebb0fd65cea93fca77ff6f5a ""
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
-  "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1789924229.30754 5315274 eca45f79c283d0da8e1220b205549efb ""
-  "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1789924243 7425080 99b02304a2deff59bf68fcda38b7b00c ""
-  "licenta.aux" 1789924283.32556 2018 c0d4fb2a037c87e51d62e0a986682ca6 "pdflatex"
-  "licenta.tex" 1789924281.52656 108234 4c05c3d48da470045874b8fc5784f111 ""
+  "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1789925395.89105 5315274 eca45f79c283d0da8e1220b205549efb ""
+  "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1789925410 7425005 cc22c1fc9435e5f808ab0ddab7fd0400 ""
+  "licenta.aux" 1789925449.80144 2018 c0d4fb2a037c87e51d62e0a986682ca6 "pdflatex"
+  "licenta.tex" 1789925448.74842 108234 4c05c3d48da470045874b8fc5784f111 ""
   (generated)
   "licenta.aux"
   "licenta.log"
