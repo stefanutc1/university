@@ -350,9 +350,9 @@ fraude.
 
 Metodologia de cercetare adoptată îmbină analiza teoretică și normativă
 a literaturii de specialitate cu o abordare cantitativă experimentală.
-Întreaga arhitectură a fost instanțiată pe un server fizic x86\_64
-dedicat (procesor Intel Core i9-13900H cu 14 nuclee / 20 fire de
-execuție, 64 GB memorie RAM DDR5 și subsistem de stocare NVMe ZFS).
+Întreaga arhitectură a fost instanțiată pe nodul fizic de calcul x86\_64
+bare-metal al infrastructurii de laborator (procesor Intel Core i3-10100F cu 4 nuclee fizice / 8 fire de
+execuție la 4.30 GHz Turbo, 12 GB memorie RAM DDR4 completată cu subsistem dinamic ZRAM de 6.0 GB lz4 și subsistem de stocare de 512 GB SSD LVM-Thin sub Proxmox VE 9.2).
 Toate componentele software au fost dezvoltate în limbajul Python 3,
 utilizând cadre de lucru moderne (FastAPI, SQLite/PostgreSQL, hashlib)
 și au fost supuse unor teste de penetrare automate riguroase, asigurând
@@ -1027,12 +1027,8 @@ Resurselor}
 
 Infrastructura de calcul a fost implementată pe platforma de
 virtualizare de nivel întreprindere Proxmox Virtual Environment (PVE)
-versiunea 9.2, instalată bare-metal pe un server de calcul fizic de
-înaltă densitate Minisforum MS-01. Serverul este echipat cu un procesor
-Intel Core i9-13900H (14 nuclee fizice, 20 fire de execuție, frecvență
-turbo de până la 5.4 GHz), 64 GB de memorie RAM DDR5 la 5200 MHz și o
-matrice de stocare de mare viteză configurată în sistem de fișiere ZFS
-pe SSD-uri NVMe PCIe 4.0.
+versiunea 9.2 (nucleu Linux 7.0 pve), instalată bare-metal pe nodul fizic x86\_64 primar al laboratorului (\texttt{pve}). Serverul este echipat cu un procesor
+Intel Core i3-10100F (4 nuclee fizice, 8 fire de execuție, frecvență de bază 3.60 GHz și până la 4.30 GHz Turbo, 6 MB Smart Cache), 12 GB de memorie RAM DDR4 la 2133 MHz (12.288 MB), o placă grafică dedicată NVIDIA GeForce GTX 1050 Ti (4 GB VRAM GDDR5), un subsistem de stocare de 512 GB SSD (gestionat printr-un pool LVM-Thin de mare viteză) și un modul ZRAM de 6.0 GB (/dev/zram0, compresie lz4, swappiness 60) ce garantează densitatea ridicată a sarcinilor de lucru și previne degradarea mediilor SSD prin VirtIO Memory Ballooning.
 
 Platforma Proxmox VE oferă o combinație optimă între mașini virtuale
 complete bazate pe KVM (Kernel-based Virtual Machine) -- utilizate

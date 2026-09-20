@@ -224,7 +224,7 @@ def build_introduction(doc):
     add_bullet_p(doc, "Obiectivul 6:", "Evaluarea riguroasă a performanței operaționale, a rezilienței la incidente și a gradului de conformitate de reglementare obținut, evidențiind valoarea adăugată a cercetării și impactul economic direct asupra diminuării pierderilor operaționale din fraude.")
     
     add_body_p(doc, 
-        "Metodologia de cercetare adoptată îmbină analiza teoretică și normativă a literaturii de specialitate cu o abordare cantitativă experimentală. Întreaga arhitectură a fost instanțiată pe un server fizic x86_64 dedicat (procesor Intel Core i9-13900H cu 14 nuclee / 20 fire de execuție, 64 GB memorie RAM DDR5 și subsistem de stocare NVMe ZFS). Toate componentele software au fost dezvoltate în limbajul Python 3, utilizând cadre de lucru moderne (FastAPI, SQLite/PostgreSQL, hashlib) și au fost supuse unor teste de penetrare automate riguroase, asigurând reproductibilitatea completă a rezultatelor obținute."
+        "Metodologia de cercetare adoptată îmbină analiza teoretică și normativă a literaturii de specialitate cu o abordare cantitativă experimentală. Întreaga arhitectură a fost instanțiată pe nodul fizic de calcul x86_64 bare-metal al infrastructurii de laborator (procesor Intel Core i3-10100F cu 4 nuclee fizice / 8 fire de execuție la 4.30 GHz Turbo, 12 GB memorie RAM DDR4 completată cu subsistem dinamic ZRAM de 6.0 GB lz4 și subsistem de stocare de 512 GB SSD LVM-Thin sub Proxmox VE 9.2). Toate componentele software au fost dezvoltate în limbajul Python 3, utilizând cadre de lucru moderne (FastAPI, SQLite/PostgreSQL, hashlib) și au fost supuse unor teste de penetrare automate riguroase, asigurând reproductibilitatea completă a rezultatelor obținute."
     )
     
     add_body_p(doc, 

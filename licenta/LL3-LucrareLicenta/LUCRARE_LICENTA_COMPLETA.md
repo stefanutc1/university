@@ -82,7 +82,7 @@ Obiectivul principal al prezentei lucrări de licență constă în proiectarea,
 5. **Obiectivul 5:** Integrarea unui sistem de monitorizare a integrității și detecție a intruziunilor (HIDS/SIEM - Wazuh), configurarea unor reguli analitice de corelare în timp real capabile să identifice decalajele contabile și maparea integrală a incidentelor pe matricea internațională MITRE ATT&CK for Financial Services.
 6. **Obiectivul 6:** Evaluarea riguroasă a performanței operaționale, a rezilienței la incidente și a gradului de conformitate de reglementare obținut, evidențiind valoarea adăugată a cercetării și impactul economic direct asupra diminuării pierderilor operaționale din fraude.
 
-Metodologia de cercetare adoptată îmbină analiza teoretică și normativă a literaturii de specialitate cu o abordare cantitativă experimentală. Întreaga arhitectură a fost instanțiată pe un server fizic x86_64 dedicat (procesor Intel Core i9-13900H cu 14 nuclee / 20 fire de execuție, 64 GB memorie RAM DDR5 și subsistem de stocare NVMe ZFS). Toate componentele software au fost dezvoltate în limbajul Python 3, utilizând cadre de lucru moderne (FastAPI, SQLite/PostgreSQL, hashlib) și au fost supuse unor teste de penetrare automate riguroase, asigurând reproductibilitatea completă a rezultatelor obținute.
+Metodologia de cercetare adoptată îmbină analiza teoretică și normativă a literaturii de specialitate cu o abordare cantitativă experimentală. Întreaga arhitectură a fost instanțiată pe nodul fizic de calcul x86_64 bare-metal al infrastructurii de laborator (procesor Intel Core i3-10100F cu 4 nuclee fizice / 8 fire de execuție la 4.30 GHz Turbo, 12 GB memorie RAM DDR4 completată cu subsistem dinamic ZRAM de 6.0 GB lz4 și subsistem de stocare de 512 GB SSD LVM-Thin sub Proxmox VE 9.2). Toate componentele software au fost dezvoltate în limbajul Python 3, utilizând cadre de lucru moderne (FastAPI, SQLite/PostgreSQL, hashlib) și au fost supuse unor teste de penetrare automate riguroase, asigurând reproductibilitatea completă a rezultatelor obținute.
 
 Lucrarea este structurată riguros pe două capitole principale, conform ghidului de elaborare al facultății. Primul capitol, „Stadiul cunoașterii în securitatea cibernetică bancară”, sintetizează fundamentele legislative, arhitecturale, vulnerabilitățile curente și paradigmele defensive de ultimă generație. Al doilea capitol, „Proiectarea, implementarea și evaluarea arhitecturii bancare reziliente într-un mediu virtualizat”, constituie contribuția originală extinsă a autorului, detaliind construcția mediului experimental, codul sursă al serviciilor bancare, derularea atacurilor controlate, telemetria sistemului SIEM și validarea ipotezelor de cercetare. Lucrarea se încheie cu o secțiune de concluzii, bibliografia consultată și anexe tehnice cuprinzătoare.
 
@@ -242,20 +242,20 @@ Un Jump-Box securizat elimină autentificarea prin parole statice, impunând cri
 ## 2.1. Arhitectura generală și topologia laboratorului virtual bancar
 
 ### 2.1.1. Platforma de Virtualizare Proxmox VE 9.2 și Dimensionarea Resurselor
-Infrastructura de calcul a fost implementată pe platforma de virtualizare bare-metal Proxmox Virtual Environment (PVE) 9.2 pe un nod fizic Minisforum MS-01 echipat cu procesor Intel Core i9-13900H (14 nuclee, 20 fire de execuție), 64 GB memorie RAM DDR5 și stocare NVMe configurată în sistem de fișiere ZFS.
+Infrastructura de calcul a fost implementată pe platforma de virtualizare bare-metal Proxmox Virtual Environment (PVE) 9.2 (nucleu Linux 7.0 pve) pe nodul fizic x86_64 primar al laboratorului (`pve`), echipat cu procesor Intel Core i3-10100F (4 nuclee fizice, 8 fire de execuție, frecvență de bază 3.60 GHz și până la 4.30 GHz Turbo, 6 MB Smart Cache), 12 GB memorie RAM DDR4 la 2133 MHz (12.288 MB), accelerator grafic dedicat NVIDIA GeForce GTX 1050 Ti (4 GB VRAM GDDR5), un subsistem de stocare de 512 GB SSD (gestionat printr-un pool LVM-Thin) și un modul ZRAM de 6.0 GB (/dev/zram0, compresie lz4, swappiness 60) ce garantează densitatea ridicată a sarcinilor de lucru și previne degradarea mediilor SSD prin VirtIO Memory Ballooning.
 
-S-a utilizat o combinație optimizată de mașini virtuale KVM (pentru nodurile cu cerințe de izolare la nivel de nucleu OS) și containere LXC (pentru microserviciile cu rată ridicată de transfer), beneficiind de mecanismul de Memory Ballooning (virtio-balloon) pentru alocarea dinamică a memoriei.
+S-a utilizat o combinație optimizată de mașini virtuale KVM (pentru nodurile cu cerințe de izolare la nivel de nucleu OS) și containere LXC (pentru microserviciile cu rată ridicată de transfer și nodul central SIEM Wazuh), beneficiind de mecanismul de Memory Ballooning (virtio-balloon) pentru alocarea dinamică a memoriei.
 
-#### Tabelul 2.1: Specificațiile tehnice și alocarea resurselor pentru activele virtualizate din clusterul Proxmox VE 9.2
-| ID Activ | Denumire Nod | Tip Virtualizare | Sistem de Operare | Alocare vCPU / RAM | Stocare ZFS | Rol Funcțional |
+#### Tabelul 2.1: Specificațiile tehnice și alocarea resurselor pentru activele virtualizate din nodul fizic Proxmox VE 9.2
+| ID Activ | Denumire Nod | Tip Virtualizare | Sistem de Operare | Alocare vCPU / RAM | Stocare LVM | Rol Funcțional |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| VM 200 | opnsense-firewall | KVM (pve) | FreeBSD 14 / OPNsense | 2 vCPU / 4 GB (fix) | 20 GB SSD | Firewall de frontieră, gateway inter-VLAN, IDS |
-| VM 310 | core-banking-licenta | KVM (pve) | Debian 12 Bookworm | 2 vCPU / 4 GB (2GB balloon) | 40 GB SSD | Motor central Core-Banking, ledger în partidă dublă |
-| VM 311 | fin-db-licenta | KVM (pve) | Debian 12 Hardened | 2 vCPU / 4 GB (2GB balloon) | 50 GB SSD | Server bază de date financiară PostgreSQL + Wazuh |
-| CT 312 | payment-gateway-licenta | LXC (pve) | Alpine Linux 3.19 | 1 vCPU / 1 GB (fix) | 10 GB rootfs | Microserviciu plăți rapide card & SWIFT ISO 20022 |
-| VM 313 | swift-jumpbox-licenta | KVM (pve) | Debian 12 Hardened | 2 vCPU / 2 GB (1GB balloon) | 25 GB SSD | Bastion administrativ unic, SSH Ed25519 + MFA |
-| VM 205 | kiosk-terminal-licenta | KVM (pve) | Ubuntu 24.04 LTS | 2 vCPU / 2 GB (fix) | 20 GB SSD | Terminal tranzacțional securizat casierie/kiosk |
-| VM 302 | cyberlab-kali-attacker | KVM (pve) | Kali Linux 2024.1 | 4 vCPU / 8 GB (fix) | 60 GB SSD | Nod ofensiv Red Team pentru simularea atacurilor |
+| VM 200 | opnsense-firewall | KVM (pve) | FreeBSD 14 / OPNsense | 2 vCPU / 1024 MB (512MB balloon) | 20 GB SSD | Firewall de frontieră, gateway inter-VLAN, IDS Suricata |
+| VM 310 | core-banking-licenta | KVM (pve) | Debian 12 Bookworm | 2 vCPU / 2048 MB (1024MB balloon) | 40 GB SSD | Motor central Core-Banking, ledger în partidă dublă SHA-256 |
+| VM 311 | fin-db-licenta | KVM (pve) | Debian 12 Hardened | 2 vCPU / 2048 MB (1024MB balloon) | 50 GB SSD | Server bază de date financiară PostgreSQL + reconciliere |
+| CT 312 | payment-gateway-licenta | LXC (pve) | Alpine Linux 3.19 | 1 vCPU / 1024 MB (fix) | 10 GB rootfs | Microserviciu plăți rapide card (Luhn) & ISO 20022 pacs.008 |
+| VM 313 | swift-jumpbox-licenta | KVM (pve) | Debian 12 Hardened | 2 vCPU / 1024 MB (512MB balloon) | 25 GB SSD | Bastion administrativ unic, SSH Ed25519 + MFA TOTP |
+| CT 106 | wazuh-siem-licenta | LXC (pve) | Ubuntu 24.04 LTS | 4 vCPU / 6144 MB (4GB Heap) | 35 GB rootfs | Platformă centrală SIEM/XDR, OpenSearch Indexer & Dashboard |
+| VM 205 | kiosk-terminal-licenta | KVM (pve) | Ubuntu 24.04 LTS | 2 vCPU / 1024 MB (fix) | 20 GB SSD | Terminal tranzacțional securizat casierie/kiosk (VLAN 20/30) |
 
 *Sursa: Proiectare proprie a autorului în cadrul infrastructurii Proxmox VE.*
 

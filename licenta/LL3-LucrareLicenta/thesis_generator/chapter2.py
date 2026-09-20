@@ -25,24 +25,24 @@ def build_chapter2(doc):
     
     add_subsub_title(doc, "2.1.1. Platforma de Virtualizare Proxmox VE 9.2 și Dimensionarea Resurselor")
     add_body_p(doc,
-        "Infrastructura de calcul a fost implementată pe platforma de virtualizare de nivel întreprindere Proxmox Virtual Environment (PVE) versiunea 9.2, instalată bare-metal pe un server de calcul fizic de înaltă densitate Minisforum MS-01. Serverul este echipat cu un procesor Intel Core i9-13900H (14 nuclee fizice, 20 fire de execuție, frecvență turbo de până la 5.4 GHz), 64 GB de memorie RAM DDR5 la 5200 MHz și o matrice de stocare de mare viteză configurată în sistem de fișiere ZFS pe SSD-uri NVMe PCIe 4.0."
+        "Infrastructura de calcul a fost implementată pe platforma de virtualizare de nivel întreprindere Proxmox Virtual Environment (PVE) versiunea 9.2 (nucleu Linux 7.0 pve), instalată bare-metal pe nodul fizic x86_64 primar al laboratorului (pve). Serverul este echipat cu un procesor Intel Core i3-10100F (4 nuclee fizice, 8 fire de execuție, frecvență de bază 3.60 GHz și până la 4.30 GHz Turbo, 6 MB Smart Cache), 12 GB de memorie RAM DDR4 la 2133 MHz (12.288 MB), o placă grafică dedicată NVIDIA GeForce GTX 1050 Ti (4 GB VRAM GDDR5), un subsistem de stocare de 512 GB SSD (gestionat printr-un pool LVM-Thin de mare viteză) și un modul ZRAM de 6.0 GB (/dev/zram0, compresie lz4, swappiness 60) ce garantează densitatea ridicată a sarcinilor de lucru și previne degradarea mediilor SSD prin VirtIO Memory Ballooning."
     )
     add_body_p(doc,
-        "Platforma Proxmox VE oferă o combinație optimă între mașini virtuale complete bazate pe KVM (Kernel-based Virtual Machine) – utilizate pentru nodurile care necesită izolare strictă la nivel de nucleu al sistemului de operare – și containere ușoare bazate pe nucleu Linux (LXC – Linux Containers) – utilizate pentru microserviciile cu rată ridicată de tranzacționare. Pentru eficientizarea consumului de memorie și garantarea disponibilității în perioadele de vârf tranzacțional, mașinile virtuale au fost configurate cu alocare dinamică de memorie (Memory Ballooning via virtio-balloon)."
+        "Platforma Proxmox VE oferă o combinație optimă între mașini virtuale complete bazate pe KVM (Kernel-based Virtual Machine) – utilizate pentru nodurile care necesită izolare strictă la nivel de nucleu al sistemului de operare – și containere ușoare bazate pe nucleu Linux (LXC – Linux Containers) – utilizate pentru microserviciile cu rată ridicată de tranzacționare și platforma SIEM Wazuh. Pentru eficientizarea consumului de memorie și garantarea disponibilității în perioadele de vârf tranzacțional, mașinile virtuale au fost configurate cu alocare dinamică de memorie (Memory Ballooning via virtio-balloon)."
     )
     
     # TABELUL 2.1
-    headers_2_1 = ["ID Activ", "Denumire Nod", "Tip Virtualizare", "Sistem de Operare", "Alocare vCPU / RAM", "Stocare ZFS", "Rol Funcțional"]
+    headers_2_1 = ["ID Activ", "Denumire Nod", "Tip Virtualizare", "Sistem de Operare", "Alocare vCPU / RAM", "Stocare LVM", "Rol Funcțional"]
     rows_2_1 = [
-        ["VM 200", "opnsense-firewall", "KVM (pve)", "FreeBSD 14 / OPNsense", "2 vCPU / 4 GB (fix)", "20 GB SSD", "Firewall de frontieră, gateway inter-VLAN, IDS"],
-        ["VM 310", "core-banking-licenta", "KVM (pve)", "Debian 12 Bookworm", "2 vCPU / 4 GB (2GB balloon)", "40 GB SSD", "Motor central Core-Banking, ledger în partidă dublă"],
-        ["VM 311", "fin-db-licenta", "KVM (pve)", "Debian 12 Hardened", "2 vCPU / 4 GB (2GB balloon)", "50 GB SSD", "Server bază de date financiară PostgreSQL + Wazuh"],
-        ["CT 312", "payment-gateway-licenta", "LXC (pve)", "Alpine Linux 3.19", "1 vCPU / 1 GB (fix)", "10 GB rootfs", "Microserviciu plăți rapide card & SWIFT ISO 20022"],
-        ["VM 313", "swift-jumpbox-licenta", "KVM (pve)", "Debian 12 Hardened", "2 vCPU / 2 GB (1GB balloon)", "25 GB SSD", "Bastion administrativ unic, SSH Ed25519 + MFA"],
-        ["VM 205", "kiosk-terminal-licenta", "KVM (pve)", "Ubuntu 24.04 LTS", "2 vCPU / 2 GB (fix)", "20 GB SSD", "Terminal tranzacțional securizat casierie/kiosk"],
-        ["VM 302", "cyberlab-kali-attacker", "KVM (pve)", "Kali Linux 2024.1", "4 vCPU / 8 GB (fix)", "60 GB SSD", "Nod ofensiv Red Team pentru simularea atacurilor"]
+        ["VM 200", "opnsense-firewall", "KVM (pve)", "FreeBSD 14 / OPNsense", "2 vCPU / 1024 MB (512MB balloon)", "20 GB SSD", "Firewall de frontieră, gateway inter-VLAN, IDS Suricata"],
+        ["VM 310", "core-banking-licenta", "KVM (pve)", "Debian 12 Bookworm", "2 vCPU / 2048 MB (1024MB balloon)", "40 GB SSD", "Motor central Core-Banking, ledger în partidă dublă SHA-256"],
+        ["VM 311", "fin-db-licenta", "KVM (pve)", "Debian 12 Hardened", "2 vCPU / 2048 MB (1024MB balloon)", "50 GB SSD", "Server bază de date financiară PostgreSQL + reconciliere"],
+        ["CT 312", "payment-gateway-licenta", "LXC (pve)", "Alpine Linux 3.19", "1 vCPU / 1024 MB (fix)", "10 GB rootfs", "Microserviciu plăți rapide card (Luhn) & ISO 20022 pacs.008"],
+        ["VM 313", "swift-jumpbox-licenta", "KVM (pve)", "Debian 12 Hardened", "2 vCPU / 1024 MB (512MB balloon)", "25 GB SSD", "Bastion administrativ unic, SSH Ed25519 + MFA TOTP"],
+        ["CT 106", "wazuh-siem-licenta", "LXC (pve)", "Ubuntu 24.04 LTS", "4 vCPU / 6144 MB (4GB Heap)", "35 GB rootfs", "Platformă centrală SIEM/XDR, OpenSearch Indexer & Dashboard"],
+        ["VM 205", "kiosk-terminal-licenta", "KVM (pve)", "Ubuntu 24.04 LTS", "2 vCPU / 1024 MB (fix)", "20 GB SSD", "Terminal tranzacțional securizat casierie/kiosk (VLAN 20/30)"]
     ]
-    add_table_with_caption(doc, "2.1", "Specificațiile tehnice și alocarea resurselor pentru activele virtualizate din clusterul Proxmox VE 9.2", headers_2_1, rows_2_1, "Proiectare proprie a autorului în cadrul infrastructurii Proxmox VE")
+    add_table_with_caption(doc, "2.1", "Specificațiile tehnice și alocarea resurselor pentru activele virtualizate din nodul fizic Proxmox VE 9.2", headers_2_1, rows_2_1, "Proiectare proprie a autorului în cadrul infrastructurii Proxmox VE")
     
     add_subsub_title(doc, "2.1.2. Segmentarea Rețelei prin Firewall OPNsense și Politici Inter-VLAN")
     add_body_p(doc,

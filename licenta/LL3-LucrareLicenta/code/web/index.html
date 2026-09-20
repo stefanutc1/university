@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Nexus Core-Banking | Kiosk Simulator & Wazuh SIEM Telemetry</title>
+  <title>Nexus Core-Banking | Kiosk Simulator &amp; Wazuh SIEM Telemetry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/kiosk.css">
 </head>
 <body>
@@ -11,15 +14,18 @@
   <!-- Zero Navigation Chrome: Bara de stare Kiosk -->
   <header class="kiosk-status-bar">
     <div class="bank-logo">
-      <span>🏛️ NEXUS BANK</span>
-      <span class="badge">KIOSK VM-205</span>
+      <span class="brand-name">NEXUS CORE-BANKING</span>
+      <span class="badge-tag">KIOSK VM-205</span>
     </div>
     <div class="status-right">
       <div id="backend-status-badge" class="backend-indicator">
         <span class="dot"></span>
-        <span id="backend-mode-label">Se detectează mediul...</span>
+        <span id="backend-mode-label">CONNECTING...</span>
       </div>
-      <span style="font-family:var(--font-mono);font-size:11px;">VLAN 20 • SECURE</span>
+      <div class="badge-tag secure">
+        <span class="pulse-dot"></span>
+        <span>VLAN 20 • SECURE</span>
+      </div>
     </div>
   </header>
 
@@ -29,12 +35,16 @@
     <!-- ECRAN 1: WELCOME / TOUCH TO START -->
     <div id="screen-welcome" class="screen active">
       <div class="welcome-box" onclick="startKioskFlow()">
-        <div class="atm-slot-icon">💳</div>
+        <svg class="atm-slot-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+          <line x1="2" y1="10" x2="22" y2="10"></line>
+        </svg>
+        <div class="welcome-chip">[TERMINAL IDLE · CARD READY]</div>
         <h1>Terminal Bancar Kiosk</h1>
-        <p>Atingeți ecranul sau introduceți cardul virtual pentru a iniția o sesiune securizată de operațiuni bancare.</p>
+        <p>Interfață de operare securizată pentru tranzacții financiare. Atingeți ecranul pentru autentificare și alocarea sesiunii temporare.</p>
         <button class="touch-prompt-btn" type="button">
-          <span>Atingeți pentru a începe</span>
-          <span>→</span>
+          <span>Inițiere sesiune client</span>
+          <span>[ ENTER ]</span>
         </button>
       </div>
     </div>
@@ -43,8 +53,9 @@
     <div id="screen-login" class="screen">
       <div class="kiosk-card">
         <div class="kiosk-header">
-          <h2>Autentificare Client Kiosk</h2>
-          <p>Introduceți codul PIN din 4 cifre folosind tastatura tactilă de mai jos</p>
+          <span class="section-tag">[ AUTENTIFICARE SECURE PIN ]</span>
+          <h2>Acces Terminal Client</h2>
+          <p>Introduceți codul PIN din 4 cifre pe tastatura numerică protejată</p>
         </div>
 
         <div class="pin-display-group">
@@ -57,7 +68,7 @@
           </div>
         </div>
 
-        <!-- Tastatură Numerică Tactică (ATM Style) -->
+        <!-- Tastatură Numerică Tactilă (ATM Style) -->
         <div class="numpad-grid">
           <button class="num-btn" onclick="handleNumClick('1')">1</button>
           <button class="num-btn" onclick="handleNumClick('2')">2</button>
@@ -79,7 +90,7 @@
             <span>Test Client: <code>K-1002</code> | PIN: <code>8421</code></span>
           </div>
           <button class="btn-brute-sim" onclick="simulateBruteForceAttack()" title="Trimite 5 cereri consecutive greșite pentru a genera alerte Wazuh">
-            ⚡ Test Brute-Force
+            [SIMULARE BRUTE-FORCE]
           </button>
         </div>
       </div>
@@ -91,7 +102,7 @@
         
         <!-- Timer Banner 45s de inactivitate -->
         <div id="timer-banner" class="timer-banner">
-          <span>⏱️ Sesiune Kiosk Activă (Auto-Wipe la inactivitate)</span>
+          <span>SESIUNE ACTIVĂ · AUTO-WIPE LA INACTIVITATE</span>
           <span id="timer-display" class="timer-countdown">45s</span>
         </div>
 
@@ -104,44 +115,55 @@
         <!-- Continut Tab 1: Kiosk Rapid -->
         <div id="view-kiosk-content">
           <div class="account-card">
-            <div class="account-label">Sold Disponibil Cont Curent</div>
-            <div class="account-balance">
-              <span id="kiosk-balance-display">1450.00</span>
+            <div class="account-card-header">
+              <span class="label">SOLD DISPONIBIL CONT CURENT</span>
+              <span class="badge-tag">ACTIVE LEDGER</span>
+            </div>
+            <div class="account-balance-wrapper">
+              <span id="kiosk-balance-display" class="account-balance">1450.00</span>
               <span class="currency">RON</span>
             </div>
-            <div id="kiosk-iban-display" class="account-iban">RO99NXCR0001842100000001</div>
-            <div style="margin-top:12px; font-size:12px; color:var(--text-muted);">
-              Cont Economii: <span id="kiosk-savings-balance" style="color:var(--accent-teal);font-weight:600;">3200.00</span> RON 
-              (<span id="kiosk-savings-iban" style="font-family:var(--font-mono);font-size:11px;">RO99NXCR0002842100000002</span>)
+            <div class="account-meta-grid">
+              <div class="meta-box">
+                <div class="meta-title">IBAN Cont Curent</div>
+                <div id="kiosk-iban-display" class="meta-val">RO99NXCR0001842100000001</div>
+              </div>
+              <div class="meta-box">
+                <div class="meta-title">Cont Economii (<span id="kiosk-savings-balance" style="color:var(--status-emerald)">3200.00</span> RON)</div>
+                <div id="kiosk-savings-iban" class="meta-val">RO99NXCR0002842100000002</div>
+              </div>
             </div>
           </div>
 
           <!-- Actiuni Rapide -->
           <div class="kiosk-actions-grid">
             <button class="quick-action-btn btn-transfer-50" onclick="handleQuickTransfer50()">
-              <span class="btn-icon">⚡</span>
-              <span class="btn-title">Transfer Rapid 50 RON</span>
-              <span class="btn-desc">Către contul tău de economii</span>
+              <span class="btn-tag">[TRANSFER RAPID]</span>
+              <span class="btn-title">50.00 RON</span>
+              <span class="btn-desc">Transfer imediat către contul de economii</span>
             </button>
             <button class="quick-action-btn" onclick="openCustomTransferModal()">
-              <span class="btn-icon">💸</span>
-              <span class="btn-title">Alt Transfer IBAN</span>
-              <span class="btn-desc">Către orice alt cont bancar</span>
+              <span class="btn-tag">[TRANSFER EXTERN]</span>
+              <span class="btn-title">Transfer IBAN Arbitrar</span>
+              <span class="btn-desc">Inițiere transfer fonduri către cont terț</span>
             </button>
           </div>
 
           <!-- Eject / Inchidere Sesiune -->
           <button class="btn-eject-session" onclick="triggerAutoWipe('USER_LOGOUT')">
-            <span>⏏️ Închide Sesiunea / Eject Card</span>
+            [ TERMINARE SESIUNE / EJECT CARD ]
           </button>
         </div>
 
         <!-- Continut Tab 2: Portal Istoric Tranzactii -->
         <div id="view-portal-content" style="display:none;">
-          <h3 style="font-size:16px; margin-bottom:12px; color:var(--text-main);">Ultimele 5 Tranzacții Înregistrate</h3>
+          <div class="kiosk-header" style="text-align:left; margin-bottom:12px;">
+            <span class="section-tag">[ AUDIT TRANZACȚIONAL ]</span>
+            <h3 style="font-size:15px; font-weight:600; color:var(--text-primary);">Ultimele 5 Tranzacții Înregistrate</h3>
+          </div>
           <div id="portal-tx-list" class="portal-transactions-list"></div>
           <button class="btn-eject-session" style="margin-top:20px;" onclick="triggerAutoWipe('USER_LOGOUT')">
-            <span>⏏️ Închide Sesiunea</span>
+            [ TERMINARE SESIUNE ]
           </button>
         </div>
 
@@ -154,18 +176,18 @@
   <section class="telemetry-drawer">
     <div class="telemetry-header">
       <div class="telemetry-title">
-        <span>🛡️ WAZUH SOC TELEMETRY CONSOLE</span>
-        <span style="font-size:11px;color:var(--text-muted);font-weight:normal;">Target: <code>/var/log/bank-app/security.log</code></span>
+        <span>WAZUH SIEM TELEMETRY CONSOLE</span>
+        <span class="target-pill">/var/log/bank-app/security.log</span>
       </div>
       <div class="telemetry-actions">
-        <button class="btn-telemetry-action btn-anomaly-trigger" onclick="triggerSimulatedAnomaly()" title="Simulează o discrepanță în baza de date pentru regula Wazuh 100109">
-          ⚠️ Simulează Alterare Sold (Rule 100109)
+        <button class="btn-telemetry-action btn-rule-anomaly" onclick="triggerSimulatedAnomaly()" title="Simulează o discrepanță în ledger pentru regula Wazuh 100109">
+          [SIMULEAZĂ DISCREPANȚĂ (RULE 100109)]
         </button>
-        <button class="btn-telemetry-action btn-anomaly-trigger" onclick="triggerSimulated500Error()" title="Simulează o eroare 500 pentru monitorizare FIM">
-          💥 Simulează Eroare 500
+        <button class="btn-telemetry-action btn-rule-500" onclick="triggerSimulated500Error()" title="Simulează o eroare 500 pentru FIM și monitorizare aplicație">
+          [SIMULEAZĂ EROARE 500]
         </button>
-        <button class="btn-telemetry-action" onclick="copyTelemetryLog()">📋 Copiază Loguri</button>
-        <button class="btn-telemetry-action" onclick="refreshTelemetryConsole()">🔄 Reîmprospătează</button>
+        <button class="btn-telemetry-action" onclick="copyTelemetryLog()">[COPIAZĂ LOGURI]</button>
+        <button class="btn-telemetry-action" onclick="refreshTelemetryConsole()">[REFRESH STREAM]</button>
       </div>
     </div>
     <div id="wazuh-log-stream" class="log-stream">
