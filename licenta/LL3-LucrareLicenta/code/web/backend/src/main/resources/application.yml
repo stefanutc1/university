@@ -1,0 +1,26 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  application:
+    name: bank-kiosk-backend
+  main:
+    banner-mode: console
+
+bank:
+  security:
+    jwt:
+      secret: "BankingSecretKeyForJwtSigningInFEAALicentaProjectMustBeAtLeast256BitsLong2026!"
+      expiration-seconds: 45
+    log-file-path: "/var/log/bank-app/security.log"
+    fallback-log-file-path: "./logs/security.log"
+  accounts:
+    default-client: "K-1002"
+    default-pin: "8421"
+    default-name: "Popescu Ion"
+    default-iban: "RO99NXCR0001842100000001"
+    savings-iban: "RO99NXCR0002842100000002"
+    initial-balance: 1450.00

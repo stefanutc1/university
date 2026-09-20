@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Nexus Core-Banking | Kiosk Simulator & Wazuh SIEM Telemetry</title>
+  <link rel="stylesheet" href="css/kiosk.css">
+</head>
+<body>
+
+  <!-- Zero Navigation Chrome: Bara de stare Kiosk -->
+  <header class="kiosk-status-bar">
+    <div class="bank-logo">
+      <span>🏛️ NEXUS BANK</span>
+      <span class="badge">KIOSK VM-205</span>
+    </div>
+    <div class="status-right">
+      <div id="backend-status-badge" class="backend-indicator">
+        <span class="dot"></span>
+        <span id="backend-mode-label">Se detectează mediul...</span>
+      </div>
+      <span style="font-family:var(--font-mono);font-size:11px;">VLAN 20 • SECURE</span>
+    </div>
+  </header>
+
+  <!-- Viewport Principal -->
+  <main class="app-viewport">
+
+    <!-- ECRAN 1: WELCOME / TOUCH TO START -->
+    <div id="screen-welcome" class="screen active">
+      <div class="welcome-box" onclick="startKioskFlow()">
+        <div class="atm-slot-icon">💳</div>
+        <h1>Terminal Bancar Kiosk</h1>
+        <p>Atingeți ecranul sau introduceți cardul virtual pentru a iniția o sesiune securizată de operațiuni bancare.</p>
+        <button class="touch-prompt-btn" type="button">
+          <span>Atingeți pentru a începe</span>
+          <span>→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ECRAN 2: LOGIN PIN & ON-SCREEN NUMERIC PAD -->
+    <div id="screen-login" class="screen">
+      <div class="kiosk-card">
+        <div class="kiosk-header">
+          <h2>Autentificare Client Kiosk</h2>
+          <p>Introduceți codul PIN din 4 cifre folosind tastatura tactilă de mai jos</p>
+        </div>
+
+        <div class="pin-display-group">
+          <input type="hidden" id="client-id-input" value="K-1002">
+          <div class="pin-inputs">
+            <div id="pin-dot-1" class="pin-dot"></div>
+            <div id="pin-dot-2" class="pin-dot"></div>
+            <div id="pin-dot-3" class="pin-dot"></div>
+            <div id="pin-dot-4" class="pin-dot"></div>
+          </div>
+        </div>
+
+        <!-- Tastatură Numerică Tactică (ATM Style) -->
+        <div class="numpad-grid">
+          <button class="num-btn" onclick="handleNumClick('1')">1</button>
+          <button class="num-btn" onclick="handleNumClick('2')">2</button>
+          <button class="num-btn" onclick="handleNumClick('3')">3</button>
+          <button class="num-btn" onclick="handleNumClick('4')">4</button>
+          <button class="num-btn" onclick="handleNumClick('5')">5</button>
+          <button class="num-btn" onclick="handleNumClick('6')">6</button>
+          <button class="num-btn" onclick="handleNumClick('7')">7</button>
+          <button class="num-btn" onclick="handleNumClick('8')">8</button>
+          <button class="num-btn" onclick="handleNumClick('9')">9</button>
+          <button class="num-btn action-btn btn-clear" onclick="handleClearPin()">Șterge</button>
+          <button class="num-btn" onclick="handleNumClick('0')">0</button>
+          <button class="num-btn action-btn btn-enter" onclick="submitLogin()">OK</button>
+        </div>
+
+        <!-- Credentiale Demo & Test Red Team -->
+        <div class="demo-hint-box">
+          <div>
+            <span>Test Client: <code>K-1002</code> | PIN: <code>8421</code></span>
+          </div>
+          <button class="btn-brute-sim" onclick="simulateBruteForceAttack()" title="Trimite 5 cereri consecutive greșite pentru a genera alerte Wazuh">
+            ⚡ Test Brute-Force
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ECRAN 3: KIOSK DASHBOARD -->
+    <div id="screen-kiosk" class="screen">
+      <div class="kiosk-card">
+        
+        <!-- Timer Banner 45s de inactivitate -->
+        <div id="timer-banner" class="timer-banner">
+          <span>⏱️ Sesiune Kiosk Activă (Auto-Wipe la inactivitate)</span>
+          <span id="timer-display" class="timer-countdown">45s</span>
+        </div>
+
+        <!-- Selector Vizualizare: Kiosk vs Portal -->
+        <div class="view-mode-tabs">
+          <button id="tab-kiosk" class="tab-btn active" onclick="switchViewMode('kiosk')">Terminal Kiosk</button>
+          <button id="tab-portal" class="tab-btn" onclick="switchViewMode('portal')">Portal Tranzacții</button>
+        </div>
+
+        <!-- Continut Tab 1: Kiosk Rapid -->
+        <div id="view-kiosk-content">
+          <div class="account-card">
+            <div class="account-label">Sold Disponibil Cont Curent</div>
+            <div class="account-balance">
+              <span id="kiosk-balance-display">1450.00</span>
+              <span class="currency">RON</span>
+            </div>
+            <div id="kiosk-iban-display" class="account-iban">RO99NXCR0001842100000001</div>
+            <div style="margin-top:12px; font-size:12px; color:var(--text-muted);">
+              Cont Economii: <span id="kiosk-savings-balance" style="color:var(--accent-teal);font-weight:600;">3200.00</span> RON 
+              (<span id="kiosk-savings-iban" style="font-family:var(--font-mono);font-size:11px;">RO99NXCR0002842100000002</span>)
+            </div>
+          </div>
+
+          <!-- Actiuni Rapide -->
+          <div class="kiosk-actions-grid">
+            <button class="quick-action-btn btn-transfer-50" onclick="handleQuickTransfer50()">
+              <span class="btn-icon">⚡</span>
+              <span class="btn-title">Transfer Rapid 50 RON</span>
+              <span class="btn-desc">Către contul tău de economii</span>
+            </button>
+            <button class="quick-action-btn" onclick="openCustomTransferModal()">
+              <span class="btn-icon">💸</span>
+              <span class="btn-title">Alt Transfer IBAN</span>
+              <span class="btn-desc">Către orice alt cont bancar</span>
+            </button>
+          </div>
+
+          <!-- Eject / Inchidere Sesiune -->
+          <button class="btn-eject-session" onclick="triggerAutoWipe('USER_LOGOUT')">
+            <span>⏏️ Închide Sesiunea / Eject Card</span>
+          </button>
+        </div>
+
+        <!-- Continut Tab 2: Portal Istoric Tranzactii -->
+        <div id="view-portal-content" style="display:none;">
+          <h3 style="font-size:16px; margin-bottom:12px; color:var(--text-main);">Ultimele 5 Tranzacții Înregistrate</h3>
+          <div id="portal-tx-list" class="portal-transactions-list"></div>
+          <button class="btn-eject-session" style="margin-top:20px;" onclick="triggerAutoWipe('USER_LOGOUT')">
+            <span>⏏️ Închide Sesiunea</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Panou Telemetrie Securitate Wazuh SOC (Bottom Drawer) -->
+  <section class="telemetry-drawer">
+    <div class="telemetry-header">
+      <div class="telemetry-title">
+        <span>🛡️ WAZUH SOC TELEMETRY CONSOLE</span>
+        <span style="font-size:11px;color:var(--text-muted);font-weight:normal;">Target: <code>/var/log/bank-app/security.log</code></span>
+      </div>
+      <div class="telemetry-actions">
+        <button class="btn-telemetry-action btn-anomaly-trigger" onclick="triggerSimulatedAnomaly()" title="Simulează o discrepanță în baza de date pentru regula Wazuh 100109">
+          ⚠️ Simulează Alterare Sold (Rule 100109)
+        </button>
+        <button class="btn-telemetry-action btn-anomaly-trigger" onclick="triggerSimulated500Error()" title="Simulează o eroare 500 pentru monitorizare FIM">
+          💥 Simulează Eroare 500
+        </button>
+        <button class="btn-telemetry-action" onclick="copyTelemetryLog()">📋 Copiază Loguri</button>
+        <button class="btn-telemetry-action" onclick="refreshTelemetryConsole()">🔄 Reîmprospătează</button>
+      </div>
+    </div>
+    <div id="wazuh-log-stream" class="log-stream">
+      <div class="log-line" style="color:var(--text-muted);">Se inițializează fluxul de telemetrie de securitate...</div>
+    </div>
+  </section>
+
+  <!-- Scripturi Aplicatie -->
+  <script src="js/mock-engine.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
