@@ -1,0 +1,236 @@
+"""
+Modul pentru generarea Capitolului 1: Stadiul Cunoașterii în Securitatea Cibernetică Bancară
+Lucrare de Licență FEAA UCV - Moanță Ștefănuț-Cornel
+"""
+
+import docx
+from docx.shared import Inches, Pt, Cm, RGBColor
+from thesis_generator.styles import (
+    add_chapter_title, add_subchapter_title, add_subsub_title,
+    add_body_p, add_bullet_p, add_table_with_caption
+)
+
+
+def build_chapter1(doc):
+    add_chapter_title(doc, "CAPITOLUL 1. STADIUL CUNOAȘTERII ÎN SECURITATEA CIBERNETICĂ BANCARĂ")
+    
+    # -------------------------------------------------------------
+    # 1.1. CADRUL DE REGLEMENTARE ȘI CONFORMITATE
+    # -------------------------------------------------------------
+    add_subchapter_title(doc, "1.1. Cadrul de reglementare și conformitate în sectorul bancar european și național")
+    
+    add_body_p(doc,
+        "În sistemul economic contemporan, sectorul bancar este supus celui mai strict și complex regim de reglementare dintre toate ramurile economice. Această realitate derivă din rolul critic pe care băncile îl joacă ca intermediari financiari, administratori ai economiilor populației și garantori ai continuității mecanismelor de plăți și creditare. Într-o piață financiară unică la nivelul Uniunii Europene, riscul cibernetic a încetat să mai fie considerat o simplă problemă tehnică izolată a departamentelor de IT, fiind reîncadrat juridic și prudențial ca un risc operațional major cu potențial de contagiune sistemică."
+    )
+    
+    add_subsub_title(doc, "1.1.1. Directiva Revizuită privind Serviciile de Plată (PSD2) și Cerințele EBA RTS")
+    add_body_p(doc,
+        "Directiva (UE) 2015/2366 a Parlamentului European și a Consiliului (cunoscută sub acronimul PSD2 – Payment Services Directive 2) a reprezentat o piatră de hotar în democratizarea și digitalizarea serviciilor de plată europene. Obiectivul central al directivei a fost stimularea concurenței, susținerea inovației financiare (FinTech) și facilitarea dezvoltării conceptului de Open Banking. Prin intermediul PSD2, băncile au fost obligate legal să deschidă accesul la conturile clienților (Access to Account – XS2A) către furnizorii terți autorizați (TPP – Third Party Providers), clasificați în furnizori de servicii de inițiere a plății (PISP) și furnizori de servicii de informare cu privire la conturi (AISP), prin intermediul unor interfețe de programare a aplicațiilor (API-uri) dedicate și securizate."
+    )
+    add_body_p(doc,
+        "Pentru a contracara riscurile inerente deschiderii sistemelor financiare către terți, Autoritatea Bancară Europeană (EBA), în strânsă colaborare cu Banca Centrală Europeană (BCE), a elaborat Standardele Tehnice de Reglementare (RTS – Regulatory Technical Standards, consfințite prin Regulamentul Delegat UE 2018/389). Pilonul fundamental al acestor cerințe tehnice este reprezentat de Autentificarea Strictă a Clienților (SCA – Strong Customer Authentication). Conform Articolului 97 din PSD2, instituțiile de plată trebuie să aplice SCA ori de câte ori plătitorul accesează contul de plăți online, inițiază o operațiune de plată electronică sau efectuează orice acțiune printr-un canal la distanță care poate implica un risc de fraudă."
+    )
+    add_body_p(doc,
+        "SCA este definită ca o procedură de autentificare bazată pe utilizarea a două sau mai multe elemente clasificate în categorii independente, astfel încât compromiterea unuia să nu compromită fiabilitatea celorlalte: (1) Cunoaștere – ceva ce numai utilizatorul știe (parolă statică, cod PIN); (2) Posesie – ceva ce numai utilizatorul deține (token hardware, smartphone autorizat capabil să primească notificări push semnate criptografic); (3) Inerență – ceva ce utilizatorul este (caracteristici biometrice: amprentă digitală, recunoaștere facială, scanare de retină). În plus, pentru operațiunile de plată electronică la distanță, EBA RTS impune conceptul critic de legătură dinamică (Dynamic Linking): codul de autentificare generat trebuie să fie asociat matematic și univoc cu suma specifică a tranzacției și cu beneficiarul declarat de către plătitor. Dacă atacatorul încearcă să modifice beneficiarul sau suma în tranzit (atac de tip Man-in-the-Middle), codul de autentificare devine instantaneu nul."
+    )
+    
+    add_subsub_title(doc, "1.1.2. Regulamentul DORA (Digital Operational Resilience Act - UE 2022/2554)")
+    add_body_p(doc,
+        "Deși PSD2 a consolidat securitatea la nivelul canalului de inițiere a plăților, vulnerabilitățile la nivelul infrastructurilor de bază, dependențele critice față de furnizorii de servicii cloud și riscurile de întrerupere operațională au determinat legiuitorul european să adopte Regulamentul (UE) 2022/2554 privind reziliența operațională digitală a sectorului financiar (DORA). Aplicabil direct în toate statele membre începând cu data de 17 ianuarie 2025, DORA reprezintă o schimbare radicală de paradigmă: accentul este mutat de pe simpla conformitate pasivă (bifarea unor cerințe din liste de verificare) pe reziliența operațională activă, adică abilitatea unei entități financiare de a-și consolida, asigura și menține integritatea și continuitatea operațională în cazul unor întreruperi severe ale tehnologiilor informației și comunicațiilor (TIC)."
+    )
+    add_body_p(doc,
+        "Regulamentul DORA este structurat în jurul a cinci piloni operaționali obligatorii: (1) Cadrul de management al riscurilor TIC – consiliul de administrație al băncii poartă responsabilitatea directă pentru definirea politicilor de securitate, protecția activelor informatice, segmentarea rețelelor și implementarea de mecanisme automate de prevenire și detecție; (2) Clasificarea și raportarea incidentelor majore legate de TIC – băncile au obligația de a clasifica incidentele pe baza unor criterii cantitative și calitative stricte (clienți afectați, tranzacții blocate, impact geografic, exfiltrare de date) și de a transmite notificări inițiale către autoritățile naționale competente (pentru România, BNR și ASF) în termen de maximum 4 ore de la clasificare și nu mai târziu de 24 de ore de la detecția incidentului major; (3) Testarea periodică a rezilienței operaționale digitale – efectuarea anuală a unor teste riguroase de securitate și vulnerabilitate, iar pentru băncile de importanță sistemică, desfășurarea cel puțin o dată la trei ani a unor teste avansate de penetrare ghidate de amenințări reale (TLPT – Threat-Led Penetration Testing), bazate pe metodologia TIBER-EU; (4) Managementul riscurilor asociate furnizorilor terți de servicii TIC – stabilirea unui registru al tuturor acordurilor contractuale și supravegherea directă la nivel european a furnizorilor critici de servicii (furnizori de hyperscaler cloud, noduri SWIFT); (5) Acorduri de partajare a informațiilor – facilitarea schimbului legal de indicatori tehnici de compromitere (IoC – Indicators of Compromise) între instituțiile financiare pentru consolidarea apărării colective."
+    )
+    
+    add_subsub_title(doc, "1.1.3. Standardul de Securitate a Datelor din Industria Cardurilor (PCI-DSS v4.0)")
+    add_body_p(doc,
+        "În domeniul plăților electronice cu carduri bancare (de debit sau de credit), standardul internațional de referință este Payment Card Industry Data Security Standard (PCI-DSS), administrat de către Consiliul pentru Standarde de Securitate PCI (constituit de American Express, Discover, JCB, MasterCard și Visa). Lansată în versiunea 4.0 (cu aplicabilitate obligatorie deplină din martie 2025), noua specificație aduce modificări majore axate pe flexibilitatea controalelor de securitate, combaterea fraudelor de tip e-skimming și cerințe sporite de autentificare și criptografie."
+    )
+    add_body_p(doc,
+        "Obiectivul fundamental al PCI-DSS este protecția Mediului de Date al Titularului de Card (CDE – Cardholder Data Environment), definit ca aria din rețeaua băncii care stochează, procesează sau transmite date despre carduri (Numărul Primar de Cont – PAN, Numele Titularului, Data Expirării) sau Date Sensibile de Autentificare (SAD – codul CVV2/CVC2, datele complete de pe banda magnetică, codurile PIN). Un principiu cheie al PCI-DSS este reducerea ariei de aplicare a auditului (Scope Reduction): o bancă sau o poartă de plăți trebuie să izoleze strict CDE prin micro-segmentare de rețea, firewall-uri și criptografie avansată. De asemenea, standardul interzice cu desăvârșire stocarea codului CVV după finalizarea autorizării și obligă la mascarea numărului de card în toate ecranele de afișare și jurnalele de sistem, permițând vizualizarea doar a primelor șase cifre (care identifică emitentul – BIN) și a ultimelor patru cifre."
+    )
+    
+    add_subsub_title(doc, "1.1.4. Standardul ISO 20022 și Reglementările Băncii Naționale a României (BNR)")
+    add_body_p(doc,
+        "Pe planul comunicațiilor interbancare și al decontărilor de mare valoare, asistăm la o revoluție tehnologică marcată de migrarea globală către standardul internațional ISO 20022. Timp de decenii, societatea interbancară SWIFT (Society for Worldwide Interbank Financial Telecommunication) a utilizat formate de mesagerie telegrafică nestructurată de tip MT (cum ar fi MT103 pentru transferuri de credit simple sau MT940 pentru extrase de cont). Aceste mesaje aveau limite severe de spațiu, caractere nestructurate și generau o rată ridicată de alerte false în sistemele de filtrare a sancțiunilor internaționale și de combatere a spălării banilor (AML)."
+    )
+    add_body_p(doc,
+        "Standardul ISO 20022 introduce o sintaxă structurată bazată pe scheme XML (eXtensible Markup Language) și codificări unificate de tip MX (de exemplu, pacs.008 pentru plăți de credit interbancare, pacs.002 pentru rapoarte de stare a plăților și camt.053 pentru extrase bancare). Fiecare tranzacție financiară este obligată să conțină un identificator unic universal de la un capăt la altul (UETR – Unique End-to-end Transaction Reference), generat ca un șir de caractere conform formatului RFC 4122 UUID Versiunea 4. Acest identificator permite urmărirea în timp real a fondurilor pe tot parcursul lanțului de corespondenți bancari prin serviciul SWIFT gpi (Global Payments Innovation)."
+    )
+    add_body_p(doc,
+        "La nivel național, Banca Națională a României (BNR) exercită atribuțiile de supraveghere prudențială și monitorizare a infrastructurilor pieței financiare. Prin Regulamentul BNR nr. 4/2021 și normele conexe, banca centrală impune instituțiilor de credit autohtone cerințe riguroase de auditare periodică a securității sistemelor informatice, mecanisme obligatorii de redundanță pentru procesarea plăților prin sistemele ReGIS (decontare brută în timp real) și SENT (casa de compensare automată), precum și monitorizarea permanentă a conformității cu standardele europene."
+    )
+    
+    # TABELUL 1.1
+    headers_1_1 = ["Cadru / Directivă", "Emitent / Autoritate", "Obiectiv Principal de Securitate", "Sancțiuni Financiare / Impact"]
+    rows_1_1 = [
+        ["PSD2 (Directiva UE 2015/2366)", "Parlamentul European / EBA", "SCA obligatoriu, Open Banking prin API, Legătură dinamică sumă/beneficiar", "Până la 5% din cifra de afaceri anuală sau retragerea autorizației de plată"],
+        ["DORA (Regulament UE 2022/2554)", "Uniunea Europeană (direct aplicabil)", "Reziliență operațională TIC, raportare incidente majore (<4h), teste TLPT/TIBER", "Amenzi de până la 10 milioane EUR sau 5% din cifra de afaceri mondială totală"],
+        ["PCI-DSS v4.0", "PCI Security Standards Council", "Izolarea CDE, interzicerea stocării CVV, mascarea PAN, criptarea tranzacțiilor", "Amenzi de la 5.000 la 100.000 USD/lună din partea rețelelor Visa/Mastercard și revocare"],
+        ["ISO 20022 / BNR Reg. 4/2021", "ISO / Banca Națională a României", "Mesagerie financiară XML structurată, trasabilitate UETR, audit infrastructuri", "Sancțiuni administrative, suspendarea participării la sistemul de decontare ReGIS/SENT"]
+    ]
+    add_table_with_caption(doc, "1.1", "Sinteza cerințelor de conformitate și a sancțiunilor în sectorul financiar-bancar european", headers_1_1, rows_1_1, "Sinteză a autorului pe baza directivelor UE și a standardelor internaționale")
+    
+    # -------------------------------------------------------------
+    # 1.2. ARHITECTURA SISTEMELOR INFORMATICE FINANCIAR-BANCARE
+    # -------------------------------------------------------------
+    add_subchapter_title(doc, "1.2. Arhitectura sistemelor informatice financiar-bancare")
+    
+    add_body_p(doc,
+        "Arhitectura software și hardware a unei bănci moderne este una dintre cele mai complexe structuri inginerești din lumea digitală. Spre deosebire de aplicațiile web comerciale generale, unde o eventuală eroare de sincronizare a datelor poate fi remediată printr-o reîncărcare de pagină, în sistemele bancare fiecare octet reprezintă active financiare reale. O singură tranzacție coruptă sau o neconcordanță între soldurile conturilor poate produce prejudicii ireparabile și poate atrage investigații prudențiale severe."
+    )
+    
+    add_subsub_title(doc, "1.2.1. Sistemele de Core-Banking și Registrul General în Partidă Dublă")
+    add_body_p(doc,
+        "În centrul oricărei bănci se află sistemul de Core-Banking (Sistemul Central Bancar), reprezentat de platforme specializate precum Temenos Transact, SAP for Banking, Finacle, sau inițiative open-source de anvergură globală precum Apache Fineract și Mifos X (utilizate masiv în instituții financiare și organizații de micro-finanțare din întreaga lume). Misiunea fundamentală a motorului de Core-Banking este gestiunea stării conturilor, a clienților și, cel mai important, a Registrului General Contabil (General Ledger – GL)."
+    )
+    add_body_p(doc,
+        "Principiul imuabil care guvernează funcționarea registrului contabil încă din secolul al XV-lea (formalizat de Luca Pacioli) este contabilitatea în partidă dublă (Double-Entry Bookkeeping). Conform acestui model matematic, nicio sumă de bani nu poate apărea sau dispărea în mod spontan din sistem. Fiecare tranzacție financiară este compusă din cel puțin două înregistrări contabile contrare și perfect egale valoric: un debit și un credit. Relația de echilibru fundamental este exprimată prin ecuația matematică:"
+    )
+    add_body_p(doc,
+        "$$\\sum_{i=1}^{n} \\text{Debite}_i = \\sum_{j=1}^{m} \\text{Credite}_j$$"
+    )
+    add_body_p(doc,
+        "Din punct de vedere al bazei de date, sistemul de Core-Banking trebuie să garanteze proprietățile ACID (Atomicitate, Consistență, Izolare, Durabilitate). Atomicitatea garantează că transferul de fonduri de la contul A la contul B reprezintă o unitate indivizibilă: fie ambele conturi sunt actualizate și ambele linii din registru sunt inserate, fie nicio modificare nu persistă în baza de date în cazul unei erori la nivel de nod. Consistența garantează că sistemul trece doar dintr-o stare validă în altă stare validă, respectând toate constrângerile de integritate (de exemplu, interzicerea soldurilor negative dacă nu există o facilitate expresă de descoperit de cont – overdraft). Izolarea împiedică apariția fenomenelor de tip „dirty read” sau „race condition” la tranzacționări paralele concurente, iar Durabilitatea garantează persistența tranzacției pe suport nevolatil chiar și în caz de cădere totală de tensiune a serverului."
+    )
+    
+    # TABELUL 1.2
+    headers_1_2 = ["Tip Cont", "Clasă Contabilă", "Comportament la Debit", "Comportament la Credit", "Exemplu în Arhitectura Bancară"]
+    rows_1_2 = [
+        ["Activ (Assets)", "Clasa 1/2", "Crește soldul (+)", "Scade soldul (-)", "Rezervele băncii la banca centrală, Credite acordate"],
+        ["Pasiv (Liabilities)", "Clasa 3/5", "Scade soldul (-)", "Crește soldul (+)", "Depozitele clienților, Conturile curente ale populației"],
+        ["Cheltuieli (Expenses)", "Clasa 6", "Crește soldul (+)", "Scade soldul (-)", "Dobânzi plătite deponenților, Comisioane interbancare"],
+        ["Venituri (Revenues)", "Clasa 7", "Scade soldul (-)", "Crește soldul (+)", "Comisioane de procesare încasate, Dobânzi din credite"]
+    ]
+    add_table_with_caption(doc, "1.2", "Structura conturilor și corespondența partidei duble în sistemele Core-Banking", headers_1_2, rows_1_2, "Sinteza autorului pe baza normelor de contabilitate bancară IFRS și standardelor Core-Banking")
+    
+    add_subsub_title(doc, "1.2.2. Porțile de Plată Electronice (Payment Gateways) și Procesarea Tranzacțiilor")
+    add_body_p(doc,
+        "Dacă sistemul de Core-Banking reprezintă registrul intern de încredere, Poarta de Plăți (Payment Gateway) reprezintă interfața externă de acceptare a tranzacțiilor prin carduri bancare. Arhitectura tipică a procesării cardurilor implică cinci entități distincte: Titularul cardului (Cardholder), Comerciantul (Merchant), Banca Acceptatoare (Acquirer – banca la care comerciantul are contul deschis), Rețeaua de Carduri (Card Scheme / Card Brand – Visa sau Mastercard) și Banca Emitentă (Issuer – banca la care deținătorul cardului are contul și care a emis instrumentul de plată)."
+    )
+    add_body_p(doc,
+        "Ciclul de viață al unei tranzacții parcurge două faze distincte: (1) Autorizarea – verificarea în timp real a disponibilității fondurilor, a stării cardului și a absenței indicatorilor de fraudă; (2) Compensarea și Decontarea (Clearing & Settlement) – faza asincronă, derulată de obicei la sfârșitul zilei bancare (End-of-Day Batch), prin care fondurile sunt transferate efectiv între banca emitentă și cea acceptatoare prin conturile de decontare ale băncii centrale."
+    )
+    add_body_p(doc,
+        "La nivel de validare matematică inițială pe poarta de plăți, orice număr primar de cont (PAN) trebuie să respecte algoritmul Luhn (cunoscut și sub denumirea de algoritmul Modulus 10), patentat de cercetătorul Hans Peter Luhn de la IBM în anul 1954. Acest algoritm calculează o cifră de control pentru a detecta erorile de tastare sau numerele de card sintetice generate aleatoriu. Formula matematică verifică dacă:"
+    )
+    add_body_p(doc,
+        "$$\\left( \\sum_{i=1}^{n} f(c_i) \\right) \\pmod{10} = 0$$"
+    )
+    add_body_p(doc,
+        "unde cifra de pe pozițiile pare numărate de la dreapta la stânga este dublată (dacă rezultatul depășește 9, se scade 9), iar cifrele de pe pozițiile impare se adună direct. Validarea algoritmului Luhn este primul filtru defensiv implementat în poarta de plată înainte de transmiterea oricărei cereri către procesatorul de carduri."
+    )
+    
+    add_subsub_title(doc, "1.2.3. Comunicațiile Interbancare și Rețeaua SWIFT")
+    add_body_p(doc,
+        "Pentru transferurile transfrontaliere și transferurile de mare valoare dintre instituții de credit diferite, canalul standardizat de comunicație este rețeaua SWIFT. Infrastructura SWIFT operează ca un serviciu de mesagerie extrem de securizat, utilizând o rețea privată de date bazată pe protocoale criptografice dedicate (SWIFT Secure IP Network – SIPN). Fiecare instituție financiară conectată deține un Cod de Identificare a Afacerii (BIC – Business Identifier Code, conform ISO 9362), cunoscut public sub denumirea de cod SWIFT."
+    )
+    add_body_p(doc,
+        "O componentă critică de securitate în cadrul nodului de conectare la rețeaua SWIFT (SWIFT Alliance Access sau Alliance Gateway) este asigurarea non-repudierii și a integrității mesajului prin intermediul infrastructurii cu chei publice (PKI). Fiecare mesaj financiar (fie el MT103 clasic sau pacs.008 XML) este semnat digital la nivelul modulului hardware de securitate (HSM – Hardware Security Module). În noul standard ISO 20022, mesajul este încapsulat într-un antet de aplicație (Business Application Header – BAH / `head.001`), care conține semnătura digitală a expeditorului și identificatorul unic universal de tranzacție UETR, împiedicând orice încercare de interceptare sau manipulare a fondurilor în tranzit."
+    )
+    
+    # -------------------------------------------------------------
+    # 1.3. VECTORI DE ATAC CONTEMPORANI
+    # -------------------------------------------------------------
+    add_subchapter_title(doc, "1.3. Vectori de atac contemporani și analiza amenințărilor în sectorul bancar")
+    
+    add_body_p(doc,
+        "Raportul ENISA Threat Landscape for the Financial Sector arată că industria bancară este ținta predilectă a celor mai sofisticați atacatori cibernetici din lume. În timp ce atacatorii oportuniști caută să obțină câștiguri rapide prin scheme de inginerie socială direcționate împotriva clienților (phishing, smishing), grupările de criminalitate organizată de elită (cum ar fi Carbanak/FIN7, Lazarus Group, Evil Corp sau Silence) vizează direct infrastructura internă a instituțiilor financiare, urmărind manipularea registrelor, compromiterea fluxurilor de plăți sau paralizarea activității prin atacuri de tip ransomware."
+    )
+    
+    add_subsub_title(doc, "1.3.1. Manipularea Bazelor de Date și Atacurile de tip SQL Injection")
+    add_body_p(doc,
+        "Baza de date este cel mai valoros activ informațional al unei bănci. Unul dintre cele mai devastatoare scenarii de atac constă în exploatarea unei vulnerabilități de tip SQL Injection (SQLi) la nivelul unei aplicații conexe (cum ar fi un portal de servicii clienți, o interfață de casierie sau un terminal de tip Kiosk neizolat corespunzător). Prin injectarea unor caractere de control și a unor instrucțiuni SQL malițioase (de exemplu, `' OR '1'='1` sau `UNION SELECT`), atacatorul poate eluda logica de autentificare a aplicației."
+    )
+    add_body_p(doc,
+        "În mod și mai grav, dacă aplicația comunică cu baza de date utilizând un utilizator cu privilegii excesive (încălcând principiul privilegiului minim), atacatorul poate rula instrucțiuni de modificare a datelor (`UPDATE accounts SET balance = balance + 1000000.00 WHERE account_id = '...'`). Acest tip de fraudă, cunoscut sub denumirea de Balance Tampering (Manipularea Soldului), este deosebit de periculos deoarece generează monedă scripturală fictivă direct în baza de date fără a exista un flux corespondent de intrare de capital. Dacă sistemul nu deține un mecanism autonom de audit care să compare soldurile sintetice cu istoricul tranzacțiilor din ledger, atacatorul poate retrage fondurile create fraudulos prin rețeaua de bancomate sau prin transferuri internaționale înainte ca frauda să fie descoperită la reconcilierea contabilă de sfârșit de lună."
+    )
+    
+    add_subsub_title(doc, "1.3.2. Fraudele Tranzacționale: Card Stuffing, Velocity Floods și Credential Stuffing")
+    add_body_p(doc,
+        "Porțile de plată electronice sunt permanent asaltate de rețele de calculatoare compromise (botnet-uri) care derulează atacuri automatizate de tip Card Stuffing (numit și Card Testing). În acest scenariu, atacatorii obțin baze de date ilicite din piețele underground (Darknet) conținând mii de numere de card parțial compromise (adesea fără CVV sau fără data de expirare validă). Utilizând boți paraleli de mare viteză, atacatorii transmit sute de cereri de plată de valoare minimă (de exemplu, 1 RON sau 0.50 EUR) către o poartă de plăți pentru a ghici combinația validă de CVV și dată de expirare prin forță brută."
+    )
+    add_body_p(doc,
+        "Pe lângă riscul de compromitere a cardurilor legitime, astfel de atacuri de viteză (Velocity Floods) pot conduce la degradarea severă a performanței porții de plăți (Denial of Service), pot atrage amenzi usturătoare din partea schemelor de carduri Visa/Mastercard pentru rate anormale de autorizări eșuate și pot epuiza resursele hardware ale bazei de date financiare."
+    )
+    
+    add_subsub_title(doc, "1.3.3. Mișcarea Laterală, Compromiterea Nodurilor Administrative și Infostealers")
+    add_body_p(doc,
+        "Atacurile cibernetice moderne împotriva băncilor rareori reușesc să penetreze direct nucleul de Core-Banking dintr-o singură etapă. Modelul tipic de atac (descris în matricea MITRE ATT&CK) debutează cu compromiterea unei stații de lucru obișnuite a unui angajat din rețeaua de birou (Office Network), fie printr-un email de tip spear-phishing cu atașament malițios, fie prin infectarea cu un troian de tip Infostealer (cum ar fi RedLine, Lumma Stealer sau Vidar)."
+    )
+    add_body_p(doc,
+        "Infostealer-ul exfiltrează din browser-ul angajatului cookie-urile de sesiune, parolele salvate și fișierele cu chei private SSH. Odată obținut un cap de pod în rețea (Initial Access), atacatorul inițiază etapa de Mișcare Laterală (Lateral Movement). Dacă rețeaua băncii este plană sau insuficient segmentată, atacatorul va scana segmentele interne căutând protocoale de administrare la distanță (SSH, RDP, WinRM) pentru a sări de pe stația de lucru compromisă pe serverele de producție. Din acest motiv, lipsa unui punct unic, strict controlat și întărit de tranzit administrativ (Bastion Host / Jump-Box) reprezintă una dintre cele mai grave erori de arhitectură de securitate."
+    )
+    
+    add_subsub_title(doc, "1.3.4. Alterarea Mesageriei Financiare și Campaniile Ransomware cu Dublă Extorcare")
+    add_body_p(doc,
+        "Un alt vector avansat de atac îl constituie manipularea software-ului de middleware responsabil de procesarea fișierelor de tranzacții interbancare. Cel mai elocvent exemplu istoric îl reprezintă jaful cibernetic de 81 de milioane de dolari comis împotriva Băncii Centrale din Bangladesh în anul 2016 de către gruparea Lazarus. Atacatorii au pătruns în rețeaua internă, au instalat malware pe serverul de conectare SWIFT Alliance Access și au modificat dinamic fișierele de confirmare a plăților transmise către imprimantele de audit, mascând transferurile frauduloase către bănci din Filipine."
+    )
+    add_body_p(doc,
+        "În paralel, amenințarea atacurilor de tip Ransomware a evoluat către modelul de Dublă și Triplă Extorcare (Double/Triple Extortion). Grupările de criminalitate cibernetică nu se limitează doar la criptarea bazelor de date financiare pentru a paraliza activitatea băncii, ci extrag în prealabil volume masive de date cu caracter personal ale clienților și detalii despre tranzacții, amenințând cu publicarea acestora pe site-uri de tip „name-and-shame” dacă nu este plătită o răscumpărare în criptomonede, expunând banca la amenzi colosale pe linia GDPR și DORA."
+    )
+    
+    # TABELUL 1.3
+    headers_1_3 = ["Vector de Atac", "Tehnică MITRE ATT&CK", "Mecanism de Exploatare", "Impact Potențial Asupra Băncii"]
+    rows_1_3 = [
+        ["SQL Injection (SQLi)", "T1190 (Exploit Public-Facing App)", "Injectare comenzi SQL în câmpuri nefiltrate pentru bypass auth", "Exfiltrare date clienți, escaladare de privilegii administrative"],
+        ["Balance Tampering", "T1565.001 (Stored Data Manipulation)", "UPDATE direct al tabelei accounts fără înregistrare în ledger", "Generare de monedă scripturală fictivă, dezechilibru contabil major"],
+        ["Card Stuffing / Testing", "T1110.001 (Password/Data Guessing)", "Rafale automatizate de autorizări card cu CVV/dată aleatorii", "Compromiterea cardurilor clienților, amenzi Visa/Mastercard, DoS"],
+        ["Mișcare Laterală", "T1021.004 (Remote Services: SSH/RDP)", "Scanare rețea internă și conectare cu credențiale furate", "Compromiterea zonei de producție Core-Banking din segmentul Office"],
+        ["SWIFT Heist / Corupere", "T1565.002 (Transmitted Data Manipulation)", "Falsificarea fișierelor de tranzacții MT103/pacs.008 și UETR", "Deturnare de fonduri internaționale de mare valoare, daune reputaționale"]
+    ]
+    add_table_with_caption(doc, "1.3", "Taxonomia principalilor vectori de atac bancari și impactul operațional asociat", headers_1_3, rows_1_3, "Sinteză a autorului pe baza cadrului MITRE ATT&CK for Financial Services")
+    
+    # -------------------------------------------------------------
+    # 1.4. PRINCIPII ȘI MECANISME DE SECURITATE DEFENSIVĂ
+    # -------------------------------------------------------------
+    add_subchapter_title(doc, "1.4. Principii și mecanisme de securitate defensivă bancară")
+    
+    add_body_p(doc,
+        "În fața amenințărilor asimetrice descrise anterior, instituțiile de credit trebuie să abandoneze definitiv vechea paradigmă defensivă a „castelului cu șanț de apă” (perimetru exterior puternic și încredere totală în interior) și să adopte o abordare integrată de Apărare în Adâncime (Defense-in-Depth) guvernată de arhitectura Zero Trust."
+    )
+    
+    add_subsub_title(doc, "1.4.1. Paradigma Zero Trust (ZTA) și Principiul Privilegiului Minim (PoLP)")
+    add_body_p(doc,
+        "Formalizată de Institutul Național de Standarde și Tehnologie din SUA prin publicația specială NIST SP 800-207, Arhitectura Zero Trust (Zero Trust Architecture – ZTA) pornește de la premisa fundamentală: „Nu avea niciodată încredere, verifică întotdeauna” (Never trust, always verify). Într-o arhitectură Zero Trust, nicio entitate – fie că este vorba despre un utilizator uman, o aplicație sau un server – nu primește încredere implicită pe baza poziției sale fizice sau a adresei IP din rețea."
+    )
+    add_body_p(doc,
+        "Principiul Privilegiului Minim (Principle of Least Privilege – PoLP) impune ca fiecare modul software și fiecare operator bancar să aibă acces exclusiv la datele și resursele strict necesare pentru îndeplinirea atribuțiilor de serviciu. În contextul bazelor de date bancare, acest lucru presupune că serverul web de Core-Banking nu trebuie să dețină drepturi de administrare de tip `superuser` sau `DROP/ALTER TABLE` asupra bazei de date relaționale, ci doar permisiuni de execuție a procedurilor stocate strict necesare."
+    )
+    
+    add_subsub_title(doc, "1.4.2. Segmentarea Rețelei, VLAN-uri și Firewalling Stateful cu Inspecție Profundă")
+    add_body_p(doc,
+        "Segmentarea de rețea constituie prima linie de apărare împotriva mișcării laterale a atacatorilor. Prin împărțirea infrastructurii fizice în Rețele Locale Virtuale distincte (VLAN-uri conforme standardului IEEE 802.1Q), traficul de rețea este complet izolat la nivelul stratului 2 OSI (Data Link Layer)."
+    )
+    add_body_p(doc,
+        "Trecerea oricărui pachet de date între două VLAN-uri se poate realiza exclusiv la nivelul stratului 3 OSI prin intermediul unui firewall stateful dedicat (cum ar fi OPNsense sau pfSense). O politică de securitate bancară robustă impune principiul Implicit Deny (Default Deny): orice trafic de rețea care nu este autorizat explicit printr-o regulă firewall prealabilă este automat blocat și jurnalizat. În plus, nodurile de procesare financiare nu trebuie niciodată expuse direct către Internet, fiind plasate în zone izolate din spatele unor zone demilitarizate (DMZ)."
+    )
+    
+    add_subsub_title(doc, "1.4.3. Monitorizarea Integrității Datelor și Sistemele HIDS/SIEM (Wazuh)")
+    add_body_p(doc,
+        "Prevenția nu este niciodată 100% eficientă; de aceea, capacitatea de detecție rapidă a anomaliilor este esențială. Sistemele de Management al Informațiilor și Evenimentelor de Securitate (SIEM – Security Information and Event Management), combinate cu Sisteme de Detecție a Intruziunilor la Nivel de Gazdă (HIDS – Host-based Intrusion Detection Systems), reprezintă „turnul de control” al securității unei bănci."
+    )
+    add_body_p(doc,
+        "Platforma deschisă Wazuh reprezintă soluția lider de piață pentru monitorizarea unificată a infrastructurilor virtualizate. Agenții Wazuh instalați pe serverele bancare analizează în timp real jurnalele de sistem (Syslog, jurnalele bazei de date PostgreSQL, jurnalele de acces Nginx/FastAPI), monitorizează integritatea fișierelor de configurare critice (File Integrity Monitoring – FIM) și execută scripturi de auditare a integrității financiare. Prin decodificatoare și reguli de corelare personalizate, sistemul SIEM poate asocia o interogare suspectă din baza de date cu o tentativă de autentificare pe SSH, declanșând alerte automate de nivel critic către echipa de Centru de Operațiuni de Securitate (SOC – Security Operations Center)."
+    )
+    
+    add_subsub_title(doc, "1.4.4. Bastioane Administrative (Jump-Box) cu Autentificare Ed25519 și MFA")
+    add_body_p(doc,
+        "Pentru a proteja nodurile productive de accesul neautorizat al administratorilor de sistem sau al inginerilor DevOps, standardele bancare impun utilizarea unui Bastion Host (cunoscut și sub denumirea de Jump-Box sau Jump-Server). Jump-Box-ul este singurul nod din rețea căruia îi este permisă inițierea de conexiuni administrative (pe portul 22 SSH) către serverele interne de Core-Banking și baze de date."
+    )
+    add_body_p(doc,
+        "Un Jump-Box conform normelor de securitate avansate elimină complet autentificarea bazată pe parole convenționale (vulnerabile la atacuri de dicționar, forță brută sau infostealers), impunând autentificarea asimetrică bazată pe criptografie pe curbe eliptice, utilizând algoritmul Ed25519 (Edwards-curve Digital Signature Algorithm). Ed25519 oferă un nivel de securitate echivalent cu RSA-3072, dar cu o lungime a cheii de doar 256 de biți, performanțe computaționale excepționale și imunitate demonstrată matematic la atacurile de tip „timing side-channel”. În completare, accesul pe Jump-Box este condiționat obligatoriu de un al doilea factor de autentificare de tip TOTP (Time-based One-Time Password, conform RFC 6238), generat pe un dispozitiv fizic independent."
+    )
+    
+    # TABELUL 1.4
+    headers_1_4 = ["Criteriu de Comparație", "Abordare Tradițională (Perimetrică)", "Abordare Zero Trust (Modernă Bancară)"]
+    rows_1_4 = [
+        ["Model de Încredere", "Încredere implicită în tot ce se află în rețeaua internă (LAN)", "Încredere zero; fiecare pachet și identitate sunt verificate continuu"],
+        ["Segmentare Rețea", "Rețea plană sau împărțită doar grosier în LAN și DMZ", "Micro-segmentare granulară prin VLAN-uri dedicate (IEEE 802.1Q)"],
+        ["Controlul Accesului", "Parole statice, drepturi largi acordate pe grupuri globale", "Autentificare MFA + chei asimetrice Ed25519, RBAC strict și PoLP"],
+        ["Inspecția Traficului", "Filtrare doar la intrarea în rețea prin firewall exterior", "Inspecție stateful inter-VLAN cu politică Default-Deny și analiză SIEM"],
+        ["Auditul Integrității", "Verificare manuală periodică a fișierelor și extraselor contabile", "Audit continuu în timp real prin agenți HIDS/SIEM (Wazuh) și hash chaining"]
+    ]
+    add_table_with_caption(doc, "1.4", "Comparație între arhitectura defensivă perimetrică tradițională și arhitectura Zero Trust", headers_1_4, rows_1_4, "Sinteză teoretică a autorului pe baza standardului NIST SP 800-207")
+    
+    doc.add_page_break()
