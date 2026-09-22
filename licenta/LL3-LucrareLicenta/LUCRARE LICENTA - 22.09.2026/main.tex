@@ -1,0 +1,55 @@
+\documentclass[12pt,a4paper,oneside]{report}
+
+\input{preamble.tex}
+\input{metadata.tex}
+
+\begin{document}
+
+% Pagina de Titlu Conform Normelor FEAA UCV
+\begin{titlepage}
+    \centering
+    {\large \textbf{\Universitate}}\\[0.2cm]
+    {\large \textbf{\Facultate}}\\[0.2cm]
+    {\small Craiova, Str. A.I. Cuza, nr. 13, tel: +40-251-411317, http://feaa.ucv.ro}\\[1.5cm]
+
+    {\large Programul de studii: \textbf{\Specializare}}\\[0.2cm]
+    {\large Forma de învățământ: Cu frecvență (IF)}\\[2.0cm]
+
+    {\LARGE \textbf{LUCRARE DE LICENȚĂ}}\\[1.0cm]
+    {\Large \textbf{\TitluLicenta}}\\[3.5cm]
+
+    \begin{minipage}{0.48\textwidth}
+        \begin{flushleft} \large
+            \textbf{Coordonator științific:}\\
+            \CoordonatorLicenta
+        \end{flushleft}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \begin{flushright} \large
+            \textbf{Absolvent:}\\
+            \AutorLicenta
+        \end{flushright}
+    \end{minipage}
+
+    \vfill
+    {\large \Oras, \Anul}
+\end{titlepage}
+
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+
+\pagenumbering{arabic}
+\include{chapters/00_introducere}
+\include{chapters/01_stadiul_cunoasterii}
+\include{chapters/02_proiectare_si_implementare}
+\include{chapters/03_concluzii}
+
+% Bibliografie academica
+\bibliographystyle{plain}
+\bibliography{bibliography/references}
+
+\include{appendices/anexe}
+
+\end{document}

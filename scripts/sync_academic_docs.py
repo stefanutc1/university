@@ -716,16 +716,18 @@ def main():
             print(f"[EROARE] Nu s-a găsit niciun fișier DOCX conform {pattern}")
             sys.exit(1)
         
+        # Procesăm fiecare versiune în folderul său dedicat
         for docx_path in docx_files:
             filename = os.path.basename(docx_path)
             base_name = os.path.splitext(filename)[0]
-            
-            # Generăm atât în licenta/LL3-LucrareLicenta/latex cât și în licenta/LL3-LucrareLicenta/LUCRARE LICENTA - DATA/
-            target_latex = os.path.join(ll3_dir, "latex")
             target_named = os.path.join(ll3_dir, base_name)
-            
-            process_docx_to_latex(docx_path, target_latex)
             process_docx_to_latex(docx_path, target_named)
+
+        # Structura principală 'latex/' reflectă lucrarea completă (cel mai mare volum de conținut)
+        primary_docx = max(docx_files, key=os.path.getsize)
+        target_latex = os.path.join(ll3_dir, "latex")
+        print(f"[PRIMARY] Actualizez 'latex/' cu versiunea completă: {os.path.basename(primary_docx)}")
+        process_docx_to_latex(primary_docx, target_latex)
 
     if args.verify:
         success = verify_academic_docs(root_dir)
