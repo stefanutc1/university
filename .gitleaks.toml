@@ -1,0 +1,19 @@
+# Gitleaks Configuration for Projects-FEAA-UCV/proiecte
+title = "Gitleaks DevSecOps Security Profile"
+
+[extend]
+# Extinde regulile implicite Gitleaks
+
+[allowlist]
+description = "Permite chei mock academice utilizate exclusiv pentru teste in memorie"
+paths = [
+  '''licenta/LL3-LucrareLicenta/code/web/backend/src/main/resources/application\.ya?ml''',
+  '''licenta/LL3-LucrareLicenta/code/web/js/mock-engine\.js''',
+  '''licenta/LL3-LucrareLicenta/code/payment_gateway_simulator\.py''',
+  '''licenta/LL3-LucrareLicenta/code/banking_attack_simulator\.py'''
+]
+regexes = [
+  '''BankingSecretKeyForJwtSigningInFEAALicentaProjectMustBeAtLeast256BitsLong2026!''',
+  '''KIOSK_DEVICE_CERT_HW_TOKEN_2026''',
+  '''4532015112835671'''
+]

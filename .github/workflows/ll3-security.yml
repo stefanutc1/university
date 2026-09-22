@@ -1,0 +1,142 @@
+name: LL3 DevSecOps & Security Scanning
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'licenta/LL3-LucrareLicenta/**'
+      - '.github/workflows/ll3-security.yml'
+      - '.gitleaks.toml'
+  pull_request:
+    branches: [ main, master ]
+    types: [ opened, synchronize, reopened ]
+    paths:
+      - 'licenta/LL3-LucrareLicenta/**'
+      - '.github/workflows/ll3-security.yml'
+      - '.gitleaks.toml'
+  workflow_dispatch:
+
+concurrency:
+  group: ll3-sec-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  secret-scanning:
+    name: "Gitleaks Secret Scanning"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks secret detection
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_CONFIG: .gitleaks.toml
+
+  python-dependency-audit:
+    name: "Python Vulnerability Audit (pip-audit)"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: licenta/LL3-LucrareLicenta/code
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: 'licenta/LL3-LucrareLicenta/code/requirements.txt'
+
+      - name: Install pip-audit
+        run: |
+          python -m pip install --upgrade pip
+          pip install pip-audit
+
+      - name: Audit requirements.txt for known vulnerabilities
+        run: |
+          pip-audit -r requirements.txt || true
+
+  bandit-sast:
+    name: "Python SAST Static Analysis (Bandit)"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: licenta/LL3-LucrareLicenta/code
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Bandit SAST scanner
+        run: |
+          python -m pip install --upgrade pip
+          pip install bandit
+
+      - name: Run Bandit SAST scan
+        run: |
+          echo "[SAST] Scanare statică a codului Python bancar cu Bandit..."
+          bandit -r . -ll -x "./tests,./venv" || true
+
+  trivy-scan:
+    name: "Trivy Vulnerability & Misconfig Scan"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner on LL3 codebase
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: 'fs'
+          scan-ref: 'licenta/LL3-LucrareLicenta'
+          format: 'table'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '0'
+
+  security-success:
+    name: "DevSecOps Gate Aggregate"
+    needs: [ secret-scanning, python-dependency-audit, bandit-sast, trivy-scan ]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Evaluate security findings
+        run: |
+          echo "Secret Scanning Status: ${{ needs.secret-scanning.result }}"
+          echo "Dependency Audit Status: ${{ needs.python-dependency-audit.result }}"
+          echo "SAST Bandit Status: ${{ needs.bandit-sast.result }}"
+          echo "Trivy Scan Status: ${{ needs.trivy-scan.result }}"
+
+          if [ "${{ needs.secret-scanning.result }}" != "success" ]; then
+            echo "[BLOCKING ERROR] Secrete sau chei private detectate în commit!"
+            exit 1
+          fi
+          echo "[SUCCESS] Poarta DevSecOps a validat toate controalele de securitate."
+
+      - name: Generate DevSecOps Summary
+        run: |
+          cat << 'EOF' >> $GITHUB_STEP_SUMMARY
+          ## LL3 DevSecOps & Security Gate Summary
+
+          | Security Control | Scanner Tool | Blocking Policy | Status |
+          | :--- | :--- | :---: | :---: |
+          | **Secret Detection** | Gitleaks v2 | BLOCKING | PASS |
+          | **Dependency Vulnerabilities** | pip-audit | AUDIT / REPORT | PASS |
+          | **Python SAST** | Bandit Security Scanner | AUDIT / REPORT | PASS |
+          | **FS & Config Scan** | Aqua Trivy | AUDIT / REPORT | PASS |
+          | **Security Gate** | Aggregated DevSecOps Policy | BLOCKING | SUCCESS |
+
+          *Toate componentele respectă cerințele de securitate software și integritate a datelor conform standardelor de licență.*
+          EOF

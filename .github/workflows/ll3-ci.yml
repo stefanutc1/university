@@ -1,0 +1,253 @@
+name: LL3 Continuous Integration & Quality Gates
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'licenta/LL3-LucrareLicenta/**'
+      - '.github/workflows/ll3-ci.yml'
+  pull_request:
+    branches: [ main, master ]
+    types: [ opened, synchronize, reopened ]
+    paths:
+      - 'licenta/LL3-LucrareLicenta/**'
+      - '.github/workflows/ll3-ci.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ll3-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  python-ci:
+    name: "Python 3.11 CI (Simulators & Tests)"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: licenta/LL3-LucrareLicenta/code
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: 'licenta/LL3-LucrareLicenta/code/requirements.txt'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Bytecode compilation check
+        run: |
+          python -m py_compile *.py
+
+      - name: Import integrity verification
+        run: |
+          python -c "import core_banking_service, database_audit_monitor, payment_gateway_simulator, banking_attack_simulator; print('Toate modulele de securitate bancara au fost importate cu succes.')"
+
+      - name: Run Banking Attack & Defense Simulator (5 MITRE Scenarios)
+        run: |
+          python banking_attack_simulator.py
+
+      - name: Run Pytest automated test suite
+        run: |
+          pytest -v test_banking_suite.py
+
+  java-maven-ci:
+    name: "Java 17 / Maven CI (Spring Boot Backend)"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: licenta/LL3-LucrareLicenta/code/web/backend
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17 (Eclipse Temurin)
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Resolve Maven dependencies
+        run: mvn -B dependency:resolve
+
+      - name: Compile Java backend
+        run: mvn -B compile
+
+      - name: Execute automated unit & integration tests
+        run: mvn -B test
+
+      - name: Package Spring Boot executable JAR
+        run: mvn -B package -DskipTests=true
+
+      - name: Upload Spring Boot JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bank-kiosk-backend-jar
+          path: licenta/LL3-LucrareLicenta/code/web/backend/target/*.jar
+          retention-days: 14
+          if-no-files-found: error
+
+  frontend-web-ci:
+    name: "Frontend Web Static Validation"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: licenta/LL3-LucrareLicenta/code/web
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js for syntax linting
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate static assets and HTML structure
+        run: |
+          echo "[CHECK] Verificare prezenta fisiere frontend statice..."
+          test -f index.html || { echo "Lipsește index.html"; exit 1; }
+          test -f css/kiosk.css || { echo "Lipsește css/kiosk.css"; exit 1; }
+          test -f js/mock-engine.js || { echo "Lipsește js/mock-engine.js"; exit 1; }
+          test -f js/api.js || { echo "Lipsește js/api.js"; exit 1; }
+          test -f js/app.js || { echo "Lipsește js/app.js"; exit 1; }
+          echo "[OK] Toate resursele statice exista pe disc."
+
+      - name: Validate JavaScript syntax
+        run: |
+          echo "[CHECK] Verificare sintaxa JavaScript cu Node.js..."
+          node --check js/mock-engine.js
+          node --check js/api.js
+          node --check js/app.js
+          echo "[OK] Sintaxa JavaScript validata cu 0 erori."
+
+      - name: Verify asset paths referenced in index.html
+        run: |
+          echo "[CHECK] Verificare integritate legaturi locale din index.html..."
+          for asset in "css/kiosk.css" "js/mock-engine.js" "js/api.js" "js/app.js"; do
+            grep -q "$asset" index.html || { echo "Resursa $asset nu este referita in index.html"; exit 1; }
+          done
+          echo "[OK] Toate resursele sunt corect referentiate in index.html."
+
+  docker-ci:
+    name: "Docker Buildx Validation"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build backend Docker container image
+        uses: docker/build-push-action@v6
+        with:
+          context: licenta/LL3-LucrareLicenta/code/web/backend
+          file: licenta/LL3-LucrareLicenta/code/web/backend/Dockerfile
+          push: false
+          tags: bank-kiosk-backend:ci-test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  application-smoke-test:
+    name: "Spring Boot Live Integration Smoke Test"
+    needs: [ java-maven-ci ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17 (Eclipse Temurin)
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Download compiled JAR artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: bank-kiosk-backend-jar
+          path: target-artifact
+
+      - name: Launch Spring Boot backend in background
+        run: |
+          mkdir -p logs /tmp/bank-app
+          JAR_PATH=$(find target-artifact -name "*.jar" | head -n 1)
+          echo "Pornesc JAR: $JAR_PATH"
+          java -Dserver.port=8080 -Dbank.security.log-file-path=/tmp/bank-app/security.log -jar "$JAR_PATH" > backend.log 2>&1 &
+          echo $! > backend.pid
+          echo "Proces Spring Boot pornit cu PID $(cat backend.pid)"
+
+      - name: Run live integration smoke tests
+        run: |
+          python3 licenta/LL3-LucrareLicenta/code/smoke_test_backend.py
+
+      - name: Dump backend logs on failure
+        if: failure()
+        run: |
+          echo "=== LOGURI BACKEND SPRING BOOT ==="
+          cat backend.log || true
+
+      - name: Gracefully terminate backend process
+        if: always()
+        run: |
+          if [ -f backend.pid ]; then
+            kill $(cat backend.pid) || true
+          fi
+
+  ci-success:
+    name: "CI Quality Gate Aggregate"
+    needs: [ python-ci, java-maven-ci, frontend-web-ci, docker-ci, application-smoke-test ]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Evaluate component statuses
+        run: |
+          echo "Evaluare stări joburi CI:"
+          echo "Python CI: ${{ needs.python-ci.result }}"
+          echo "Java/Maven CI: ${{ needs.java-maven-ci.result }}"
+          echo "Frontend Web CI: ${{ needs.frontend-web-ci.result }}"
+          echo "Docker CI: ${{ needs.docker-ci.result }}"
+          echo "Smoke Test: ${{ needs.application-smoke-test.result }}"
+
+          if [ "${{ needs.python-ci.result }}" != "success" ] || \
+             [ "${{ needs.java-maven-ci.result }}" != "success" ] || \
+             [ "${{ needs.frontend-web-ci.result }}" != "success" ] || \
+             [ "${{ needs.docker-ci.result }}" != "success" ] || \
+             [ "${{ needs.application-smoke-test.result }}" != "success" ]; then
+            echo "[FAIL] Unul sau mai multe joburi obligatorii au esuat."
+            exit 1
+          fi
+          echo "[SUCCESS] Toate componentele CI au fost validate cu succes."
+
+      - name: Generate GitHub Actions Job Summary
+        run: |
+          cat << 'EOF' >> $GITHUB_STEP_SUMMARY
+          ## LL3 Core Banking & Security CI Summary
+
+          | Component | Job Name | Status |
+          | :--- | :--- | :---: |
+          | **Python Simulators** | Python 3.11 CI (5 MITRE ATT&CK Scenarios) | PASS |
+          | **Java/Maven** | Spring Boot 3.2 Backend Compile & Package | PASS |
+          | **Web Kiosk** | HTML5 / CSS3 / Vanilla JS Static Validation | PASS |
+          | **Containerization** | Docker Buildx Image Build & Layer Cache | PASS |
+          | **Integration Smoke Test** | Live REST Endpoints & Wazuh Telemetry Stream | PASS |
+          | **Aggregate CI Gate** | Quality Status for Branch Protection | SUCCESS |
+
+          *Pipeline executat pe infrastructura monorepo Projects-FEAA-UCV/proiecte conform standardelor DevSecOps.*
+          EOF

@@ -1,11 +1,10 @@
 name: Deploy Banking Kiosk to GitHub Pages
 
 on:
-  push:
+  workflow_run:
+    workflows: [ "LL3 Continuous Integration & Quality Gates" ]
+    types: [ completed ]
     branches: [ main, master ]
-    paths:
-      - 'licenta/LL3-LucrareLicenta/code/web/**'
-      - '.github/workflows/deploy-gh-pages.yml'
   workflow_dispatch:
 
 permissions:
@@ -19,6 +18,8 @@ concurrency:
 
 jobs:
   deploy:
+    name: "Deploy Static Kiosk to GitHub Pages"
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -26,6 +27,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Verify Web Frontend Assets Integrity
+        run: |
+          echo "[CHECK] Verificare integritate fisiere inainte de publicare..."
+          test -f licenta/LL3-LucrareLicenta/code/web/index.html || { echo "Eroare: Lipsește index.html"; exit 1; }
+          test -f licenta/LL3-LucrareLicenta/code/web/css/kiosk.css || { echo "Eroare: Lipsește kiosk.css"; exit 1; }
+          echo "[SUCCESS] Verificare integritate finalizată cu succes."
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
