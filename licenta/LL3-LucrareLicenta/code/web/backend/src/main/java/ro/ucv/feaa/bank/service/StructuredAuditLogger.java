@@ -23,10 +23,10 @@ public class StructuredAuditLogger {
     private static final int MAX_RECENT_LOGS = 50;
 
     @Value("${bank.security.log-file-path:/var/log/bank-app/security.log}")
-    private String primaryLogPath;
+    private String primaryLogPath = "./logs/security.log";
 
     @Value("${bank.security.fallback-log-file-path:./logs/security.log}")
-    private String fallbackLogPath;
+    private String fallbackLogPath = "./logs/security.log";
 
     public void logSecurityEvent(String event, String client, String sourceIp, Map<String, Object> extraFields) {
         Map<String, Object> logEntry = new LinkedHashMap<>();
@@ -56,37 +56,49 @@ public class StructuredAuditLogger {
     }
 
     private synchronized void writeLineToFile(String jsonLine) {
-        File file = new File(primaryLogPath);
-        File targetFile = file;
+        String path = (primaryLogPath != null && !primaryLogPath.isBlank()) ? primaryLogPath : "./logs/security.log";
+        String fallback = (fallbackLogPath != null && !fallbackLogPath.isBlank()) ? fallbackLogPath : "./logs/security.log";
 
-        // Daca nu avem permisiuni de scriere in /var/log, utilizam fallback local
-        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
-            targetFile = new File(fallbackLogPath);
-            if (targetFile.getParentFile() != null && !targetFile.getParentFile().exists()) {
-                targetFile.getParentFile().mkdirs();
+        File targetFile = new File(path);
+        boolean usePrimary = false;
+
+        try {
+            File parent = targetFile.getParentFile();
+            if (parent != null) {
+                if (!parent.exists()) {
+                    usePrimary = parent.mkdirs();
+                } else {
+                    usePrimary = parent.canWrite();
+                }
+            } else {
+                usePrimary = true;
             }
-        } else if (!file.canWrite() && file.exists()) {
-            targetFile = new File(fallbackLogPath);
-            if (targetFile.getParentFile() != null && !targetFile.getParentFile().exists()) {
-                targetFile.getParentFile().mkdirs();
+        } catch (Exception ignored) {
+            usePrimary = false;
+        }
+
+        if (!usePrimary) {
+            targetFile = new File(fallback);
+            File fbParent = targetFile.getParentFile();
+            if (fbParent != null && !fbParent.exists()) {
+                fbParent.mkdirs();
             }
         }
 
         try (FileWriter fw = new FileWriter(targetFile, true);
              PrintWriter pw = new PrintWriter(fw)) {
             pw.println(jsonLine);
-        } catch (IOException e) {
-            // In caz extrem scriem la fallback
+        } catch (Exception e) {
             try {
-                File fallback = new File(fallbackLogPath);
-                if (fallback.getParentFile() != null && !fallback.getParentFile().exists()) {
-                    fallback.getParentFile().mkdirs();
+                File fb = new File(fallback);
+                if (fb.getParentFile() != null && !fb.getParentFile().exists()) {
+                    fb.getParentFile().mkdirs();
                 }
-                try (FileWriter fw = new FileWriter(fallback, true);
+                try (FileWriter fw = new FileWriter(fb, true);
                      PrintWriter pw = new PrintWriter(fw)) {
                     pw.println(jsonLine);
                 }
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 log.warn("Nu s-a putut scrie in fisierul de audit: {}", ex.getMessage());
             }
         }

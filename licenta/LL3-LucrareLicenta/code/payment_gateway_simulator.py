@@ -54,6 +54,10 @@ def luhn_checksum_valid(card_number: str) -> bool:
     return checksum % 10 == 0
 
 
+# Alias pentru compatibilitate cu testele unitare și suita CI
+validate_luhn = luhn_checksum_valid
+
+
 def detect_card_brand(card_number: str) -> str:
     """Identifică rețeaua cardului pe baza BIN/IIN."""
     clean = re.sub(r"\D", "", card_number)

@@ -19,22 +19,22 @@ public class AccountService {
     private final StructuredAuditLogger auditLogger;
 
     @Value("${bank.accounts.default-client:K-1002}")
-    private String defaultClientId;
+    private String defaultClientId = "K-1002";
 
     @Value("${bank.accounts.default-pin:8421}")
-    private String defaultPin;
+    private String defaultPin = "8421";
 
     @Value("${bank.accounts.default-name:Popescu Ion}")
-    private String defaultName;
+    private String defaultName = "Popescu Ion";
 
     @Value("${bank.accounts.default-iban:RO99NXCR0001842100000001}")
-    private String defaultIban;
+    private String defaultIban = "RO99NXCR0001842100000001";
 
     @Value("${bank.accounts.savings-iban:RO99NXCR0002842100000002}")
-    private String savingsIban;
+    private String savingsIban = "RO99NXCR0002842100000002";
 
     @Value("${bank.accounts.initial-balance:1450.00}")
-    private BigDecimal initialBalance;
+    private BigDecimal initialBalance = new BigDecimal("1450.00");
 
     public AccountService(StructuredAuditLogger auditLogger) {
         this.auditLogger = auditLogger;

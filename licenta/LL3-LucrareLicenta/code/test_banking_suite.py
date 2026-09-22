@@ -84,29 +84,35 @@ def test_double_entry_accounting_invariants(cb_engine):
     acc2 = cb_engine.open_account(client["client_id"], "RON", initial_deposit=1000.0)
 
     # Transfer între conturi
-    tx = cb_engine.execute_transfer(
+    tx = cb_engine.post_double_entry_transaction(
         source_iban=acc1["iban"],
-        destination_iban=acc2["iban"],
+        dest_iban=acc2["iban"],
         amount=1500.0,
-        currency="RON",
-        reference="Transfer test unitar",
-        client_ip="192.168.20.10",
-        role="TELLER"
+        narrative="Transfer test unitar",
+        operator_id="TELLER_TEST",
+        client_ip="192.168.20.10"
     )
-    assert tx["status"] == "COMMITTED"
-    
+    assert tx["status"] == "SUCCESS"
+    assert "tx_id" in tx
+
     # Audit matematic al General Ledger
-    audit = cb_engine.audit_general_ledger()
-    assert audit["is_balanced"] is True
-    assert audit["total_discrepancy"] == 0.0
+    valid, entries_checked, msg = cb_engine.verify_ledger_integrity()
+    assert valid is True
+    assert entries_checked >= 1
 
 
 def test_wazuh_sqli_detection_regex(fin_db):
     """Test unitar pentru detecția semnăturilor SQLi în auditorul Wazuh."""
-    auditor = WazuhSecurityAuditor(fin_db)
-    assert auditor.inspect_query_for_sqli("SELECT * FROM accounts WHERE iban = 'RO123'", "192.168.20.10") is False
-    assert auditor.inspect_query_for_sqli("SELECT * FROM accounts WHERE 1=1 OR 'a'='a'", "192.168.30.200") is True
-    assert auditor.inspect_query_for_sqli("SELECT balance FROM accounts; DROP TABLE clients; --", "192.168.30.200") is True
+    # Query legitim - executat cu succes
+    res = fin_db.execute_monitored_query("SELECT * FROM accounts WHERE iban = 'RO123'", client_ip="192.168.20.10")
+    assert isinstance(res, list)
+
+    # Query malițios - detectat și blocat cu PermissionError
+    with pytest.raises(PermissionError):
+        fin_db.execute_monitored_query("SELECT * FROM accounts WHERE 1=1 OR 'a'='a'", client_ip="192.168.30.200")
+
+    with pytest.raises(PermissionError):
+        fin_db.execute_monitored_query("SELECT balance FROM accounts; DROP TABLE clients; --", client_ip="192.168.30.200")
 
 
 if __name__ == "__main__":

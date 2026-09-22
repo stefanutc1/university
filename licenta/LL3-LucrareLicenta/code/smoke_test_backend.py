@@ -49,7 +49,8 @@ def run_smoke_tests():
         data = json.loads(resp.read().decode("utf-8"))
         token = data.get("token")
         assert token, "Token JWT absent în răspunsul de autentificare."
-        print(f"  -> Autentificare Reușită! Client: {data.get('holderName')} | Token JWT alocat (lungime: {len(token)} chars)")
+        client_name = data.get("name") or data.get("holderName") or "Utilizator"
+        print(f"  -> Autentificare Reușită! Client: {client_name} | Token JWT alocat (lungime: {len(token)} chars)")
 
     headers_auth = {
         "Content-Type": "application/json",
@@ -62,15 +63,14 @@ def run_smoke_tests():
     with urllib.request.urlopen(req) as resp:
         assert resp.status == 200
         balance_data = json.loads(resp.read().decode("utf-8"))
-        print(f"  -> Sold curent extras: {balance_data.get('currentBalance')} {balance_data.get('currency')} | IBAN: {balance_data.get('iban')}")
+        bal_val = balance_data.get("balance") or balance_data.get("currentBalance")
+        print(f"  -> Sold curent extras: {bal_val} {balance_data.get('currency')} | IBAN: {balance_data.get('iban')}")
 
     # 3. Transfer Transaction
     print("\n[STEP 3] Test Transfer Bancar: POST /api/v1/kiosk/transfer")
     transfer_payload = json.dumps({
-        "sourceIban": balance_data.get("iban"),
-        "destinationIban": "RO99NXCR0002842100000002",
-        "amount": 50.00,
-        "description": "CI Smoke Test Transfer"
+        "targetIban": "RO99NXCR0002842100000002",
+        "amount": 50.00
     }).encode("utf-8")
     req = urllib.request.Request(
         f"{BASE_URL}/api/v1/kiosk/transfer",
