@@ -2,7 +2,7 @@ name: Deploy Banking Kiosk to GitHub Pages
 
 on:
   workflow_run:
-    workflows: [ "Continuous Integration & Quality Gates", "LL3 Continuous Integration & Quality Gates" ]
+    workflows: [ "Continuous Integration & Quality Gates" ]
     types: [ completed ]
     branches: [ main, master ]
   workflow_dispatch:
@@ -20,9 +20,6 @@ jobs:
   deploy:
     name: "Deploy Static Kiosk to GitHub Pages"
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -35,14 +32,30 @@ jobs:
           test -f licenta/LL3-LucrareLicenta/code/web/css/kiosk.css || { echo "Eroare: Lipsește kiosk.css"; exit 1; }
           echo "[SUCCESS] Verificare integritate finalizată cu succes."
 
+      - name: Check GitHub Pages Availability
+        id: check_pages
+        run: |
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pages")
+          echo "Pages API HTTP Status: $HTTP_STATUS"
+          if [ "$HTTP_STATUS" = "200" ]; then
+            echo "pages_enabled=true" >> $GITHUB_OUTPUT
+            echo "[INFO] GitHub Pages este activ pentru acest repository."
+          else
+            echo "pages_enabled=false" >> $GITHUB_OUTPUT
+            echo "::notice title=GitHub Pages Deployment Skipped::GitHub Pages nu este activat sau repository-ul este privat pe cont standard. Publicarea pe Pages a fost omisă în siguranță."
+          fi
+
       - name: Setup Pages
+        if: steps.check_pages.outputs.pages_enabled == 'true'
         uses: actions/configure-pages@v5
 
       - name: Upload Pages Artifact
+        if: steps.check_pages.outputs.pages_enabled == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'licenta/LL3-LucrareLicenta/code/web'
 
       - name: Deploy to GitHub Pages
+        if: steps.check_pages.outputs.pages_enabled == 'true'
         id: deployment
         uses: actions/deploy-pages@v4

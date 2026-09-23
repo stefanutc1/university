@@ -325,5 +325,5 @@ jobs:
           | **Smoke Test** | Live REST Endpoints & Wazuh Telemetry Stream | ${{ needs.application-smoke-test.result }} |
           | **Aggregate CI Gate** | Monorepo Quality Status for Branch Protection | SUCCESS |
 
-          *Pipeline executat pe infrastructura monorepo Projects-FEAA-UCV/proiecte.*
+          *Pipeline executat pe infrastructura stefanutc1/proiecte.*
           EOF

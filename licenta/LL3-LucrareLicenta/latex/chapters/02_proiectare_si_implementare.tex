@@ -78,14 +78,14 @@ Pentru a preveni atacurile din interior (Insider Threats) și tentativele de alt
 
 \textit{Listarea de cod: 2.1: Algoritmul de înlănțuire criptografică SHA-256 a registrului contabil în Core-Banking}
 
-\begin{lstlisting}[language=Python, caption={Modul Python de simulare și audit de securitate}]
+\begin{lstlisting}[language=Python, caption={Modul Python de simulare si audit de securitate}]
 def _compute_hash(self, tx_id: str, src: str, dst: str, amount: float,
                   currency: str, timestamp: str, prev_hash: str) -> str:
-    """Calcul amprentă SHA-256 pentru înlănțuirea criptografică a registrului."""
+    """Calcul amprenta SHA-256 pentru inlatuirea criptografica a registrului."""
     payload = f"{tx_id}|{src}|{dst}|{amount:.2f}|{currency}|{timestamp}|{prev_hash}"
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
-# La inserarea tranzacției în General Ledger:
+# La inserarea tranzactiei in General Ledger:
 prev_hash = self.ledger[-1]["record_hash"] if self.ledger else "0" * 64
 record_hash = self._compute_hash(tx_id, src_acc, dst_acc, amount, 
                                  currency, timestamp_iso, prev_hash)
@@ -130,14 +130,14 @@ Dacă un atacator reușește să ruleze un `UPDATE accounts SET balance = ...` d
 
 \textit{Listarea de cod: 2.2: Algoritmul de verificare automată a dezechilibrului contabil și declanșare a alertei Wazuh}
 
-\begin{lstlisting}[language=SQL, caption={Schema relațională PostgreSQL și jurnal de audit}]
+\begin{lstlisting}[language=Python, caption={Algoritmul de verificare automata a integritatii soldului}]
 def verify_account_balance_integrity(self, account_id: str) -> Tuple[bool, float, float]:
-    """Verifică concordanța dintre soldul stocat și suma tranzacțiilor din ledger."""
+    """Verifica concordanta dintre soldul stocat si suma tranzactiilor din ledger."""
     # 1. Extragere sold curent din accounts
     cur.execute("SELECT balance, initial_balance FROM accounts WHERE account_id = ?", (account_id,))
     stored_balance, init_bal = cur.fetchone()
     
-    # 2. Reconstrucție sold din tranzacțiile General Ledger (Credite - Debite)
+    # 2. Reconstructie sold din tranzactiile General Ledger (Credite - Debite)
     cur.execute("SELECT COALESCE(SUM(amount), 0) FROM ledger_transactions WHERE dst = ?", (account_id,))
     total_credits = cur.fetchone()[0]
     cur.execute("SELECT COALESCE(SUM(amount), 0) FROM ledger_transactions WHERE src = ?", (account_id,))
@@ -166,9 +166,9 @@ Pentru fluxul de transferuri interbancare de mare valoare, modulul generează me
 
 \textit{Listarea de cod: 2.3: Validarea algoritmului Luhn și mascarea PAN pe poarta de plăți (CT 312)}
 
-\begin{lstlisting}[language=Python, caption={Modul Python de simulare și audit de securitate}]
+\begin{lstlisting}[language=Python, caption={Validarea algoritmului Luhn si mascarea PAN}]
 def validate_luhn(card_number: str) -> bool:
-    """Validare matematică a cifrei de control conform algoritmului Luhn (Mod 10)."""
+    """Validare matematica a cifrei de control conform algoritmului Luhn (Mod 10)."""
     cleaned = re.sub(r"\D", "", card_number)
     if not (13 <= len(cleaned) <= 19):
         return False
@@ -181,7 +181,7 @@ def validate_luhn(card_number: str) -> bool:
     return checksum % 10 == 0
 
 def mask_pan(card_number: str) -> str:
-    """Mascarea numărului de card conform cerințelor stricte PCI-DSS v4.0."""
+    """Mascarea numarului de card conform cerintelor stricte PCI-DSS v4.0."""
     digits = re.sub(r"\D", "", card_number)
     if len(digits) < 10:
         return "INVALID_PAN"

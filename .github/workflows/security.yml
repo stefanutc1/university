@@ -218,5 +218,5 @@ jobs:
           | **FS & Config Scan** | Aqua Trivy | AUDIT / REPORT | ${{ needs.trivy-scan.result }} |
           | **Supply Chain SBOM** | CycloneDX (Maven plugin) | ARTIFACT | ${{ needs.sbom-generation.result }} |
 
-          *Controale de securitate auditate conform politicii monorepo Projects-FEAA-UCV/proiecte.*
+          *Controale de securitate auditate conform politicii stefanutc1/proiecte.*
           EOF

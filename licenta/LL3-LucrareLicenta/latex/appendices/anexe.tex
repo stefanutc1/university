@@ -8,9 +8,9 @@ Următorul script SQL reprezintă structura tabelară relațională a serverului
 
 \textit{Listarea de cod: Schema SQL DDL pentru serverul de baze de date financiare}
 
-\begin{lstlisting}[language=SQL, caption={Schema relațională PostgreSQL și jurnal de audit}]
--- SCHEMA RELAȚIONALĂ FINANCIAR-BANCARĂ & GENERAL LEDGER (VM 311)
--- Implementare conform normelor ACID și integrității tranzacționale
+\begin{lstlisting}[language=SQL, caption={Schema relationala PostgreSQL si jurnal de audit}]
+-- SCHEMA RELATIONALA FINANCIAR-BANCARA & GENERAL LEDGER (VM 311)
+-- Implementare conform normelor ACID si integritatii tranzactionale
 
 CREATE TABLE IF NOT EXISTS clients (
     client_id VARCHAR(36) PRIMARY KEY,
@@ -22,13 +22,13 @@ CREATE TABLE IF NOT EXISTS clients (
 );
 
 CREATE TABLE IF NOT EXISTS accounts (
-    account_id VARCHAR(34) PRIMARY KEY,        -- Standard internațional IBAN
+    account_id VARCHAR(34) PRIMARY KEY,        -- Standard international IBAN
     client_id VARCHAR(36) NOT NULL,
     currency VARCHAR(3) NOT NULL DEFAULT 'EUR',
     balance NUMERIC(15, 2) NOT NULL DEFAULT 0.00,
     initial_balance NUMERIC(15, 2) NOT NULL DEFAULT 0.00,
     account_type VARCHAR(20) DEFAULT 'CURRENT', -- CURRENT, SAVINGS, ESCROW
-    is_frozen BOOLEAN NOT NULL DEFAULT FALSE,   -- Flag blocare automată antifraudă
+    is_frozen BOOLEAN NOT NULL DEFAULT FALSE,   -- Flag blocare automata antifrauda
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_client FOREIGN KEY (client_id) REFERENCES clients (client_id)
         ON DELETE RESTRICT,
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS ledger_transactions (
     currency VARCHAR(3) NOT NULL,
     timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     record_hash VARCHAR(64) NOT NULL,          -- Dispersie SHA-256 tamper-evident
-    prev_hash VARCHAR(64) NOT NULL,            -- Hash-ul tranzacției anterioare
+    prev_hash VARCHAR(64) NOT NULL,            -- Hash-ul tranzactiei anterioare
     status VARCHAR(20) NOT NULL DEFAULT 'COMMITTED',
     CONSTRAINT chk_amount_positive CHECK (amount > 0.00),
     CONSTRAINT fk_src_acc FOREIGN KEY (source_account_id) REFERENCES accounts (account_id),
@@ -73,16 +73,16 @@ Extras din codul sursă al clasei WazuhSecurityAuditor (modulul database\_audit\
 
 \textit{Listarea de cod: Motorul de audit al integrității financiare și reconciliere}
 
-\begin{lstlisting}[language=SQL, caption={Schema relațională PostgreSQL și jurnal de audit}]
+\begin{lstlisting}[language=Python, caption={Motorul de audit al integritatii financiare si reconciliere}]
 class WazuhSecurityAuditor:
     """Auditor avansat de securitate integrat cu sistemul Wazuh SIEM."""
     
     def inspect_query_for_sqli(self, query: str, client_ip: str) -> bool:
-        """Detectează semnăturile de atac prin injectare SQL (SQLi)."""
+        """Detecteaza semnaturile de atac prin injectare SQL (SQLi)."""
         patterns = [
             r"(--|#|/\*|;)",
             r"\bUNION\s+SELECT\b",
-            r"\bOR\s+['"]?1['"]?\s*=\s*['"]?1['"]?",
+            r"\bOR\s+['\"]?1['\"]?\s*=\s*['\"]?1['\"]?",
             r"\bDROP\s+TABLE\b",
             r"\bUPDATE\s+.*\bSET\b.*\bbalance\b"
         ]
@@ -97,7 +97,7 @@ class WazuhSecurityAuditor:
         return False
 
     def verify_account_balance_integrity(self, account_id: str) -> Tuple[bool, float, float]:
-        """Reconciliere matematică automată între soldul sintetic și registrul analitic."""
+        """Reconciliere matematica automata intre soldul sintetic si registrul analitic."""
         with self.db.get_cursor() as cur:
             cur.execute("SELECT balance, initial_balance FROM accounts WHERE account_id = ?", (account_id,))
             res = cur.fetchone()
