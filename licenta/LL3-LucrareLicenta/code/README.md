@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![CI Pipeline](https://img.shields.io/badge/CI%20Pipeline-Passing-brightgreen?style=flat&logo=githubactions)](https://github.com/Projects-FEAA-UCV/proiecte/actions/workflows/ll3-ci.yml)
+[![CI Pipeline](https://img.shields.io/badge/CI%20Pipeline-Passing-brightgreen?style=flat&logo=githubactions)](https://github.com/stefanutc1/proiecte/actions/workflows/ci.yml)
 [![Python Version](https://img.shields.io/badge/Python-3.10%2B-blue?style=flat&logo=python)](requirements.txt)
 [![Framework](https://img.shields.io/badge/API-FastAPI%200.109-009688?style=flat&logo=fastapi)](payment_gateway_simulator.py)
 [![Security SIEM](https://img.shields.io/badge/SIEM-Wazuh%204.14-teal?style=flat&logo=wazuh)](database_audit_monitor.py)

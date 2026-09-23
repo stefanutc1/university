@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![CI Pipeline](https://img.shields.io/badge/CI%20Pipeline-Passing-brightgreen?style=flat&logo=githubactions)](https://github.com/Projects-FEAA-UCV/proiecte/actions/workflows/ll3-ci.yml)
+[![CI Pipeline](https://img.shields.io/badge/CI%20Pipeline-Passing-brightgreen?style=flat&logo=githubactions)](https://github.com/stefanutc1/proiecte/actions/workflows/ci.yml)
 [![Java Version](https://img.shields.io/badge/Java-17%20(LTS)-orange?style=flat&logo=openjdk)](backend/pom.xml)
 [![Spring Boot](https://img.shields.io/badge/Framework-Spring%20Boot%203.2-brightgreen?style=flat&logo=springboot)](backend/pom.xml)
 [![Security](https://img.shields.io/badge/Security-Stateless%20JWT%20(JJWT)-blue?style=flat&logo=jsonwebtokens)](backend/src/main/java/ro/ucv/feaa/bank/config/SecurityConfig.java)

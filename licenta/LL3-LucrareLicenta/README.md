@@ -23,7 +23,7 @@ Arhitectura reproduce fidel un ecosistem financiar multi-nivel integrat cu stand
 
 ## 2. CI/CD & DevSecOps Architecture
 
-Pipeline-ul de Integrare Continuă și Livrare Continuă este proiectat la nivel de întreprindere și adaptat pentru contextul de monorepo al organizației `Projects-FEAA-UCV/proiecte`. Toate workflow-urile folosesc filtre stricte de cale (`path filters`) pe `licenta/LL3-LucrareLicenta/**`, prevenind execuțiile redundante la modificarea altor proiecte universitare.
+Pipeline-ul de Integrare Continuă și Livrare Continuă este proiectat la nivel de întreprindere și adaptat pentru repository-ul `stefanutc1/proiecte`. Toate workflow-urile folosesc filtre stricte de cale (`path filters`) pe `licenta/LL3-LucrareLicenta/**`, prevenind execuțiile redundante la modificarea altor proiecte universitare.
 
 ### 2.1. Diagrama Arhitecturală a Pipeline-ului
 

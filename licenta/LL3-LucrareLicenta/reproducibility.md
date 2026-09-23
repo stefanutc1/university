@@ -25,7 +25,7 @@ This guide describes how to reproduce the software systems, threat simulations, 
 ### 2.1. Environment Preparation
 ```bash
 # Clone repository
-git clone https://github.com/Projects-FEAA-UCV/proiecte.git
+git clone https://github.com/stefanutc1/proiecte.git
 cd proiecte/licenta/LL3-LucrareLicenta/code
 
 # Python virtual environment
