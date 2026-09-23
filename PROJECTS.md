@@ -31,6 +31,7 @@ This document provides a truthful, comprehensive catalog of all academic and sof
 | **APSI3-Platforma** | [`licenta/APSI3-Platforma`](licenta/APSI3-Platforma/) | Lab Platform | An 3 | Systems Analysis & Design | Enterprise Architecture | Planned | Planned | None | **WIP** | **WIP** | None | In Progress |
 | **GBD3-Platforma** | [`licenta/GBD3-Platforma`](licenta/GBD3-Platforma/) | Lab Platform | An 3 | Database Management | SQL / Administration | Planned | Planned | None | **WIP** | **WIP** | None | In Progress |
 | **master** | [`master`](master/) | Graduate Research | Master | Economic Information Systems | Planned | Planned | Planned | None | **WIP** | **WIP** | None | Planned |
+| **doctorat** | [`doctorat`](doctorat/) | Doctoral Research (PhD) | PhD (2028+) | Advanced Cybersecurity | Planned | Planned | Planned | None | **WIP** | **WIP** | None | Planned |
 
 ---
 
@@ -230,9 +231,10 @@ This document provides a truthful, comprehensive catalog of all academic and sof
 
 ---
 
-### 2.11. Curricular Platform Stubs (Year 3 & Master)
+### 2.11. Curricular Platform Stubs (Year 3, Master & PhD)
 
 * **`licenta/PW3-Platforma`** — Programare Web (Anul 3). Status: *WIP / Planned*.
 * **`licenta/APSI3-Platforma`** — Analiza și Proiectarea Sistemelor Informatice (Anul 3). Status: *WIP / Planned*.
 * **`licenta/GBD3-Platforma`** — Gestiunea Bazelor de Date (Anul 3). Status: *WIP / Planned*.
 * **`master/`** — Master's Degree Studies (2026–2028). Status: *WIP / Planned*.
+* **`doctorat/`** — Doctoral Studies & Advanced Research (PhD Track 2028+). Status: *WIP / Planned*. ([`if_we_make_it.md`](doctorat/if_we_make_it.md)).

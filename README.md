@@ -86,6 +86,7 @@ The monorepo consolidates curricular and extracurricular engineering projects ac
 | [`licenta/APSI3-Platforma`](licenta/APSI3-Platforma/) | Systems Analysis & Design | Enterprise Architecture Modeling | Planned / In Progress | Planned | **WIP** |
 | [`licenta/GBD3-Platforma`](licenta/GBD3-Platforma/) | Database Management Platform | SQL / Advanced Database Administration | Planned / In Progress | Planned | **WIP** |
 | [`master/`](master/) | Master's Degree Research | Advanced Information Systems | Planned (2026–2028) | Planned | **WIP** |
+| [`doctorat/`](doctorat/) | Doctoral Studies (PhD Track) | Advanced Cybersecurity & Autonomous Systems | Planned (2028+) | Planned | **WIP** |
 
 *For exhaustive technical descriptions, dependencies, and manifest schemas, see [PROJECTS.md](PROJECTS.md).*
 

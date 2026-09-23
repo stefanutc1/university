@@ -1,0 +1,22 @@
+schema_version: "1.0"
+name: "doctorat"
+title: "Studii Doctorale & Cercetare Avansată (PhD Track)"
+type: "doctoral-research"
+academic_year: "Doctorat (2028+)"
+institution: "Universitatea din Craiova, Școala Doctorală"
+specialization: "Informatică Economică / Securitate Cibernetică"
+author: "Moanță Ștefănuț-Cornel"
+domain:
+  - "advanced-cybersecurity"
+  - "autonomous-agent-systems"
+  - "banking-resilience"
+languages: []
+frameworks: []
+build_system: "Planned"
+test_framework: "Planned"
+ci_pipeline: ".github/workflows/docs.yml"
+security_scanning: []
+documentation_status: "Planned / In Progress (WIP)"
+deployment:
+  mode: "planned"
+  targets: []
