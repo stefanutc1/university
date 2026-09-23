@@ -98,8 +98,16 @@ class CoreBankingSecurityGuard:
 class CoreBankingEngine:
     """Motorul central de contabilitate bancară în partidă dublă (Apache Fineract model)."""
 
+    @classmethod
+    def reset_state(cls):
+        """Resetează colecțiile în memorie pentru un mediu de testare izolat."""
+        global CLIENTS_DB, ACCOUNTS_DB, LEDGER_ENTRIES
+        CLIENTS_DB.clear()
+        ACCOUNTS_DB.clear()
+        LEDGER_ENTRIES.clear()
+
     def __init__(self):
-        self.last_ledger_hash = "0" * 64
+        self.last_ledger_hash = LEDGER_ENTRIES[-1]["entry_hash"] if LEDGER_ENTRIES else "0" * 64
         self._initialize_master_accounts()
 
     def _initialize_master_accounts(self):
@@ -237,6 +245,7 @@ class CoreBankingEngine:
         entry_hash = calculate_hash(self.last_ledger_hash, entry_payload)
 
         ledger_record = {
+            "status": "SUCCESS",
             "entry_index": len(LEDGER_ENTRIES) + 1,
             "tx_id": tx_id,
             "source_debit_iban": source_iban,

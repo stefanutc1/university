@@ -18,6 +18,7 @@ def harness():
 
 @pytest.fixture
 def cb_engine():
+    CoreBankingEngine.reset_state()
     return CoreBankingEngine()
 
 
@@ -69,12 +70,12 @@ def test_scenario_5_swift_tampered_payload(harness):
 
 def test_luhn_algorithm_validation():
     """Test unitar pentru algoritmul matematic Luhn Mod 10 și mascarea PAN PCI-DSS."""
-    valid_card = "4532015112835671"
+    valid_card = "4532015112835670"
     corrupt_card = "4532015112835679"
     assert validate_luhn(valid_card) is True
     assert validate_luhn(corrupt_card) is False
     masked = mask_pan(valid_card)
-    assert masked == "453201******5671"
+    assert masked == "453201******5670"
 
 
 def test_double_entry_accounting_invariants(cb_engine):

@@ -124,7 +124,9 @@ class FinancialDatabase:
         # 1. Inspecție euristică de tip Wazuh / Suricata pentru SQLi
         sqli_patterns = [
             r"(\bUNION\b\s+\bSELECT\b)",
-            r"('|\bOR\b\s+['\"]?1['\"]?\s*=\s*['\"]?1)",
+            r"(\bOR\b\s+['\"]?(\w+)['\"]?\s*=\s*['\"]?\2['\"]?)",
+            r"(\b1\s*=\s*1\b)",
+            r"(['\"](\w+)['\"]\s*=\s*['\"]\2['\"])",
             r"(\bDROP\b\s+\bTABLE\b)",
             r"(\bINFORMATION_SCHEMA\b)",
             r"(--|#|/\*)"
