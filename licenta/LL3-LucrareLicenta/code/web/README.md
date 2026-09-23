@@ -373,7 +373,7 @@ java -jar target/bank-kiosk-backend-1.0.0.jar
 
 ### 5.4. Opțiunea C: Containerizare Docker Multi-Stage
 
-Proiectul conține un fișier [`Dockerfile`](file:///Users/s3nnnzzzatyeeee/stefannut_repos/proiecte/licenta/LL3-LucrareLicenta/code/web/backend/Dockerfile) optimizat în două etape (Builder cu Maven + Runtime minimalist Eclipse Temurin JRE):
+Proiectul conține un fișier [`Dockerfile`](backend/Dockerfile) optimizat în două etape (Builder cu Maven + Runtime minimalist Eclipse Temurin JRE):
 
 ```bash
 cd licenta/LL3-LucrareLicenta/code/web/backend
@@ -434,7 +434,7 @@ python3 smoke_test_backend.py
 
 ## 6. Integrare în Pipeline-ul CI/CD
 
-Modulul web este integrat în workflow-ul GitHub Actions [`.github/workflows/ll3-ci.yml`](file:///Users/s3nnnzzzatyeeee/stefannut_repos/proiecte/.github/workflows/ll3-ci.yml) și [`.github/workflows/deploy-gh-pages.yml`](file:///Users/s3nnnzzzatyeeee/stefannut_repos/proiecte/.github/workflows/deploy-gh-pages.yml):
+Modulul web este integrat în workflow-ul GitHub Actions [`.github/workflows/ci.yml`](../../../../.github/workflows/ci.yml) și [`.github/workflows/deploy-gh-pages.yml`](../../../../.github/workflows/deploy-gh-pages.yml):
 
 ```mermaid
 flowchart LR
@@ -486,5 +486,5 @@ licenta/LL3-LucrareLicenta/code/web/
 
 * [Python Core Banking & Attack Simulation Documentation](../README.md) — Documentația tehnică a motoarelor de simulare Python, a bazei de date și a suitei MITRE ATT&CK.
 * [Master README Lucrare de Licență](../../README.md) — Documentul principal de referință arhitecturală și academică.
-* [CI Workflow Definiție](file:///Users/s3nnnzzzatyeeee/stefannut_repos/proiecte/.github/workflows/ll3-ci.yml) — Pipeline-ul complet de verificare și testare automată.
-* [Docker Container Manifest](file:///Users/s3nnnzzzatyeeee/stefannut_repos/proiecte/licenta/LL3-LucrareLicenta/code/web/backend/Dockerfile) — Specificația imaginii de containerizare multi-stage.
+* [CI Workflow Definiție](../../../../.github/workflows/ci.yml) — Pipeline-ul complet de verificare și testare automată.
+* [Docker Container Manifest](backend/Dockerfile) — Specificația imaginii de containerizare multi-stage.

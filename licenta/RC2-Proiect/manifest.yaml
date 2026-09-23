@@ -1,0 +1,25 @@
+schema_version: "1.0"
+name: "RC2-Proiect"
+title: "Proiect Arhitectură și Segmentare Rețele de Calculatoare"
+type: "networking-simulation"
+academic_year: "Anul 2 (2024–2025)"
+institution: "Universitatea din Craiova, FEAA"
+specialization: "Informatică Economică"
+author: "Moanță Ștefănuț-Cornel"
+domain:
+  - "computer-networks"
+  - "vlan-segmentation"
+  - "cisco-packet-tracer"
+  - "l3-routing"
+languages: []
+frameworks:
+  - "Cisco IOS"
+build_system: "Cisco Packet Tracer 8+"
+test_framework: "Topology Verification"
+ci_pipeline: ".github/workflows/docs.yml"
+security_scanning: []
+documentation_status: "Complete"
+deployment:
+  mode: "simulation"
+  targets:
+    - "Cisco Packet Tracer Runtime"

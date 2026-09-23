@@ -1,0 +1,43 @@
+# EditorConfig for Projects-FEAA-UCV/proiecte
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{py,pyw}]
+indent_style = space
+indent_size = 4
+
+[*.{java,c,cpp,h,hpp}]
+indent_style = space
+indent_size = 4
+
+[*.{cs,vb}]
+indent_style = space
+indent_size = 4
+
+[*.{js,jsx,ts,tsx,json,html,css,scss,mjs}]
+indent_style = space
+indent_size = 2
+
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+
+[*.{tex,bib}]
+indent_style = space
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+insert_final_newline = true
+
+[*.{sln,slnx,vcxproj,vbproj}]
+end_of_line = crlf
+indent_style = space
+indent_size = 2

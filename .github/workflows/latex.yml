@@ -1,0 +1,69 @@
+name: Academic Thesis LaTeX Compilation
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'licenta/LL3-LucrareLicenta/latex/**'
+      - '.github/workflows/latex.yml'
+  pull_request:
+    branches: [ main, master ]
+    types: [ opened, synchronize, reopened ]
+    paths:
+      - 'licenta/LL3-LucrareLicenta/latex/**'
+      - '.github/workflows/latex.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: monorepo-latex-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  compile-latex:
+    name: "Compile Thesis LaTeX to PDF"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile LaTeX Lucrare de Licență to PDF
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: main.tex
+          working_directory: licenta/LL3-LucrareLicenta/latex
+          args: -pdf -file-line-error -interaction=nonstopmode -halt-on-error
+
+      - name: Verify generated PDF document
+        run: |
+          PDF_PATH="licenta/LL3-LucrareLicenta/latex/main.pdf"
+          if [ -f "$PDF_PATH" ]; then
+            SIZE=$(du -h "$PDF_PATH" | cut -f1)
+            echo "[SUCCESS] PDF-ul lucrarii de licenta a fost generat cu succes ($SIZE)."
+            cp "$PDF_PATH" "licenta/LL3-LucrareLicenta/LUCRARE_LICENTA_2026.pdf"
+          else
+            echo "[EROARE CRITICA] Fisierul PDF nu a fost produs in timpul compilarii LaTeX!"
+            exit 1
+          fi
+
+      - name: Upload compiled Licență PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: licenta-pdf
+          path: licenta/LL3-LucrareLicenta/LUCRARE_LICENTA_2026.pdf
+          retention-days: 30
+          if-no-files-found: error
+
+      - name: Thesis Compilation Summary
+        run: |
+          cat << 'EOF' >> $GITHUB_STEP_SUMMARY
+          ## Bachelor's Thesis Academic PDF Compilation Summary
+
+          | Asset | Engine | Compilation Status | Produced Artifact |
+          | :--- | :--- | :---: | :---: |
+          | **Lucrare de Licență** | TeXLive / latexmk | SUCCESS | `licenta-pdf` (30 days) |
+
+          *Documentul a fost compilat din sursele modulare LaTeX conform standardelor FEAA UCV.*
+          EOF

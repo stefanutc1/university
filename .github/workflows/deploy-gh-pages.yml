@@ -2,7 +2,7 @@ name: Deploy Banking Kiosk to GitHub Pages
 
 on:
   workflow_run:
-    workflows: [ "LL3 Continuous Integration & Quality Gates" ]
+    workflows: [ "Continuous Integration & Quality Gates", "LL3 Continuous Integration & Quality Gates" ]
     types: [ completed ]
     branches: [ main, master ]
   workflow_dispatch:

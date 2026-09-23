@@ -1,0 +1,25 @@
+schema_version: "1.0"
+name: "SD2-Teme"
+title: "Teme și Probleme Algoritmice Structuri de Date"
+type: "algorithmic-homework"
+academic_year: "Anul 2 (2024–2025)"
+institution: "Universitatea din Craiova, FEAA"
+specialization: "Informatică Economică"
+author: "Moanță Ștefănuț-Cornel"
+domain:
+  - "algorithmics"
+  - "complexity-analysis"
+  - "problem-solving"
+languages:
+  - "C++"
+frameworks:
+  - "C++ Standard Library"
+build_system: "g++ / MSVC"
+test_framework: "None detected"
+ci_pipeline: "N/A"
+security_scanning: []
+documentation_status: "Complete"
+deployment:
+  mode: "cli"
+  targets:
+    - "Standalone Executables"

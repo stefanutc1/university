@@ -1,0 +1,24 @@
+schema_version: "1.0"
+name: "PW3-Platforma"
+title: "Platformă Laborator Programare Web (Anul 3)"
+type: "curricular-platform"
+academic_year: "Anul 3 (2025–2026)"
+institution: "Universitatea din Craiova, FEAA"
+specialization: "Informatică Economică"
+author: "Moanță Ștefănuț-Cornel"
+domain:
+  - "web-programming"
+  - "fullstack-development"
+languages:
+  - "JavaScript"
+  - "HTML"
+  - "CSS"
+frameworks: []
+build_system: "Planned"
+test_framework: "Planned"
+ci_pipeline: ".github/workflows/docs.yml"
+security_scanning: []
+documentation_status: "Work In Progress (WIP)"
+deployment:
+  mode: "planned"
+  targets: []

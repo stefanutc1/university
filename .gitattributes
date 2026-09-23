@@ -1,0 +1,45 @@
+# Auto detect text files and perform LF normalization
+* text=auto eol=lf
+
+# Explicit Text Formats
+*.txt text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.xml text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.py text eol=lf
+*.java text eol=lf
+*.cpp text eol=lf
+*.h text eol=lf
+*.cs text eol=lf
+*.vb text eol=lf
+*.sql text eol=lf
+*.tex text eol=lf
+*.bib text eol=lf
+*.sh text eol=lf
+*.sln text eol=crlf
+*.slnx text eol=crlf
+*.vcxproj text eol=crlf
+*.vbproj text eol=crlf
+
+# Binary Academic Documents & Deliverables (no delta corruption)
+*.docx binary
+*.doc binary
+*.pdf binary
+*.pkt binary
+*.pkz binary
+*.mwb binary
+*.aps binary
+*.ico binary
+*.bmp binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.jar binary

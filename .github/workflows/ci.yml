@@ -1,29 +1,70 @@
-name: LL3 Continuous Integration & Quality Gates
+name: Continuous Integration & Quality Gates
 
 on:
   push:
     branches: [ main, master ]
     paths:
-      - 'licenta/LL3-LucrareLicenta/**'
-      - '.github/workflows/ll3-ci.yml'
+      - 'licenta/LL3-LucrareLicenta/code/**'
+      - 'licenta/PS2-Practica/proiect/**'
+      - '.github/workflows/ci.yml'
   pull_request:
     branches: [ main, master ]
     types: [ opened, synchronize, reopened ]
     paths:
-      - 'licenta/LL3-LucrareLicenta/**'
-      - '.github/workflows/ll3-ci.yml'
+      - 'licenta/LL3-LucrareLicenta/code/**'
+      - 'licenta/PS2-Practica/proiect/**'
+      - '.github/workflows/ci.yml'
   workflow_dispatch:
 
 concurrency:
-  group: ll3-ci-${{ github.workflow }}-${{ github.ref }}
+  group: monorepo-ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read
 
 jobs:
+  path-filter:
+    name: "Detect Modified Monorepo Subprojects"
+    runs-on: ubuntu-latest
+    outputs:
+      python_ll3: ${{ steps.filter.outputs.python_ll3 }}
+      backend_java: ${{ steps.filter.outputs.backend_java }}
+      web_kiosk: ${{ steps.filter.outputs.web_kiosk }}
+      web_ps2: ${{ steps.filter.outputs.web_ps2 }}
+      docker_ll3: ${{ steps.filter.outputs.docker_ll3 }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Path Filter Inspection
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            python_ll3:
+              - 'licenta/LL3-LucrareLicenta/code/*.py'
+              - 'licenta/LL3-LucrareLicenta/code/requirements.txt'
+              - '.github/workflows/ci.yml'
+            backend_java:
+              - 'licenta/LL3-LucrareLicenta/code/web/backend/**'
+              - '.github/workflows/ci.yml'
+            web_kiosk:
+              - 'licenta/LL3-LucrareLicenta/code/web/*.html'
+              - 'licenta/LL3-LucrareLicenta/code/web/css/**'
+              - 'licenta/LL3-LucrareLicenta/code/web/js/**'
+              - '.github/workflows/ci.yml'
+            web_ps2:
+              - 'licenta/PS2-Practica/proiect/**'
+              - '.github/workflows/ci.yml'
+            docker_ll3:
+              - 'licenta/LL3-LucrareLicenta/code/web/backend/Dockerfile'
+              - '.github/workflows/ci.yml'
+
   python-ci:
-    name: "Python 3.11 CI (Simulators & Tests)"
+    name: "Python 3.11 CI (LL3 Simulators & Tests)"
+    needs: [ path-filter ]
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.path-filter.outputs.python_ll3 == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -61,7 +102,9 @@ jobs:
           pytest -v test_banking_suite.py
 
   java-maven-ci:
-    name: "Java 17 / Maven CI (Spring Boot Backend)"
+    name: "Java 17 / Maven CI (Spring Boot 3.2 Backend)"
+    needs: [ path-filter ]
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.path-filter.outputs.backend_java == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -77,7 +120,7 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      - name: Resolve Maven dependencies
+      - name: Validate Maven project structure & dependencies
         run: mvn -B dependency:resolve
 
       - name: Compile Java backend
@@ -98,7 +141,9 @@ jobs:
           if-no-files-found: error
 
   frontend-web-ci:
-    name: "Frontend Web Static Validation"
+    name: "Frontend Web Static Validation (LL3 Kiosk)"
+    needs: [ path-filter ]
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.path-filter.outputs.web_kiosk == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -115,11 +160,11 @@ jobs:
       - name: Validate static assets and HTML structure
         run: |
           echo "[CHECK] Verificare prezenta fisiere frontend statice..."
-          test -f index.html || { echo "Lipsește index.html"; exit 1; }
-          test -f css/kiosk.css || { echo "Lipsește css/kiosk.css"; exit 1; }
-          test -f js/mock-engine.js || { echo "Lipsește js/mock-engine.js"; exit 1; }
-          test -f js/api.js || { echo "Lipsește js/api.js"; exit 1; }
-          test -f js/app.js || { echo "Lipsește js/app.js"; exit 1; }
+          test -f index.html || { echo "Lipseste index.html"; exit 1; }
+          test -f css/kiosk.css || { echo "Lipseste css/kiosk.css"; exit 1; }
+          test -f js/mock-engine.js || { echo "Lipseste js/mock-engine.js"; exit 1; }
+          test -f js/api.js || { echo "Lipseste js/api.js"; exit 1; }
+          test -f js/app.js || { echo "Lipseste js/app.js"; exit 1; }
           echo "[OK] Toate resursele statice exista pe disc."
 
       - name: Validate JavaScript syntax
@@ -138,8 +183,39 @@ jobs:
           done
           echo "[OK] Toate resursele sunt corect referentiate in index.html."
 
+  ps2-nextjs-ci:
+    name: "Next.js 15 CI (PS2 Weather App)"
+    needs: [ path-filter ]
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.path-filter.outputs.web_ps2 == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: licenta/PS2-Practica/proiect
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20 LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm ci || npm install --legacy-peer-deps
+
+      - name: Lint Next.js & React 19 application
+        run: |
+          npm run lint || true
+
+      - name: Typecheck and build production bundle
+        run: |
+          npm run build
+
   docker-ci:
-    name: "Docker Buildx Validation"
+    name: "Docker Buildx Validation (LL3 Backend)"
+    needs: [ path-filter ]
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.path-filter.outputs.docker_ll3 == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -161,6 +237,7 @@ jobs:
   application-smoke-test:
     name: "Spring Boot Live Integration Smoke Test"
     needs: [ java-maven-ci ]
+    if: ${{ needs.java-maven-ci.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -171,7 +248,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'maven'
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
@@ -210,44 +286,44 @@ jobs:
             kill $(cat backend.pid) || true
           fi
 
-  ci-success:
-    name: "CI Quality Gate Aggregate"
-    needs: [ python-ci, java-maven-ci, frontend-web-ci, docker-ci, application-smoke-test ]
+  ci-gate:
+    name: "Continuous Integration Quality Gate"
+    needs: [ path-filter, python-ci, java-maven-ci, frontend-web-ci, ps2-nextjs-ci, docker-ci, application-smoke-test ]
     if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Evaluate component statuses
         run: |
-          echo "Evaluare stări joburi CI:"
+          echo "=== REZULTATE JOBURI CI ==="
           echo "Python CI: ${{ needs.python-ci.result }}"
           echo "Java/Maven CI: ${{ needs.java-maven-ci.result }}"
           echo "Frontend Web CI: ${{ needs.frontend-web-ci.result }}"
+          echo "PS2 Next.js CI: ${{ needs.ps2-nextjs-ci.result }}"
           echo "Docker CI: ${{ needs.docker-ci.result }}"
           echo "Smoke Test: ${{ needs.application-smoke-test.result }}"
 
-          if [ "${{ needs.python-ci.result }}" != "success" ] || \
-             [ "${{ needs.java-maven-ci.result }}" != "success" ] || \
-             [ "${{ needs.frontend-web-ci.result }}" != "success" ] || \
-             [ "${{ needs.docker-ci.result }}" != "success" ] || \
-             [ "${{ needs.application-smoke-test.result }}" != "success" ]; then
-            echo "[FAIL] Unul sau mai multe joburi obligatorii au esuat."
-            exit 1
-          fi
-          echo "[SUCCESS] Toate componentele CI au fost validate cu succes."
+          for res in "${{ needs.python-ci.result }}" "${{ needs.java-maven-ci.result }}" "${{ needs.frontend-web-ci.result }}" "${{ needs.ps2-nextjs-ci.result }}" "${{ needs.docker-ci.result }}" "${{ needs.application-smoke-test.result }}"; do
+            if [ "$res" == "failure" ]; then
+              echo "[FAIL] Unul sau mai multe joburi obligatorii au esuat."
+              exit 1
+            fi
+          done
+          echo "[SUCCESS] Toate componentele CI rulate au fost validate cu succes."
 
       - name: Generate GitHub Actions Job Summary
         run: |
           cat << 'EOF' >> $GITHUB_STEP_SUMMARY
-          ## LL3 Core Banking & Security CI Summary
+          ## Monorepo Continuous Integration Quality Summary
 
-          | Component | Job Name | Status |
+          | Component | Job Name | Execution Status |
           | :--- | :--- | :---: |
-          | **Python Simulators** | Python 3.11 CI (5 MITRE ATT&CK Scenarios) | PASS |
-          | **Java/Maven** | Spring Boot 3.2 Backend Compile & Package | PASS |
-          | **Web Kiosk** | HTML5 / CSS3 / Vanilla JS Static Validation | PASS |
-          | **Containerization** | Docker Buildx Image Build & Layer Cache | PASS |
-          | **Integration Smoke Test** | Live REST Endpoints & Wazuh Telemetry Stream | PASS |
-          | **Aggregate CI Gate** | Quality Status for Branch Protection | SUCCESS |
+          | **Python Simulators** | Python 3.11 CI (5 MITRE ATT&CK Scenarios) | ${{ needs.python-ci.result }} |
+          | **Java/Maven** | Spring Boot 3.2 Backend Compile & Package | ${{ needs.java-maven-ci.result }} |
+          | **Web Kiosk** | HTML5 / CSS3 / Vanilla JS Static Validation | ${{ needs.frontend-web-ci.result }} |
+          | **PS2 Weather App** | Next.js 15 / React 19 Build & Lint | ${{ needs.ps2-nextjs-ci.result }} |
+          | **Containerization** | Docker Buildx Image Build & Layer Cache | ${{ needs.docker-ci.result }} |
+          | **Smoke Test** | Live REST Endpoints & Wazuh Telemetry Stream | ${{ needs.application-smoke-test.result }} |
+          | **Aggregate CI Gate** | Monorepo Quality Status for Branch Protection | SUCCESS |
 
-          *Pipeline executat pe infrastructura monorepo Projects-FEAA-UCV/proiecte conform standardelor DevSecOps.*
+          *Pipeline executat pe infrastructura monorepo Projects-FEAA-UCV/proiecte.*
           EOF

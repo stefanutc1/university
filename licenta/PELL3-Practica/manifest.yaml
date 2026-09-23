@@ -1,0 +1,22 @@
+schema_version: "1.0"
+name: "PELL3-Practica"
+title: "Practică Economică și Documentare Licență Anul 3"
+type: "internship-logbook"
+academic_year: "Anul 3 (2025–2026)"
+institution: "Universitatea din Craiova, FEAA"
+specialization: "Informatică Economică"
+author: "Moanță Ștefănuț-Cornel"
+domain:
+  - "applied-economics"
+  - "business-informatics"
+languages:
+  - "Markdown"
+frameworks: []
+build_system: "None"
+test_framework: "None"
+ci_pipeline: ".github/workflows/docs.yml"
+security_scanning: []
+documentation_status: "Complete (10 Daily Journal Entries)"
+deployment:
+  mode: "document"
+  targets: []

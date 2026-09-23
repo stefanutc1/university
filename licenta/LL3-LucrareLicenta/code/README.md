@@ -125,13 +125,13 @@ sequenceDiagram
 
 | Fișier | Rol Arhitectural | Port / Protocol | Tehnologii Cheie | Standarde Relevante |
 | :--- | :--- | :--- | :--- | :--- |
-| [`payment_gateway_simulator.py`](file:///Users/s3nnnzzzatyeeee/stefannut_repos/proiecte/licenta/LL3-LucrareLicenta/code/payment_gateway_simulator.py) | Simulator Procesare Plăți & Decontare Interbancară | Port `8000` / HTTP REST | FastAPI, Uvicorn, Pydantic, UUID v4 | PCI-DSS v4.0, PSD2 EBA RTS, ISO 20022 (`pacs.008`), SWIFT MT103 |
-| [`core_banking_service.py`](file:///Users/s3nnnzzzatyeeee/stefannut_repos/proiecte/licenta/LL3-LucrareLicenta/code/core_banking_service.py) | Motor Central Contabilitate & Gestiune Solduri | Port `8080` / HTTP REST | FastAPI, SHA-256 Hash Chain, RBAC Guards | Partidă Dublă (*Debite = Credite*), Apache Fineract Architecture |
-| [`database_audit_monitor.py`](file:///Users/s3nnnzzzatyeeee/stefannut_repos/proiecte/licenta/LL3-LucrareLicenta/code/database_audit_monitor.py) | Bază de Date Relațională & Agent Audit Wazuh | In-Memory SQLite / PostgreSQL Engine | SQLite3 Engine, Wazuh Rule Engine, Regex | Proprietăți ACID, Constrângeri 3NF, Wazuh SIEM HIDS Rules |
-| [`banking_attack_simulator.py`](file:///Users/s3nnnzzzatyeeee/stefannut_repos/proiecte/licenta/LL3-LucrareLicenta/code/banking_attack_simulator.py) | Orchestrator Red Team / Blue Team & Test Harness | CLI Standalone Runner | Python 3, Harness Orchestrator | Cadrul MITRE ATT&CK Enterprise (5 Scenarii de Securitate) |
-| [`test_banking_suite.py`](file:///Users/s3nnnzzzatyeeee/stefannut_repos/proiecte/licenta/LL3-LucrareLicenta/code/test_banking_suite.py) | Suită Unit & Integration Testing pentru CI | Pytest Test Runner | Pytest Fixtures, Assertions | GitHub Actions Automated Quality Gates |
-| [`smoke_test_backend.py`](file:///Users/s3nnnzzzatyeeee/stefannut_repos/proiecte/licenta/LL3-LucrareLicenta/code/smoke_test_backend.py) | Test Integrat Smoke Test pentru Backend REST | HTTP Client Standalone | `urllib.request`, JSON Parser | Verificare Endpoint-uri Live & Telemetrie |
-| [`requirements.txt`](file:///Users/s3nnnzzzatyeeee/stefannut_repos/proiecte/licenta/LL3-LucrareLicenta/code/requirements.txt) | Specificație de Dependențe Pip | N/A | Pip Package Manifest | Dependențe minime versionate |
+| [`payment_gateway_simulator.py`](payment_gateway_simulator.py) | Simulator Procesare Plăți & Decontare Interbancară | Port `8000` / HTTP REST | FastAPI, Uvicorn, Pydantic, UUID v4 | PCI-DSS v4.0, PSD2 EBA RTS, ISO 20022 (`pacs.008`), SWIFT MT103 |
+| [`core_banking_service.py`](core_banking_service.py) | Motor Central Contabilitate & Gestiune Solduri | Port `8080` / HTTP REST | FastAPI, SHA-256 Hash Chain, RBAC Guards | Partidă Dublă (*Debite = Credite*), Apache Fineract Architecture |
+| [`database_audit_monitor.py`](database_audit_monitor.py) | Bază de Date Relațională & Agent Audit Wazuh | In-Memory SQLite / PostgreSQL Engine | SQLite3 Engine, Wazuh Rule Engine, Regex | Proprietăți ACID, Constrângeri 3NF, Wazuh SIEM HIDS Rules |
+| [`banking_attack_simulator.py`](banking_attack_simulator.py) | Orchestrator Red Team / Blue Team & Test Harness | CLI Standalone Runner | Python 3, Harness Orchestrator | Cadrul MITRE ATT&CK Enterprise (5 Scenarii de Securitate) |
+| [`test_banking_suite.py`](test_banking_suite.py) | Suită Unit & Integration Testing pentru CI | Pytest Test Runner | Pytest Fixtures, Assertions | GitHub Actions Automated Quality Gates |
+| [`smoke_test_backend.py`](smoke_test_backend.py) | Test Integrat Smoke Test pentru Backend REST | HTTP Client Standalone | `urllib.request`, JSON Parser | Verificare Endpoint-uri Live & Telemetrie |
+| [`requirements.txt`](requirements.txt) | Specificație de Dependențe Pip | N/A | Pip Package Manifest | Dependențe minime versionate |
 
 ---
 
@@ -363,7 +363,7 @@ pkill -f "core_banking_service.py"
 
 ## 6. Integrare CI/CD și DevSecOps
 
-Toate modulele din acest director sunt monitorizate de pipeline-ul de Integrare Continuă GitHub Actions definit în [`.github/workflows/ll3-ci.yml`](file:///Users/s3nnnzzzatyeeee/stefannut_repos/proiecte/.github/workflows/ll3-ci.yml) și [`.github/workflows/ll3-security.yml`](file:///Users/s3nnnzzzatyeeee/stefannut_repos/proiecte/.github/workflows/ll3-security.yml):
+Toate modulele din acest director sunt monitorizate de pipeline-ul de Integrare Continuă GitHub Actions definit în [`.github/workflows/ci.yml`](../../../.github/workflows/ci.yml) și [`.github/workflows/security.yml`](../../../.github/workflows/security.yml):
 
 ```mermaid
 flowchart LR
@@ -405,5 +405,5 @@ licenta/LL3-LucrareLicenta/code/
 
 * [Master README Lucrare de Licență](../README.md) — Documentul principal de referință arhitecturală și academică.
 * [Web Banking Kiosk & Spring Boot Backend Documentation](web/README.md) — Documentația completă a frontend-ului Kiosk și a backend-ului Java 17.
-* [GitHub Actions CI Workflow](file:///Users/s3nnnzzzatyeeee/stefannut_repos/proiecte/.github/workflows/ll3-ci.yml) — Definiția tehnică a pipeline-ului de integrare continuă.
-* [Gitleaks Configuration](file:///Users/s3nnnzzzatyeeee/stefannut_repos/proiecte/.gitleaks.toml) — Reguli de protecție împotriva scurgerii credențialelor financiare.
+* [GitHub Actions CI Workflow](../../../.github/workflows/ci.yml) — Definiția tehnică a pipeline-ului de integrare continuă.
+* [Gitleaks Configuration](../../../.gitleaks.toml) — Reguli de protecție împotriva scurgerii credențialelor financiare.
