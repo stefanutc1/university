@@ -12,7 +12,7 @@
 
 ## 1. Prezentare Generală
 
-Acest director (`master/`) este rezervat găzduirii proiectelor de cercetare aplicată, publicațiilor științifice și disertației din cadrul studiilor universitare de masterat (ciclul II universitar, perioada 2026–2028) la Facultatea de Economie și Administrarea Afacerilor (FEAA), Universitatea din Craiova.
+Acest director (`master/`) este rezervat găzduirii proiectelor de cercetare aplicată, publicațiilor științifice și disertației din cadrul studiilor universitare de masterat (ciclul II universitar, perioada 2027–2029) la Facultatea de Economie și Administrarea Afacerilor (FEAA), Universitatea din Craiova.
 
 ## 2. Direcții de Cercetare Proiectate
 
@@ -23,4 +23,4 @@ Acest director (`master/`) este rezervat găzduirii proiectelor de cercetare apl
 ## 3. Stare Curentă
 
 * **Status:** Planned / Work In Progress (WIP)
-* **Demarare:** Octombrie 2026
+* **Demarare:** Octombrie 2027
