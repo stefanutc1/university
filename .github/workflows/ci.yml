@@ -255,7 +255,7 @@ jobs:
           python-version: '3.11'
 
       - name: Download compiled JAR artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: bank-kiosk-backend-jar
           path: target-artifact
