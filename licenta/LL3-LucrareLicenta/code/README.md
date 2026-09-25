@@ -21,7 +21,7 @@ Acest director (`licenta/LL3-LucrareLicenta/code`) conține suita autonomă de s
 > **„Arhitectura și Securitatea Sistemelor Informatice Bancare: Proiectarea, Implementarea și Auditul Rezilienței Cibernetice într-un Mediu Virtualizat”**  
 > **Instituție:** Universitatea din Craiova — Facultatea de Economie și Administrarea Afacerilor (FEAA)  
 > **Program de Studii:** Informatică Economică (Promoția 2026)  
-> **Absolvent:** Moanță Ștefănuț-Cornel
+> **Absolvent:** Moană Ștefănuț-Cornel
 
 Suita reproduce comportamentul operațional al unui sistem bancar integrat distribuit pe 4 active virtualizate pe platforma de virtualizare **Proxmox VE**, segmentate prin firewall perimetral de nivel L3 (**OPNsense**) și monitorizate continuu prin sisteme de detecție a intruziunilor (**Suricata NIDS/IPS**) și SIEM (**Wazuh HIDS**):
 

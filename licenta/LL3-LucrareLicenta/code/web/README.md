@@ -22,7 +22,7 @@ Acest modul (`licenta/LL3-LucrareLicenta/code/web`) reprezintă subsistemul de i
 > **„Arhitectura și Securitatea Sistemelor Informatice Bancare: Proiectarea, Implementarea și Auditul Rezilienței Cibernetice într-un Mediu Virtualizat”**  
 > **Instituție:** Universitatea din Craiova — Facultatea de Economie și Administrarea Afacerilor (FEAA)  
 > **Program de Studii:** Informatică Economică (Promoția 2026)  
-> **Absolvent:** Moanță Ștefănuț-Cornel
+> **Absolvent:** Moană Ștefănuț-Cornel
 
 Modulul integrează trei capacități inginerești fundamentale:
 

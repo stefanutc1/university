@@ -1,7 +1,7 @@
 """
 Server Bază de Date Financiară & Modul de Audit și Monitorizare Wazuh HIDS / SIEM
 Lucrare de Licență: Arhitectura și Securitatea Sistemelor Informatice Bancare
-Autor: Ștefănuț-Cornel Moanță | Facultatea de Economie și Administrarea Afacerilor (FEAA), Universitatea din Craiova
+Autor: Ștefănuț-Cornel Moană | Facultatea de Economie și Administrarea Afacerilor (FEAA), Universitatea din Craiova
 Specializarea: Informatică Economică
 
 Modul: Financial Database Engine & Wazuh Security Monitor (VM 311)
@@ -284,7 +284,7 @@ def run_cli_self_test():
     """Rulare suita de teste autonome pentru Serverul de Baze de Date și Auditul Wazuh."""
     print("=" * 80)
     print("SUITA DE TESTARE: Financial Database & Wazuh HIDS/SIEM Security Auditor")
-    print("Student: Ștefănuț-Cornel Moanță | Informatică Economică FEAA UCV")
+    print("Student: Ștefănuț-Cornel Moană | Informatică Economică FEAA UCV")
     print("=" * 80)
 
     db = FinancialDatabase()

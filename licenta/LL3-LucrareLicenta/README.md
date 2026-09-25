@@ -3,7 +3,7 @@
 
 **Universitatea din Craiova** | **Facultatea de Economie și Administrarea Afacerilor (FEAA)**  
 **Program de Studii:** Informatică Economică (Promoția 2026)  
-**Absolvent:** Moanță Ștefănuț-Cornel  
+**Absolvent:** Moană Ștefănuț-Cornel  
 **Coordonator Științific:** Conf. univ. dr. [Nume Coordonator]  
 
 ---

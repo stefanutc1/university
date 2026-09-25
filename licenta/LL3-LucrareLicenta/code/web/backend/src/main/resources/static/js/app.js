@@ -1,6 +1,6 @@
 /**
  * Banking Kiosk Application Logic
- * Lucrare de Licență FEAA UCV - Moanță Ștefănuț-Cornel
+ * Lucrare de Licență FEAA UCV - Moană Ștefănuț-Cornel
  */
 
 let currentPin = "";

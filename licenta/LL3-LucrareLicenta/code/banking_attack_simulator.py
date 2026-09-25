@@ -1,7 +1,7 @@
 """
 Simulator și Suită Integrată de Testare a Atacurilor și Mecanismelor de Apărare Bancară
 Lucrare de Licență: Arhitectura și Securitatea Sistemelor Informatice Bancare
-Autor: Ștefănuț-Cornel Moanță | Facultatea de Economie și Administrarea Afacerilor (FEAA), Universitatea din Craiova
+Autor: Ștefănuț-Cornel Moană | Facultatea de Economie și Administrarea Afacerilor (FEAA), Universitatea din Craiova
 Specializarea: Informatică Economică
 
 Modul: Banking Security Attack & Defense Simulator (Red Team vs. Blue Team Suite)
@@ -272,7 +272,7 @@ class BankingAttackDefenseHarness:
         print("\n" + "=" * 80)
         print("RAPORT FINAL DE EVALUARE ȘI AUDIT AL SECURITĂȚII BANCARE")
         print("Universitatea din Craiova | Facultatea de Economie și Administrarea Afacerilor (FEAA)")
-        print("Absolvent: Moanță Ștefănuț-Cornel | Specializarea: Informatică Economică, 2026")
+        print("Absolvent: Moană Ștefănuț-Cornel | Specializarea: Informatică Economică, 2026")
         print("=" * 80)
 
         total = len(self.results_matrix)

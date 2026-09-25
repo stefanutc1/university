@@ -1,7 +1,7 @@
 """
 Sistem de Simulare Payment Gateway & Interbank Settlement (SWIFT / ISO 20022)
 Lucrare de Licență: Arhitectura și Securitatea Sistemelor Informatice Bancare
-Autor: Ștefănuț-Cornel Moanță | Facultatea de Economie și Administrarea Afacerilor (FEAA), Universitatea din Craiova
+Autor: Ștefănuț-Cornel Moană | Facultatea de Economie și Administrarea Afacerilor (FEAA), Universitatea din Craiova
 Specializarea: Informatică Economică
 
 Modul: Payment Gateway Simulator (VM/LXC 312)
@@ -417,7 +417,7 @@ def run_cli_self_test():
     """Rulare suita de teste autonome pentru validare academică în cadrul licenței."""
     print("=" * 80)
     print("SUITA DE TESTARE: Payment Gateway & Interbank Settlement Simulator")
-    print("Student: Ștefănuț-Cornel Moanță | Informatică Economică FEAA UCV")
+    print("Student: Ștefănuț-Cornel Moană | Informatică Economică FEAA UCV")
     print("=" * 80)
 
     # 1. Test Autorizare Card Valid

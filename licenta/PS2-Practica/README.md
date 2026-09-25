@@ -15,7 +15,7 @@
 
 ## 1. Prezentare Generală
 
-Acest director (`licenta/PS2-Practica`) găzduiește documentația stagiului de **Practică de Specialitate (Anul 2)** desfășurat de studentul Moanță Ștefănuț-Cornel în cadrul programului de licență *Informatică Economică*, Facultatea de Economie și Administrarea Afacerilor (FEAA), Universitatea din Craiova.
+Acest director (`licenta/PS2-Practica`) găzduiește documentația stagiului de **Practică de Specialitate (Anul 2)** desfășurat de studentul Moană Ștefănuț-Cornel în cadrul programului de licență *Informatică Economică*, Facultatea de Economie și Administrarea Afacerilor (FEAA), Universitatea din Craiova.
 
 Directorul include două componente corelate:
 1. **Jurnalul Zilnic de Practică (14 Înregistrări Bilingve RO/EN):** Documentează activitățile tehnice, setup-ul mediilor de virtualizare, configurarea rețelelor și procesul iterativ de dezvoltare software.
