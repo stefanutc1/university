@@ -4,13 +4,13 @@ on:
   push:
     branches: [ main, master ]
     paths:
-      - 'licenta/LL3-LucrareLicenta/latex/**'
+      - 'LucrareLicenta/latex/**'
       - '.github/workflows/latex.yml'
   pull_request:
     branches: [ main, master ]
     types: [ opened, synchronize, reopened ]
     paths:
-      - 'licenta/LL3-LucrareLicenta/latex/**'
+      - 'LucrareLicenta/latex/**'
       - '.github/workflows/latex.yml'
   workflow_dispatch:
 
@@ -33,16 +33,16 @@ jobs:
         uses: xu-cheng/latex-action@v3
         with:
           root_file: main.tex
-          working_directory: licenta/LL3-LucrareLicenta/latex
+          working_directory: LucrareLicenta/latex
           args: -pdf -file-line-error -interaction=nonstopmode -halt-on-error
 
       - name: Verify generated PDF document
         run: |
-          PDF_PATH="licenta/LL3-LucrareLicenta/latex/main.pdf"
+          PDF_PATH="LucrareLicenta/latex/main.pdf"
           if [ -f "$PDF_PATH" ]; then
             SIZE=$(du -h "$PDF_PATH" | cut -f1)
             echo "[SUCCESS] PDF-ul lucrarii de licenta a fost generat cu succes ($SIZE)."
-            cp "$PDF_PATH" "licenta/LL3-LucrareLicenta/LUCRARE_LICENTA_2026.pdf"
+            cp "$PDF_PATH" "LucrareLicenta/LUCRARE_LICENTA_2026.pdf"
           else
             echo "[EROARE CRITICA] Fisierul PDF nu a fost produs in timpul compilarii LaTeX!"
             exit 1
@@ -52,7 +52,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: licenta-pdf
-          path: licenta/LL3-LucrareLicenta/LUCRARE_LICENTA_2026.pdf
+          path: LucrareLicenta/LUCRARE_LICENTA_2026.pdf
           retention-days: 30
           if-no-files-found: error
 

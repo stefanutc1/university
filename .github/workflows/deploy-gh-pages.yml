@@ -28,8 +28,8 @@ jobs:
       - name: Verify Web Frontend Assets Integrity
         run: |
           echo "[CHECK] Verificare integritate fisiere inainte de publicare..."
-          test -f licenta/LL3-LucrareLicenta/code/web/index.html || { echo "Eroare: Lipsește index.html"; exit 1; }
-          test -f licenta/LL3-LucrareLicenta/code/web/css/kiosk.css || { echo "Eroare: Lipsește kiosk.css"; exit 1; }
+          test -f LucrareLicenta/code/web/index.html || { echo "Eroare: Lipsește index.html"; exit 1; }
+          test -f LucrareLicenta/code/web/css/kiosk.css || { echo "Eroare: Lipsește kiosk.css"; exit 1; }
           echo "[SUCCESS] Verificare integritate finalizată cu succes."
 
       - name: Check GitHub Pages Availability
@@ -53,7 +53,7 @@ jobs:
         if: steps.check_pages.outputs.pages_enabled == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'licenta/LL3-LucrareLicenta/code/web'
+          path: 'LucrareLicenta/code/web'
 
       - name: Deploy to GitHub Pages
         if: steps.check_pages.outputs.pages_enabled == 'true'

@@ -4,15 +4,15 @@ on:
   push:
     branches: [ main, master ]
     paths:
-      - 'licenta/LL3-LucrareLicenta/code/**'
-      - 'licenta/PS2-Practica/proiect/**'
+      - 'LucrareLicenta/code/**'
+      - 'PracticaSpecialitate/proiect/**'
       - '.github/workflows/ci.yml'
   pull_request:
     branches: [ main, master ]
     types: [ opened, synchronize, reopened ]
     paths:
-      - 'licenta/LL3-LucrareLicenta/code/**'
-      - 'licenta/PS2-Practica/proiect/**'
+      - 'LucrareLicenta/code/**'
+      - 'PracticaSpecialitate/proiect/**'
       - '.github/workflows/ci.yml'
   workflow_dispatch:
 
@@ -43,22 +43,22 @@ jobs:
         with:
           filters: |
             python_ll3:
-              - 'licenta/LL3-LucrareLicenta/code/*.py'
-              - 'licenta/LL3-LucrareLicenta/code/requirements.txt'
+              - 'LucrareLicenta/code/*.py'
+              - 'LucrareLicenta/code/requirements.txt'
               - '.github/workflows/ci.yml'
             backend_java:
-              - 'licenta/LL3-LucrareLicenta/code/web/backend/**'
+              - 'LucrareLicenta/code/web/backend/**'
               - '.github/workflows/ci.yml'
             web_kiosk:
-              - 'licenta/LL3-LucrareLicenta/code/web/*.html'
-              - 'licenta/LL3-LucrareLicenta/code/web/css/**'
-              - 'licenta/LL3-LucrareLicenta/code/web/js/**'
+              - 'LucrareLicenta/code/web/*.html'
+              - 'LucrareLicenta/code/web/css/**'
+              - 'LucrareLicenta/code/web/js/**'
               - '.github/workflows/ci.yml'
             web_ps2:
-              - 'licenta/PS2-Practica/proiect/**'
+              - 'PracticaSpecialitate/proiect/**'
               - '.github/workflows/ci.yml'
             docker_ll3:
-              - 'licenta/LL3-LucrareLicenta/code/web/backend/Dockerfile'
+              - 'LucrareLicenta/code/web/backend/Dockerfile'
               - '.github/workflows/ci.yml'
 
   python-ci:
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: licenta/LL3-LucrareLicenta/code
+        working-directory: LucrareLicenta/code
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -78,7 +78,7 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
-          cache-dependency-path: 'licenta/LL3-LucrareLicenta/code/requirements.txt'
+          cache-dependency-path: 'LucrareLicenta/code/requirements.txt'
 
       - name: Install dependencies
         run: |
@@ -108,7 +108,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: licenta/LL3-LucrareLicenta/code/web/backend
+        working-directory: LucrareLicenta/code/web/backend
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -136,7 +136,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bank-kiosk-backend-jar
-          path: licenta/LL3-LucrareLicenta/code/web/backend/target/*.jar
+          path: LucrareLicenta/code/web/backend/target/*.jar
           retention-days: 14
           if-no-files-found: error
 
@@ -147,7 +147,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: licenta/LL3-LucrareLicenta/code/web
+        working-directory: LucrareLicenta/code/web
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -190,7 +190,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: licenta/PS2-Practica/proiect
+        working-directory: PracticaSpecialitate/proiect
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -227,8 +227,8 @@ jobs:
       - name: Build backend Docker container image
         uses: docker/build-push-action@v6
         with:
-          context: licenta/LL3-LucrareLicenta/code/web/backend
-          file: licenta/LL3-LucrareLicenta/code/web/backend/Dockerfile
+          context: LucrareLicenta/code/web/backend
+          file: LucrareLicenta/code/web/backend/Dockerfile
           push: false
           tags: bank-kiosk-backend:ci-test
           cache-from: type=gha
@@ -271,7 +271,7 @@ jobs:
 
       - name: Run live integration smoke tests
         run: |
-          python3 licenta/LL3-LucrareLicenta/code/smoke_test_backend.py
+          python3 LucrareLicenta/code/smoke_test_backend.py
 
       - name: Dump backend logs on failure
         if: failure()
@@ -325,5 +325,5 @@ jobs:
           | **Smoke Test** | Live REST Endpoints & Wazuh Telemetry Stream | ${{ needs.application-smoke-test.result }} |
           | **Aggregate CI Gate** | Monorepo Quality Status for Branch Protection | SUCCESS |
 
-          *Pipeline executat pe infrastructura stefanutc1/proiecte.*
+          *Pipeline executat pe infrastructura stefanutc1/university.*
           EOF

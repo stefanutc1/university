@@ -7,10 +7,10 @@ title = "Gitleaks DevSecOps Security Profile"
 [allowlist]
 description = "Permite chei mock academice utilizate exclusiv pentru teste in memorie"
 paths = [
-  '''licenta/LL3-LucrareLicenta/code/web/backend/src/main/resources/application\.ya?ml''',
-  '''licenta/LL3-LucrareLicenta/code/web/js/mock-engine\.js''',
-  '''licenta/LL3-LucrareLicenta/code/payment_gateway_simulator\.py''',
-  '''licenta/LL3-LucrareLicenta/code/banking_attack_simulator\.py'''
+  '''LucrareLicenta/code/web/backend/src/main/resources/application\.ya?ml''',
+  '''LucrareLicenta/code/web/js/mock-engine\.js''',
+  '''LucrareLicenta/code/payment_gateway_simulator\.py''',
+  '''LucrareLicenta/code/banking_attack_simulator\.py'''
 ]
 regexes = [
   '''BankingSecretKeyForJwtSigningInFEAALicentaProjectMustBeAtLeast256BitsLong2026!''',
