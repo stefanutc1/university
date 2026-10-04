@@ -72,7 +72,7 @@ flowchart TD
     PR --> DOCS_PIPELINE
 
     CI_GATE --> DEPLOY_CHECK{CI Success?}
-    DEPLOY_CHECK -- Da (Branch Main) --> PAGES[Deploy GitHub Pages: deploy-gh-pages.yml]
+    DEPLOY_CHECK -- Da (Branch Main) --> READY[Merge Approved / Artifact Ready]
     DEPLOY_CHECK -- Nu --> REJECT[Block PR / Halt Pipeline]
 ```
 
@@ -80,10 +80,9 @@ flowchart TD
 
 | Workflow | Fișier | Responsabilitate & Porți de Calitate | Triggere |
 | :--- | :--- | :--- | :--- |
-| **Continuous Integration** | `.github/workflows/ll3-ci.yml` | Validare bytecode Python, 5 scenarii MITRE ATT&CK, compilare Maven Java 17, build Docker, smoke test REST live. | `push`, `pull_request`, `workflow_dispatch` |
-| **DevSecOps & Security** | `.github/workflows/ll3-security.yml` | Scanare secrete Gitleaks, auditare dependențe `pip-audit`, analiză statică SAST Bandit, scanare Trivy. | `push`, `pull_request`, `workflow_dispatch` |
-| **Academic Documentation** | `.github/workflows/ll3-docs.yml` | Verificare paritate DOCX ↔ LaTeX, compilare TeXLive în PDF și generare artefact `licenta-pdf`. | `push`, `pull_request`, `workflow_dispatch` |
-| **GitHub Pages Deployment** | `.github/workflows/deploy-gh-pages.yml` | Publicare securizată a terminalului Kiosk pe GitHub Pages, condiționată strict de succesul CI. | `workflow_run` (după CI), `workflow_dispatch` |
+| **Continuous Integration** | `.github/workflows/ci.yml` | Validare bytecode Python, 5 scenarii MITRE ATT&CK, compilare Maven Java 17, build Docker, smoke test REST live. | `push`, `pull_request`, `workflow_dispatch` |
+| **DevSecOps & Security** | `.github/workflows/security.yml` | Scanare secrete Gitleaks, auditare dependențe `pip-audit`, analiză statică SAST Bandit, scanare Trivy. | `push`, `pull_request`, `workflow_dispatch` |
+| **Academic Documentation** | `.github/workflows/latex.yml` | Verificare paritate DOCX ↔ LaTeX, compilare TeXLive în PDF și generare artefact `licenta-pdf`. | `push`, `pull_request`, `workflow_dispatch` |
 
 ### 2.3. Politica de Securitate și Porți Blocante (Quality Gates)
 
@@ -152,6 +151,4 @@ Pentru protejarea ramurii de producție `main` și menținerea standardelor de c
      * `Validate Parity & Compile LaTeX PDF` (din `ll3-docs.yml`)
    * **Require branches to be up to date before merging:** Activ.
    * **Do not allow bypassing the above settings:** Activ.
-2. **GitHub Pages Environment:**
-   * Source: **GitHub Actions** (deployment gh-pages via `deploy-gh-pages.yml`).
-   * Custom domain / HTTPS enforcement: Activ.
+

@@ -1,5 +1,5 @@
 /**
- * MockBankingEngine - Simulator in-browser pentru GitHub Pages
+ * MockBankingEngine - Simulator in-browser pentru mod Offline / Standalone
  * Reproduce 100% comportamentul backend-ului Java Spring Boot si scrie loguri JSON
  */
 class MockBankingEngine {

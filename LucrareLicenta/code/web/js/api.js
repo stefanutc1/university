@@ -1,5 +1,5 @@
 /**
- * BankApiClient - Client hibrid (Live Spring Boot / Demo GitHub Pages)
+ * BankApiClient - Client hibrid (Live Spring Boot / Demo Standalone)
  */
 class BankApiClient {
   constructor() {
@@ -23,10 +23,10 @@ class BankApiClient {
         return;
       }
     } catch (e) {
-      // Backend offline sau GitHub Pages static
+      // Backend offline sau mod static
     }
     this.isLiveBackend = false;
-    this.updateConnectionIndicator("DEMO (GitHub Pages / Mock Engine)", false);
+    this.updateConnectionIndicator("DEMO (Offline / Mock Engine)", false);
   }
 
   updateConnectionIndicator(text, isLive) {

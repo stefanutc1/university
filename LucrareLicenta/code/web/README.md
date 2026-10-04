@@ -8,7 +8,7 @@
 [![Security](https://img.shields.io/badge/Security-Stateless%20JWT%20(JJWT)-blue?style=flat&logo=jsonwebtokens)](backend/src/main/java/ro/ucv/feaa/bank/config/SecurityConfig.java)
 [![SIEM Telemetry](https://img.shields.io/badge/SIEM-Wazuh%204.14%20HIDS-teal?style=flat&logo=wazuh)](backend/src/main/java/ro/ucv/feaa/bank/service/StructuredAuditLogger.java)
 [![Frontend](https://img.shields.io/badge/UI-Vanilla%20JS%20ATM%20Kiosk-yellow?style=flat&logo=javascript)](index.html)
-[![Deployment](https://img.shields.io/badge/Deployment-Dual--Mode%20(GitHub%20Pages%20%2B%20Docker)-purple?style=flat&logo=docker)](backend/Dockerfile)
+[![Deployment](https://img.shields.io/badge/Deployment-Docker%20%2B%20Standalone-purple?style=flat&logo=docker)](backend/Dockerfile)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](../../LICENSE)
 
 </div>
@@ -34,7 +34,7 @@ Modulul integrează trei capacități inginerești fundamentale:
    * **Consolă SOC Live Retractabilă:** Consolă integrată la baza ecranului pentru vizualizarea în timp real a telemetriei JSON și simularea atacurilor direct în timpul demonstrației de licență.
 3. **Arhitectură Hibridă Dual-Mode (Live REST & Zero-Dependency Mock):**
    * **Modul Live (Spring Boot pe Port 8080):** Conectare automată prin `fetch()` asincron la backend-ul Java, persistând evenimentele direct în `/var/log/bank-app/security.log`.
-   * **Modul Demo (GitHub Pages):** Atunci când rulează ca pagină web statică, modulul activează automat motorul local `mock-engine.js`, oferind funcționalitate 100% identică în browser fără nicio dependență de infrastructură externă.
+   * **Modul Demo (Standalone Browser):** Atunci când rulează ca pagină web statică locală fără backend activ, modulul activează automat motorul local `mock-engine.js`, oferind funcționalitate 100% identică în browser fără nicio dependență de infrastructură externă.
 
 ---
 
@@ -434,16 +434,16 @@ python3 smoke_test_backend.py
 
 ## 6. Integrare în Pipeline-ul CI/CD
 
-Modulul web este integrat în workflow-ul GitHub Actions [`.github/workflows/ci.yml`](../../../../.github/workflows/ci.yml) și [`.github/workflows/deploy-gh-pages.yml`](../../../../.github/workflows/deploy-gh-pages.yml):
+Modulul web este integrat în workflow-ul GitHub Actions [`.github/workflows/ci.yml`](../../../../.github/workflows/ci.yml):
 
 ```mermaid
 flowchart LR
-    GIT_EVENT([Push pe licenta/LL3/**]) --> MAVEN_BUILD[Compilare Maven Java 17]
+    GIT_EVENT([Push pe cod web]) --> MAVEN_BUILD[Compilare Maven Java 17]
     MAVEN_BUILD --> JUNIT_TESTS[Teste Unitare: JUnit 5 & MockMvc]
     JUNIT_TESTS --> DOCKER_BUILD[Validare Build Multi-Stage Docker]
     DOCKER_BUILD --> SMOKE_TEST[Smoke Test: Probing Endpoint-uri Live]
     SMOKE_TEST --> CI_SUCCESS{CI Passed?}
-    CI_SUCCESS -- DA --> DEPLOY_PAGES[Publicare Kiosk pe GitHub Pages]
+    CI_SUCCESS -- DA --> ARTIFACT_BUILD[Construire Pachet JAR & Verificare Frontend]
     CI_SUCCESS -- NU --> BLOCK[Blocare Deploy & Alertă DevSecOps]
 ```
 
@@ -460,7 +460,7 @@ licenta/LL3-LucrareLicenta/code/web/
 ├── js/
 │   ├── api.js                            # Client API hibrid (conectare automată Spring Boot / Fallback Demo)
 │   ├── app.js                            # Controller principal UI, mașină de stări Kiosk, timer 45s, Auto-Wipe
-│   └── mock-engine.js                    # Simulator in-browser autonom pentru găzduire statică pe GitHub Pages
+│   └── mock-engine.js                    # Simulator in-browser autonom pentru execuție statică / offline
 └── backend/                              # Aplicație Java 17 Spring Boot 3.2
     ├── pom.xml                           # Configurație Maven (Spring Security, JJWT, Actuator, JUnit 5)
     ├── Dockerfile                        # Script de construire container Docker multi-stage
