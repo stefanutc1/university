@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+    <TITLE>Legaturi HTML - Ancore sursa si destinatie</TITLE>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+</HEAD>
+<BODY>
+    <P><A HREF="index.html">&laquo; Inapoi la Meniul Principal</A></P>
+    <HR>
+
+    <H1>Legaturi HTML (Sectiunea 5)</H1>
+    <P>Se bazeaza pe folosirea de ancore cu elementul <code>&lt;a&gt;</code>. Exista doua tipuri de ancore:</P>
+    
+    <UL>
+        <LI><B>Ancore sursa:</B> au forma <code>&lt;a href="url"&gt;text&lt;/a&gt;</code> si reprezinta originea unei legaturi.</LI>
+        <LI><B>Ancore destinatie:</B> au forma <code>&lt;a name="nume"&gt;&lt;/a&gt;</code> (sau folosind atributul <code>id="nume"</code>) si reprezinta destinatia.</LI>
+    </UL>
+
+    <H2>1. Navigare interna rapida prin ancore destinatie (#nume)</H2>
+    <P>Faceti clic pe una dintre legaturile de mai jos pentru a sari direct la sectiunea dorita:</P>
+    <UL>
+        <LI><A HREF="#capitol1">Mergi la Capitolul 1 (ancora cu name)</A></LI>
+        <LI><A HREF="#capitol2">Mergi la Capitolul 2 (ancora cu name)</A></LI>
+        <LI><A HREF="#capitol3">Mergi la Capitolul 3 (ancora cu id)</A></LI>
+        <LI><A HREF="#subsol">Mergi la Subsolul paginii</A></LI>
+    </UL>
+
+    <H2>2. Legaturi externe (World Wide Web)</H2>
+    <UL>
+        <LI><A HREF="https://www.w3.org/MarkUp/" TARGET="_blank">Consortiul W3C - Standarde HTML (deschide in fila noua)</A></LI>
+        <LI><A HREF="https://developer.mozilla.org/ro/docs/Web/HTML" TARGET="_blank">MDN Web Docs - Documentatie HTML</A></LI>
+    </UL>
+
+    <HR>
+
+    <H2><A NAME="capitol1"></A>Capitolul 1: Concepte introductive HTML</H2>
+    <P>HTML este limbajul universal utilizat pentru crearea si afisarea paginilor web. A fost dezvoltat initial pe baza SGML (Standard Generalized Markup Language) si foloseste etichete pentru a descrie structura continutului.</P>
+    <P><A HREF="#top">Inapoi la inceputul paginii</A></P>
+
+    <BR><BR><BR>
+
+    <H2><A NAME="capitol2"></A>Capitolul 2: Marcaje de bloc vs. Marcaje incluse</H2>
+    <P>Elementele de nivel bloc (P, H1-H6, TABLE, UL, OL) incep intotdeauna pe o linie noua si pot cuprinde alte elemente de bloc sau inline. Elementele incluse (B, I, U, A, IMG) se desfasoara in cadrul fluxului de text al paragrafului.</P>
+    <P><A HREF="#top">Inapoi la inceputul paginii</A></P>
+
+    <BR><BR><BR>
+
+    <H2 ID="capitol3">Capitolul 3: Hipertext si ancore (Definite cu ID)</H2>
+    <P>In versiunile moderne de HTML, atributul <code>id</code> poate transforma orice element intr-o ancora destinatie, eliminand necesitatea marcajului <code>&lt;a name="..."&gt;</code>.</P>
+    <P><A HREF="#top">Inapoi la inceputul paginii</A></P>
+
+    <BR><BR><BR>
+
+    <HR>
+    <DIV ID="subsol">
+        <H3>Subsolul paginii (Ancora #subsol)</H3>
+        <P>Ati ajuns la destinatia <code>#subsol</code>.</P>
+        <P><A HREF="#top">Inapoi sus &uarr;</A> | <A HREF="index.html">Inapoi la Meniul Principal</A></P>
+    </DIV>
+</BODY>
+</HTML>

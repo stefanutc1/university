@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+
+<HEAD>
+    <TITLE>Cerinta 2</TITLE>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+</HEAD>
+
+<BODY>
+    <P><A HREF="index.html">&laquo; Inapoi la Meniul Principal</A></P>
+    <HR>
+
+    <H1>Cerinta 2</H1>
+    <P>
+        Aceasta pagina integreaza intr-un singur
+        document conceptele fundamentale de HTML:
+    </P>
+
+    <UL>
+        <LI><A HREF="#sec_liste">1. Liste si formatare text</A></LI>
+        <LI><A HREF="#sec_tabel">2. Structura tabelara</A></LI>
+        <LI><A HREF="#sec_formular">3. Formular de interactiune</A></LI>
+    </UL>
+    <HR>
+
+    <H2><A NAME="sec_liste"></A>1. Formatare text si liste</H2>
+    <P>
+        Un document HTML contine <b>date</b> si <i>marcaje</i>. Marcajele pot fi de tip <u>bloc</u> sau <u>incluse
+            (inline)</u>.
+    </P>
+
+    <H3>Exemplu de liste imbricate:</H3>
+    <OL>
+        <LI>Limbaje de marcare:
+            <UL>
+                <LI>SGML (Standard Generalized Markup Language)</LI>
+                <LI>HTML (HyperText Markup Language)</LI>
+                <LI>XML (Extensible Markup Language)</LI>
+            </UL>
+        </LI>
+        <LI>Standarde si versiuni:
+            <UL>
+                <LI>HTML 2.0 (1995)</LI>
+                <LI>HTML 3.2 (1997)</LI>
+                <LI>HTML 4.01 (1999)</LI>
+            </UL>
+        </LI>
+    </OL>
+
+    <H3>Lista de definitii:</H3>
+    <DL>
+        <DT><B>DTD</B></DT>
+        <DD>Document Type Definition - defineste tipul si regulile gramaticale ale unui document.</DD>
+        <DT><B>Element de nivel bloc</B></DT>
+        <DD>Element care incepe intotdeauna pe o linie noua (ex: H1, P, TABLE, FORM).</DD>
+        <DT><B>Element inclus (inline)</B></DT>
+        <DD>Element care nu incepe pe linie noua si ramane in fluxul textului (ex: B, I, A, IMG).</DD>
+    </DL>
+    <P><A HREF="#top">Inapoi sus &uarr;</A></P>
+    <HR>
+
+    <H2><A NAME="sec_tabel"></A>2. Structura tabelara</H2>
+    <P>Tabel cu orar, continand antet, linii si date:</P>
+
+    <TABLE BORDER="2" CELLPADDING="5" CELLSPACING="2">
+        <CAPTION>Orar Laboratoare</CAPTION>
+        <TBODY>
+            <TR>
+                <TH>Ziua</TH>
+                <TH>Interval</TH>
+                <TH>Disciplina</TH>
+                <TH>Sala</TH>
+            </TR>
+            <TR>
+                <TD>Luni</TD>
+                <TD>08:00 - 10:00</TD>
+                <TD>Programare web</TD>
+                <TD>223</TD>
+            </TR>
+            <TR>
+                <TD>Miercuri</TD>
+                <TD>10:00 - 12:00</TD>
+                <TD>Gestiunea bazelor de date</TD>
+                <TD>224</TD>
+            </TR>
+            <TR>
+                <TD>Vineri</TD>
+                <TD>18:00 - 20:00</TD>
+                <TD>Programare orientata obiect</TD>
+                <TD>222</TD>
+            </TR>
+        </TBODY>
+    </TABLE>
+    <P><A HREF="#top">Inapoi sus &uarr;</A></P>
+    <HR>
+
+    <H2><A NAME="sec_formular"></A>3. Formular de contact si feedback</H2>
+    <P>Formular utilizand metoda GET:</P>
+
+    <FORM METHOD="GET" ACTION="">
+        Nume complet:<BR>
+        <INPUT TYPE="TEXT" NAME="Nume_Student" SIZE="20">
+        <P />
+
+        Parola cont:<BR>
+        <INPUT TYPE="PASSWORD" NAME="Parola_Student" SIZE="10">
+        <P />
+
+        An de studiu:<BR>
+        <INPUT TYPE="RADIO" NAME="An" VALUE="1" CHECKED>Anul 1
+        <INPUT TYPE="RADIO" NAME="An" VALUE="2">Anul 2
+        <INPUT TYPE="RADIO" NAME="An" VALUE="3">Anul 3
+        <P />
+
+        Optiuni curs:<BR>
+        <INPUT TYPE="CHECKBOX" NAME="Notificari" CHECKED="on"> Doresc anunturi pe e-mail
+        <P />
+
+        Specializare:<BR>
+        <SELECT NAME="Specializare">
+            <OPTION VALUE="Informatica Economica">Informatica Economica</OPTION>
+            <OPTION VALUE="Cibernetica">Finante si banci</OPTION>
+            <OPTION VALUE="Statistica">Management</OPTION>
+        </SELECT>
+        <P />
+
+        Observatii / Comentarii:<BR>
+        <TEXTAREA NAME="Mesaj" ROWS="4" COLS="30"></TEXTAREA>
+        <P />
+
+        <INPUT TYPE="SUBMIT" VALUE="Trimite Datele (GET)">
+        <INPUT TYPE="RESET" VALUE="Initializare">
+    </FORM>
+    <P><A HREF="#top">Inapoi sus &uarr;</A> | <A HREF="index.html">Inapoi la Meniul Principal</A></P>
+</BODY>
+
+</HTML>

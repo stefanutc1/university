@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+    <TITLE>Un exemplu de formular</TITLE>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+</HEAD>
+<BODY>
+    <P><A HREF="index.html">&laquo; Inapoi la Meniul Principal</A></P>
+    <HR>
+
+    <H1>Exemplu de formular HTML si comunicare HTTP (Sectiunea 8)</H1>
+    <P>Completati campurile de mai jos si apasati butonul <b>Trimite</b>. Deoarece formularul foloseste metoda <code>GET</code>, datele vor fi atasate in URL dupa caracterul <code>?</code> (Query String).</P>
+
+    <FORM METHOD="GET" ACTION="">
+        <B>Nume (TEXT):</B><BR>
+        <INPUT TYPE="TEXT" NAME="Nume" SIZE="15" VALUE="abc"><P/>
+
+        <B>Parola (PASSWORD):</B><BR>
+        <INPUT TYPE="PASSWORD" NAME="Parola" SIZE="6" VALUE="12ab"><P/>
+
+        <B>Validare (CHECKBOX):</B><BR>
+        <INPUT TYPE="CHECKBOX" NAME="Validare" CHECKED="on"> Caseta de validare<P/>
+
+        <B>Grup (RADIO):</B><BR>
+        <INPUT TYPE="RADIO" NAME="Grup" VALUE="1"> Optiunea 1 &nbsp;
+        <INPUT TYPE="RADIO" NAME="Grup" VALUE="2" CHECKED> Optiunea 2<P/>
+
+        <B>Buton Submit obisnuit (SUBMIT):</B><BR>
+        <INPUT TYPE="SUBMIT" NAME="Trimite" VALUE="Trimite"></INPUT><P/>
+
+        <B>Fisier (FILE):</B><BR>
+        <INPUT TYPE="FILE" NAME="Poza" ACCEPT="image/*" MAXLENGTH="40" SIZE="12"></INPUT><P/>
+
+        <INPUT TYPE="HIDDEN" NAME="Secret" VALUE="Secret"></INPUT>
+
+        <B>Buton generic (BUTTON):</B><BR>
+        <INPUT TYPE="BUTTON" NAME="Actiune" VALUE="Actiune" ONCLICK="alert('Butonul generic a fost actionat!')"></INPUT><P/>
+
+        <B>Buton tip imagine (IMAGE):</B><BR>
+        <INPUT TYPE="IMAGE" NAME="Imagine" VALUE="Imagine" SRC="tiny.jpg" ALT="Trimite prin imagine"></INPUT><P/>
+
+        <B>Buton resetare campuri (RESET):</B><BR>
+        <INPUT TYPE="RESET" NAME="Initializare" VALUE="Initializare"></INPUT><P/>
+
+        <B>Comentariu multilinie (TEXTAREA):</B><BR>
+        <TEXTAREA NAME="COMENTARIU" ROWS="6" COLS="25">comentariu</TEXTAREA><P/>
+
+        <B>Meniu derulant (SELECT):</B><BR>
+        <SELECT NAME="OPTIUNI" SIZE="1">
+            <OPTION VALUE="Valoarea 1">Valoarea 1</OPTION>
+            <OPTION VALUE="Valoarea 2" SELECTED>Valoarea 2</OPTION>
+        </SELECT><P/>
+    </FORM>
+
+    <HR>
+
+    <H2>Explicatii privind comunicarea HTTP GET:</H2>
+    <P>Datele transmise de client serverului (partea de dupa caracterul <code>?</code> din URL) arata astfel:</P>
+    <PRE STYLE="background-color:#F4F4F4; padding:10px; border:1px solid #CCC; font-size:14px;">
+Nume=abc&amp;
+Parola=12ab&amp;
+Validare=on&amp;
+Grup=2&amp;
+Trimite=Trimite&amp;
+Poza=exemplu_fisier.jpg&amp;
+Secret=Secret&amp;
+COMENTARIU=comentariu&amp;
+OPTIUNI=Valoarea+2
+    </PRE>
+    <UL>
+        <LI><CODE>%3A</CODE> reprezinta caracterul două puncte (<CODE>:</CODE>)</LI>
+        <LI><CODE>%5C</CODE> reprezinta caracterul backslash (<CODE>\</CODE>)</LI>
+        <LI><CODE>+</CODE> reprezinta caracterul spatiu (<CODE> </CODE>)</LI>
+    </UL>
+
+    <DIV ID="queryResult" STYLE="margin-top:15px; padding:10px; background-color:#EBF5FB; border-left:4px solid #2980B9;">
+        <B>Date receptionate in URL curent (Query String):</B><BR>
+        <SPAN ID="queryStringDisplay">Niciun parametru trimis inca (apasati „Trimite”).</SPAN>
+    </DIV>
+
+    <SCRIPT TYPE="text/javascript">
+        if (window.location.search && window.location.search.length > 1) {
+            document.getElementById('queryStringDisplay').innerHTML = 
+                '<b>' + window.location.search + '</b><br><br>Parametri decodificati:<br>' + 
+                window.location.search.substring(1).split('&').join('<br>');
+        }
+    </SCRIPT>
+</BODY>
+</HTML>

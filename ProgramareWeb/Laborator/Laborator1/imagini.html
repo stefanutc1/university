@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+    <TITLE>Un exemplu cu imagini</TITLE>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+</HEAD>
+<BODY>
+    <P><A HREF="index.html">&laquo; Inapoi la Meniul Principal</A></P>
+    <HR>
+
+    <H1>Exemplu cu imagini si harta senzitiva (Sectiunea 7)</H1>
+    <P>Faceti clic pe oricare dintre cele 4 cadrane ale imaginii de mai jos pentru a sari la sectiunea corespunzatoare (cadranul 4 declanseaza si o alerta JavaScript):</P>
+
+    <IMG SRC="sunset.jpg" HEIGHT="300" WIDTH="400" ALT="Apus de soare" USEMAP="#harta1" BORDER="1"/>
+    
+    <MAP NAME="harta1">
+        <AREA SHAPE="rect" COORDS="0,0,200,150" HREF="#stanga_sus" ALT="Stanga sus" TITLE="Cadran 1: Stanga sus (0,0,200,150)">
+        <AREA SHAPE="rect" COORDS="200,0,400,150" HREF="#dreapta_sus" ALT="Dreapta sus" TITLE="Cadran 2: Dreapta sus (200,0,400,150)">
+        <AREA SHAPE="rect" COORDS="0,150,200,300" HREF="#stanga_jos" ALT="Stanga jos" TITLE="Cadran 3: Stanga jos (0,150,200,300)">
+        <AREA SHAPE="rect" COORDS="200,150,400,300" ONCLICK='alert("Dreapta jos !")' HREF="#dreapta_jos" ALT="Dreapta jos" TITLE="Cadran 4: Dreapta jos (onclick alert)">
+    </MAP>
+
+    <HR>
+
+    <H1><A NAME="stanga_sus"></A>Stanga sus</H1>
+    <P>Ati facut clic pe cadranul din stanga sus.</P>
+    <IMG SRC="sunset.jpg" HEIGHT="300" WIDTH="400" ALT="Apus de soare"/>
+    <P><A HREF="#top">Inapoi la harta de imagini &uarr;</A></P>
+
+    <H1><A NAME="dreapta_sus"></A>Dreapta sus</H1>
+    <P>Ati facut clic pe cadranul din dreapta sus.</P>
+    <IMG SRC="sunset.jpg" HEIGHT="300" WIDTH="400" ALT="Apus de soare"/>
+    <P><A HREF="#top">Inapoi la harta de imagini &uarr;</A></P>
+
+    <H1><A NAME="stanga_jos"></A>Stanga jos</H1>
+    <P>Ati facut clic pe cadranul din stanga jos.</P>
+    <IMG SRC="sunset.jpg" HEIGHT="300" WIDTH="400" ALT="Apus de soare"/>
+    <P><A HREF="#top">Inapoi la harta de imagini &uarr;</A></P>
+
+    <H1><A NAME="dreapta_jos"></A>Dreapta jos</H1>
+    <P>Ati facut clic pe cadranul din dreapta jos (unde a aparut alerta <i>"Dreapta jos !"</i>).</P>
+    <IMG SRC="sunset.jpg" HEIGHT="300" WIDTH="400" ALT="Apus de soare"/>
+    <P><A HREF="#top">Inapoi la harta de imagini &uarr;</A> | <A HREF="index.html">Inapoi la Meniul Principal</A></P>
+</BODY>
+</HTML>
